@@ -1,0 +1,27 @@
+snippet document "whole document"
+\\documentclass[11pt]{article}
+${1:\\usepackage{fullpage,amsmath,amsthm,amsfonts,amssymb,mathtools}}
+${2:\\newcommand{\ass}{\overline{a}}}
+\\title{$3}
+\\author{$4}
+\\date{${5:\\today}}
+\\begin{document}
+\maketitle
+${6}
+\\end{document}
+endsnippet
+
+snippet tikz "Tikz Figure"
+\begin{figure}[H]
+	\centering
+	\begin{${1:tikz}}
+		$2
+	\end{$1}
+\end{figure}
+endsnippet
+
+snippet ali "align*"
+\begin{align*}
+  $1
+\end{align*}
+endsnippet

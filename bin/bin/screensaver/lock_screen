@@ -1,0 +1,8 @@
+#!/bin/sh
+FNAME="/tmp/screen.png"
+if [ -e "$FNAME" ]; then
+    rm "$FNAME"
+fi
+scrot "$FNAME"
+convert "$FNAME" -scale 2% -scale 5000% "$FNAME"
+i3lock -n -i "$FNAME"

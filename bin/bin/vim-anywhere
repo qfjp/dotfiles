@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+function setclip {
+    xclip -selection clipboard
+}
+
+function getclip {
+    xclip -selection clipboard -o | tr \\n \\r | sed s/\\r*\$//
+}
+
+file=$(mktemp)
+$HOME/bin/my-kitty --class=UniversalEditor -o remember_window_size=no zsh -c "nvim $file"
+
+cat "$file" | setclip
+
+rm $file
+
+xdotool type "$(getclip)"

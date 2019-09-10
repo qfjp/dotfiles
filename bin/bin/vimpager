@@ -1,0 +1,7 @@
+#!/bin/sh
+if [ -z "$1" ]; then
+    nvim -R -S $HOME/.config/nvim/vimpagerrc -
+else
+    nvim -R -S $HOME/.config/nvim/vimpagerrc $1
+fi
+

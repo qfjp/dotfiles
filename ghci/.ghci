@@ -1,0 +1,6 @@
+:set +m
+:set prompt  "\ESC[0;35m\STXλ\ESC[0m\STX: "
+:set prompt-cont " | "
+:set -XNoImplicitPrelude
+:m -Prelude
+import Padelude

@@ -1,0 +1,84 @@
+# hide files beginning with '.'
+set match-hidden-files off
+
+# zsh menu-ish
+TAB: menu-complete
+set show-all-if-ambiguous on
+set show-all-if-unmodified on
+
+# ignore case, even between - and _, 4 and $, etc
+set completion-ignore-case on
+set completion-map-case on
+
+set editing-mode vi
+
+# Set command key sequences here
+set keymap vi-command
+"G":     end-of-history
+"gg":    beginning-of-history
+"dd":    kill-whole-line
+"[3~": delete-char
+
+# Set insert key sequences here
+set keymap vi-insert
+"jk":    ""
+"[3~": delete-char
+
+# ipython3 greek characters
+#"\ea": "α"
+#"\eb": "β"
+#"\ec": "χ"
+#"\ed": "δ"
+#"\ee": "ε"
+#"\ef": "φ"
+#"\eg": "γ"
+#"\eh": "η"
+#"\ei": "ι"
+#"\ej": "ϑ"
+#"\ek": "κ"
+#"\el": "λ"
+#"\em": "μ"
+#"\en": "ν"
+#"\eo": "o"
+#"\ep": "π"
+#"\eq": "θ"
+#"\er": "ρ"
+#"\es": "σ"
+#"\et": "τ"
+#"\eu": "υ"
+#"\ev": "ς"
+#"\ew": "ω"
+#"\ex": "ξ"
+#"\ey": "ψ"
+#"\ez": "ζ"
+#
+#"\eA": "Α"
+#"\eB": "Β"
+#"\eC": "Χ"
+#"\eD": "Δ"
+#"\eE": "Ε"
+#"\eF": "Φ"
+#"\eG": "Γ"
+#"\eH": "Η"
+#"\eI": "Ι"
+#"\eJ": "Θ"
+#"\eK": "Κ"
+#"\eL": "Λ"
+#"\eM": "Μ"
+#"\eN": "Ν"
+#"\eO": "Ο"
+#"\eP": "Π"
+#"\eQ": "Θ"
+#"\eR": "Ρ"
+#"\eS": "Σ"
+#"\eT": "Τ"
+#"\eU": "Υ"
+#"\eV": "Σ"
+#"\eW": "Ω"
+#"\eX": "Ξ"
+#"\eY": "Ψ"
+#"\eZ": "Ζ"
+#
+#
+## other math characters
+#"\e1": "∇"

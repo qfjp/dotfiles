@@ -1,0 +1,38 @@
+#!/bin/bash
+set -e
+function update_vol() {
+    IFS=$'\n'
+    for line in $(amixer sget Master); do
+        true
+    done
+    brack_perc=$(echo "print(\"$line\".split()[3])" | python)
+    brack_perc=$(echo $brack_perc | sed 's/\[//')
+    perc=$(echo $brack_perc | sed 's/\]//')
+
+    muted=$(echo "print(\"$line\".split()[len(\"$line\".split()) - 1])" | python)
+}
+
+new_vol="$1"
+update_vol
+
+if [[ -z "$new_vol" ]]; then
+    echo $perc $muted
+    # to mute the volume:
+elif [[ $new_vol == m ]]; then
+    if [[ $muted == '[on]' ]]; then
+        amixer set Master toggle
+    else
+        amixer set Master toggle
+    fi
+else
+    amixer -c 1 set Master $new_vol > /dev/null
+fi
+update_vol
+
+if [[ $muted == '[on]' ]]; then
+    perc=$(echo "100 * $perc /  65536" | bc)
+    echo $perc
+    volnoti-show $perc
+else
+    volnoti-show -m
+fi

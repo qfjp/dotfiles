@@ -1,0 +1,96 @@
+!Xterm
+XTerm*backarrowKey:       false
+XTerm*termName:           xterm-256color
+XTerm*faceName:           xft:PragmataPro:size=9
+XTerm*metaSendsEscape:    true
+XTerm*eightBitInput:      false
+XTerm*cursorUnderLine:    true
+XTerm*highlightSelection: true
+
+!URxvt
+URxvt.font:            xft:PragmataPro:size=9:antialias=true
+URxvt.cursorUnderline: True
+URxvt.scrollBar:       False
+URxvt.saveLines:       0
+URxvt.internalBorder:  0
+URxvt.externalBorder:  0
+
+!Disable URxvt perl extensions
+!URxvt.perl-ext:
+!URxvt.perl-ext-common:
+
+!Yankable URLS
+! Alt+U = Enter Selction Mode
+! J     = Select next downward URL
+! K     = Select next upward URL
+! Enter = Open selected URL in browser and quit selection mode
+! O     = Open selected URL in browser
+! Y     = Yank URL and quit selection mode
+! ESC   = quit selection mode
+URxvt.perl-ext-common:      default,clipboard,url-select,keyboard-select
+URxvt.keysym.M-u:           perl:url-select:select_next
+URxvt.keysym.M-Escape:      perl:keyboard-select:activate
+URxvt.keysym.M-s:           perl:keyboard-select:search
+URxvt.url-select.launcher:  firefox
+URxvt.url-select.underline: true
+URxvt.clipboard.copycmd:    xsel -i
+URxvt.clipboard.pastecmd:   xsel -o
+
+!URxvt.letterSpace:     -1
+!URxvt.fading:          100
+!URxvt.pastableTabs:    on
+!URxvt.colorUL:         Red
+Emacs.font: Fantasque Sans Mono-10
+
+Vim.font: Fantasque Sans Mono-10
+
+! Base16 Default
+! Scheme: Chris Kempson (http://chriskempson.com)
+
+#define base00 #181818
+#define base01 #282828
+#define base02 #383838
+#define base03 #585858
+#define base04 #b8b8b8
+#define base05 #d8d8d8
+#define base06 #e8e8e8
+#define base07 #f8f8f8
+#define base08 #ab4642
+#define base09 #dc9656
+#define base0A #f7ca88
+#define base0B #a1b56c
+#define base0C #86c1b9
+#define base0D #7cafc2
+#define base0E #ba8baf
+#define base0F #a16946
+
+XTerm.foreground:   base05
+XTerm.background:   base00
+XTerm.cursorColor:  base05
+
+XTerm.color0:       base00
+XTerm.color1:       base08
+XTerm.color2:       base0B
+XTerm.color3:       base0A
+XTerm.color4:       base0D
+XTerm.color5:       base0E
+XTerm.color6:       base0C
+XTerm.color7:       #787878
+
+XTerm.color8:       base03
+XTerm.color9:       base08
+XTerm.color10:      base0B
+XTerm.color11:      base0A
+XTerm.color12:      base0D
+XTerm.color13:      base0E
+XTerm.color14:      base0C
+XTerm.color15:      base07
+
+! Note: colors beyond 15 might not be loaded (e.g., xterm, urxvt),
+! use 'shell' template to set these if necessary
+XTerm.color16:      base09
+XTerm.color17:      base0F
+XTerm.color18:      base01
+XTerm.color19:      base02
+XTerm.color20:      base04
+XTerm.color21:      base06

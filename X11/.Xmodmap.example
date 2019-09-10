@@ -1,0 +1,24 @@
+! Swap alt/win keys, caps->ctrl_left and ctrl_left->hyper_left
+clear lock
+clear control
+clear mod1
+clear mod2
+clear mod3
+clear mod4
+clear mod5
+
+keycode 108 = Super_R
+keycode 64 = Super_L
+
+keycode 134 = Alt_R
+keycode 133 = Alt_L
+
+keycode 37 = Hyper_L
+keycode 66 = Control_L
+
+add control = Control_L Control_R
+add mod1 = Alt_L Alt_R Meta_L
+add mod2 = Num_Lock
+add mod3 = Hyper_L
+add mod4 = Super_L Super_R
+add mod5 = Mode_switch ISO_Level3_Shift

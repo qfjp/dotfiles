@@ -1,0 +1,26 @@
+rofi.modi:                           ssh,run,combi
+rofi.columns:                        1
+rofi.ssh-client:                     mosh
+rofi.ssh-command:                    {terminal} {ssh-client} {host}
+rofi.sort:                           false
+rofi.levenshtein-sort:               true
+rofi.sidebar-mode:                   true
+rofi.matching:                       fuzzy
+rofi.dpi:                            0
+rofi.click-to-exit:                  false
+
+
+rofi.kb-primary-paste:               Control+v,Insert
+rofi.kb-secondary-paste:             Control+V,Shift+Insert
+rofi.kb-move-char-back:              Left
+rofi.kb-remove-char-forward:         Control+d
+rofi.kb-remove-char-back:            BackSpace
+rofi.kb-delete-entry:                Delete
+rofi.kb-mode-next:                   Control+n,Super+l,Control+l
+rofi.kb-mode-previous:               Control+b,Control+p,Super+h,Control+h
+rofi.kb-row-up:                      Up,Super+k,Control+k
+rofi.kb-row-down:                    Down,Super+j,Control+j
+
+rofi.kb-remove-to-eol:
+rofi.kb-accept-entry:                Control+m,Return,KP_Enter
+rofi.theme: /usr/share/rofi/themes/arthur.rasi
