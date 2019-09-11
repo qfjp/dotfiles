@@ -1,0 +1,23 @@
+FSET double(x) 2*x
+FSET yeardiff(date1,date2) year(date1) - year(date2)
+FSET since(x) ord(year(trigdate())-x)
+
+# Friends
+REM  3 Mar +5 MSG [BrCyn]%b[Nrm] %"Zach's [since(1989)]%" Birthday
+REM 13 Mar +5 MSG [BrCyn]%b[Nrm] %"Mandi's [since(1990)]%" Birthday
+REM  7 Oct +5 MSG [BrCyn]%b[Nrm] %"Paul's [since(1989)]%" Birthday
+REM 17 Oct +5 MSG [BrCyn]%b[Nrm] %"Alek's [since(1988)]%" Birthday
+REM 30 Dec +5 MSG [BrCyn]%b[Nrm] %"Xian's [since(1989)]%" Birthday
+REM 7 Dec +5 MSG [BrCyn]%b[Nrm] %"PJ's [since(1988)]%" Birthday
+
+REM 2 Mar +5 MSG [BrCyn]%b[Nrm] %"[since(2016)] Years since PJ's Death"
+
+# Family
+REM 28 Feb +5 MSG [BrCyn]%b[Nrm] %"Lauren's [since(1988)]%" Birthday
+REM 20 Nov +5 MSG [BrCyn]%b[Nrm] %"Dad's [since(1951)]%" Birthday
+REM  4 May +5 MSG [BrCyn]%b[Nrm] %"Mom's [since(1955)]%" Birthday
+REM  4 Mar +5 MSG [BrCyn]%b[Nrm] %"Mom & Dad's [since(1981)]%" Anniversary
+
+# Work
+# Don't know when the first one was...
+REM 17 Nov +5 MSG [BrCyn]%b[Nrm] %"Chris Gintz's [since(1955)]%" Birthday (Maybe)
