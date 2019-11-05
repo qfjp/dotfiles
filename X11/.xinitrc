@@ -25,6 +25,9 @@ volnoti &
 numlockx &
 nm-applet &
 unclutter --ignore-scrolling --exclude-root &
+dunst &
+udiskie -s &
+redshift-gtk &
 xmodmap "$HOME/.Xmodmap" &
 (sleep 10 && xcape -t=0 -e 'Control_L=Escape') &
 xrdb ~/.Xdefaults &
