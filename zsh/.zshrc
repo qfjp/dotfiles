@@ -413,6 +413,11 @@ econs()
     bindkey -M viins "^s" insert-sudo # Ctrl-s
     bindkey -M vicmd "^s" insert-sudo-vi # Ctrl-s
 
+    zle -N emojicli emoji::cli
+    bindkey -M viins "^e" emojicli
+    export EMOJI_CLI_USE_EMOJI=1
+    export EMOJI_CLI_FILTER="fzf-tmux -d 55%:fzf:peco:percol:fzy"
+
     # {{{ greek characters
 
         bindkey -s '^[a' "α"
@@ -510,7 +515,7 @@ econs()
       esac'"'"
     export FZF_DEFAULT_OPTS
 
-    bindkey '^E' fzf-cd-widget
+    bindkey '^F' fzf-cd-widget
 
 
     # GIT heart FZF - https://junegunn.kr/2016/07/fzf-git/
