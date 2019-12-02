@@ -151,49 +151,39 @@ econs()
 
 # {{{ Plugins
 
-    if [[ ! -d $HOME/.zplug ]]; then
-        git clone https://github.com/zplug/zplug "$HOME/.zplug"
+    if [[ ! -d $HOME/.zgen ]]; then
+        git clone https://github.com/tarjoilija/zgen "$HOME/.zgen"
     fi
 
     # {{{ zgen
+        source ~/.zgen/zgen.zsh
 
-        source ~/.zplug/init.zsh
-        zplug 'zplug/zplug', hook-build:'zplug --self-manage'
-        zplug 'modules/environment',       from:prezto
-        zplug 'modules/terminal',          from:prezto
-        zplug 'modules/history',           from:prezto
-        zplug 'modules/directory',         from:prezto
-        zplug 'modules/spectrum',          from:prezto
-        zplug 'modules/utility',           from:prezto
-        zplug 'modules/completion',        from:prezto
-        zplug 'modules/ssh',               from:prezto
-        zplug 'modules/command-not-found', from:prezto
-        zplug 'modules/prompt',            from:prezto
+        if ! zgen saved; then
+            zgen prezto
+            zgen prezto 'environment'
+            zgen prezto 'terminal'
+            zgen prezto 'history'
+            zgen prezto 'directory'
+            zgen prezto 'spectrum'
+            zgen prezto 'utility'
+            zgen prezto 'completion'
+            zgen prezto 'ssh'
+            zgen prezto 'command-not-found'
+            zgen prezto 'prompt'
 
-        zplug "stedolan/jq", \
-            from:gh-r, \
-            as:command, \
-            rename-to:jq
-        zplug "b4b4r07/emoji-cli", \
-            on:"stedolan/jq"
-        zplug 'felixgravila/zsh-abbr-path'
-        zplug 'Tarrasch/zsh-functional',          as:plugin
-        zplug 'rylnd/shpec'
-        zplug 'zsh-users/zsh-autosuggestions',    as:plugin
-        zplug 'zdharma/fast-syntax-highlighting', as:plugin
+            zgen load "b4b4r07/emoji-cli"
+            zgen load 'felixgravila/zsh-abbr-path'
+            zgen load 'Tarrasch/zsh-functional'
+            zgen load 'rylnd/shpec'
+            zgen load 'zsh-users/zsh-autosuggestions'
+            zgen load 'zdharma/fast-syntax-highlighting'
 
-        zplug 'qfjp/k',                           at:gnu-ls-color
+            zgen load 'qfjp/k'
 
-        if ! zplug check --verbose; then
-            printf "Install? [y/N]: "
-            if read -q; then
-                echo; zplug install
-            fi
+            zgen save
         fi
 
-        zplug load
-
-        . $HOME/.zplug/repos/felixgravila/zsh-abbr-path/.abbr_pwd
+        . $HOME/.zgen/felixgravila/zsh-abbr-path-master/.abbr_pwd
         FAST_HIGHLIGHT_STYLES[comment]="fg=magenta,bold"
 
         ZSH_AUTOSUGGEST_ACCEPT_WIDGETS=(
