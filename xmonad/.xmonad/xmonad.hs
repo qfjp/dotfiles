@@ -59,7 +59,6 @@ import           XMonad.Util.Timer
 
 import           Numeric                        (readHex, showHex)
 
-import           ShapedWindow
 import           Startup.Apps
 import           Startup.Utils
 
@@ -514,7 +513,7 @@ placeHook' = placeHook $ withGaps (16, 0, 16, 0) (smart (0.5, 0.5))
 myLayout =
     (avoidStruts .
      smartBorders .
-     toggleLayouts (noBorders Full) . spacing 5 . shapedWindows (roundedRect 15))
+     toggleLayouts (noBorders Full) . spacing 5 )
         (tiled |||
          reflectHoriz tiled ||| Mirror tiled ||| reflectVert (Mirror tiled))
   where
