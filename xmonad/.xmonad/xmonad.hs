@@ -188,11 +188,11 @@ myWorkspaces =
     , "3 delg"
     , "4 chrome"
     , "5 game"
-    , "6 btc"
+    , "6 virt"
     , "7 sec"
     , "8 phone"
     , "9 blank"
-    , "10 kpass"
+    , "10 hviz"
     ]
 
 toggleFloat :: X ()
@@ -481,9 +481,9 @@ myWindowManage =
     , [className =? c --> doShift (myWorkspaces !! 2) | c <- myTorrents]
     , [className =? c --> doShift (myWorkspaces !! 3) | c <- myChrome]
     , [className =? c --> doShift (myWorkspaces !! 4) | c <- myGames]
-    , [title =? t --> doShift (myWorkspaces !! 5) | t <- myTor]
+    , [className =? t --> doShift (myWorkspaces !! 5) | t <- ["VirtualBox Machine"]]
     , [className =? c --> doShift (myWorkspaces !! 6) | c <- myTorExtras]
-    , [className =? c --> doShift (myWorkspaces !! 7) | c <- myPhones]
+    , [className =? c --> doShift (myWorkspaces !! 8) | c <- ["VirtualBox Manager"]]
     , [title =? t --> doFloat | t <- myTitleFloats]
     , [isFullscreen --> doFullFloat]
     ]
@@ -499,11 +499,10 @@ myWindowManage =
         , "google-chrome"
         ]
     myTorExtras = ["Vidalia"]
-    myTor = ["Tor Browser", "TLINKS"]
     myTorrents = ["Deluge"]
     myGames = ["dosbox", "Steam", "pcsx2"]
     myPhones = []
-    myClassFloats = ["feh", "gnuplot", "mpv", "VirtualBox", "UniversalEditor"]
+    myClassFloats = ["feh", "gnuplot", "mpv", "UniversalEditor"]
     myTitleFloats = []
 
 placeHook' = placeHook $ withGaps (16, 0, 16, 0) (smart (0.5, 0.5))
