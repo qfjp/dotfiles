@@ -566,16 +566,16 @@ let g:maplocalleader = ' '
     " }}}
     " {{{ Autoformat
     " --------------
-        let g:neoformat_sql_mysqlfmt = {
-                \ 'exe': 'sqlfmt',
-                \ 'args': ['--use-spaces'],
+        let g:neoformat_sql_mysqlformat = {
+                \ 'exe': 'sqlformat',
+                \ 'args': ['-k', 'upper', '--reindent', '--comma_first', 'True', '-'],
                 \ 'stdin': 1,
                 \ }
 
         let g:neoformat_enabled_python = ['black', 'isort']
         let g:neoformat_enabled_haskell = ['hindent', 'stylishhaskell']
         let g:neoformat_enabled_tex = ['latexindent']
-        let g:neoformat_enabled_sql = ["mysqlfmt"]
+        let g:neoformat_enabled_sql = ['mysqlformat']
 
         " Enable tab to spaces conversion
         let g:neoformat_basic_format_retab = 1
