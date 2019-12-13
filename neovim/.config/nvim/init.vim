@@ -572,9 +572,15 @@ let g:maplocalleader = ' '
                 \ 'stdin': 1,
                 \ }
 
+        let g:neoformat_tex_mylatexindent = {
+                \ 'exe': 'latexindent',
+                \ 'args': ['-m', '-sl', '-g /dev/stderr', '2>/dev/null'],
+                \ 'stdin': 1,
+                \}
+
         let g:neoformat_enabled_python = ['black', 'isort']
         let g:neoformat_enabled_haskell = ['hindent', 'stylishhaskell']
-        let g:neoformat_enabled_tex = ['latexindent']
+        let g:neoformat_enabled_tex = ['mylatexindent']
         let g:neoformat_enabled_sql = ['mysqlformat']
 
         " Enable tab to spaces conversion
