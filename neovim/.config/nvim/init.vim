@@ -863,27 +863,6 @@ let g:maplocalleader = ' '
     " --------------
         set updatetime=750
     " }}}
-    " {{{ Clojure
-    " -----------
-        let g:rainbow#max_level = 16
-        let g:rainbow#pairs = [['(', ')'], ['[', ']'], ['{', '}']]
-        augroup Clojure
-            autocmd!
-            autocmd FileType lisp,clojure,scheme RainbowParentheses
-        augroup END
-    " }}}
-    " {{{ Scheme
-    " ----------
-        let racket_swank = '~/.config/nvim/plugged/swank-racket/'
-        let g:slimv_swank_cmd = '! xterm -e "cd ' . racket_swank . '; racket server.rkt" &'
-        let g:swank_port = 4005
-        let g:slimv_unmap_cr = 1
-        let g:slimv_leader = '<space>'
-        augroup Scheme
-            autocmd!
-            autocmd! BufEnter *scm syn clear schemeError
-        augroup END
-    " }}}
     " {{{ Goyo
     " --------
         let g:limelight_conceal_ctermfg = 240
