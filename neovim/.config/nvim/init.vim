@@ -425,9 +425,6 @@ let g:maplocalleader = ' '
     " Autoformatting
     Plug 'sbdchd/neoformat'
 
-    " Nix
-    Plug 'LnL7/vim-nix'
-
     Plug 'itchyny/lightline.vim'
     Plug 'mengelbrecht/lightline-bufferline'
     Plug 'ryanoasis/vim-devicons'
@@ -450,22 +447,10 @@ let g:maplocalleader = ' '
     Plug 'airblade/vim-gitgutter'
     Plug 'jreybert/vimagit'
 
-    " Tables
     Plug 'junegunn/vim-easy-align'
 
-    " Clojure and lisps
-    Plug 'l04m33/vlime'                    , {'for' : 'lisp', 'rtp' : 'vim/'}
-    Plug 'kovisoft/slimv'                  , {'for' : 'scheme'}
-                \| Plug 'mbal/swank-racket'
-    Plug 'junegunn/rainbow_parentheses.vim', {'for' : ['clojure', 'scheme', 'lisp']}
-    Plug 'eraserhd/parinfer-rust', {
-                \  'do' : 'cargo build --release'
-                \, 'for': ['clojure', 'lisp', 'scheme']
-                \}
-
-    " Colorschemes
-    Plug 'sickill/vim-monokai'
     Plug 'mhinz/vim-janah'
+
     Plug 'ElmCast/elm-vim'
 
     Plug 'rbgrouleff/bclose.vim'
@@ -475,8 +460,9 @@ let g:maplocalleader = ' '
     Plug 'junegunn/limelight.vim'
     Plug 'junegunn/goyo.vim'
 
-    Plug 'Vigemus/nvimux'
     Plug 'rliang/termedit.nvim'
+
+    Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
 
     call plug#end()
     " }}}
@@ -879,27 +865,6 @@ let g:maplocalleader = ' '
     " --------------
         set updatetime=750
     " }}}
-    " {{{ Clojure
-    " -----------
-        let g:rainbow#max_level = 16
-        let g:rainbow#pairs = [['(', ')'], ['[', ']'], ['{', '}']]
-        augroup Clojure
-            autocmd!
-            autocmd FileType lisp,clojure,scheme RainbowParentheses
-        augroup END
-    " }}}
-    " {{{ Scheme
-    " ----------
-        let racket_swank = '~/.config/nvim/plugged/swank-racket/'
-        let g:slimv_swank_cmd = '! xterm -e "cd ' . racket_swank . '; racket server.rkt" &'
-        let g:swank_port = 4005
-        let g:slimv_unmap_cr = 1
-        let g:slimv_leader = '<space>'
-        augroup Scheme
-            autocmd!
-            autocmd! BufEnter *scm syn clear schemeError
-        augroup END
-    " }}}
     " {{{ Goyo
     " --------
         let g:limelight_conceal_ctermfg = 240
@@ -938,33 +903,24 @@ let g:maplocalleader = ' '
 
         nnoremap <leader>g :Goyo<CR>
     " }}}
-    " {{{ Nvimux
-    " ----------
-        lua << EOF
-        local nvimux = require('nvimux')
-
-        -- Nvimux configuration
-        nvimux.config.set_all{
-          prefix = '<C-Space>',
-          new_window = 'term',
-          new_tab = nil, -- Defaults to new_window. Set to 'term' if you want a new term for every new tab
-          new_window_buffer = 'single',
-          quickterm_direction = 'botright',
-          quickterm_orientation = 'vertical',
-          quickterm_scope = 't', -- Use 'g' for global quickterm
-          quickterm_size = '80',
-        }
-
-        -- Nvimux custom bindings
-        nvimux.bindings.bind_all{
-          {'s', ':NvimuxHorizontalSplit', {'n', 'v', 'i', 't'}},
-          {'v', ':NvimuxVerticalSplit', {'n', 'v', 'i', 't'}},
-          {'p', ':NvimuxTermPaste', {'n', 'v', 'i', 't'}},
-        }
-
-        -- Required so nvimux sets the mappings correctly
-        nvimux.bootstrap()
-EOF
+    " {{{ firenvim
+    " ------------
+       if exists('g:started_by_firenvim')
+           set laststatus=0
+       endif
+       let g:firenvim_config = {
+      \      'globalSettings': {
+      \          'alt': 'all',
+      \      },
+      \      'localSettings': {
+      \          '.*': {
+      \              'cmdline': 'firenvim',
+      \              'priority': 0,
+      \              'selector': 'textarea',
+      \              'takeover': 'always',
+      \          },
+      \      },
+      \}
     " }}}
 
 " }}}
