@@ -13,12 +13,12 @@ set -g status "on"
 set -g status-right-length "100"
 setw -g window-status-separator ""
 
-#        
+#          
 
 set -g status-left "#[fg=colour81]#[fg=colour237,bg=colour81,bold] #S #[fg=colour81,bg=colour0,nobold,nounderscore,noitalics]"
 
 set -g status-right "#[fg=colour239,nobold,nounderscore,noitalics]#[fg=colour250,bg=colour239] %Y-%m-%d #[fg=colour245,bg=colour239]#[fg=colour238,bg=colour245] %I:%M %p #[fg=colour81,bg=colour245,nobold,nounderscore,noitalics]#[fg=colour237,bg=colour81] #h #[fg=colour81,bg=colour237,bold]"
 
-setw -g window-status-format "  #[fg=colour245] #I  #W  "
+setw -g window-status-format " #[fg=colour245]  #I  #W  "
 
 setw -g window-status-current-format " #[fg=colour245]#[fg=colour238,bg=colour245] #I #[fg=colour245,bg=colour239]#[fg=colour250,bg=colour239] #W #[fg=colour239,bg=colour0,nobold,nounderscore,noitalics]"
