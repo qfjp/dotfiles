@@ -878,11 +878,12 @@ let g:maplocalleader = ' '
       \          '.*': {
       \              'cmdline': 'firenvim',
       \              'priority': 0,
-      \              'selector': 'textarea',
-      \              'takeover': 'always',
+      \              'selector': 'textarea, div[role="textbox"]',
+      \              'takeover': 'never',
       \          },
       \      },
       \}
+       au BufEnter bethesda2.cloud.databricks.com_*.txt set filetype=scala
     " }}}
 
 " }}}
