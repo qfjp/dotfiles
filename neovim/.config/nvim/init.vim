@@ -371,10 +371,6 @@ let g:maplocalleader = ' '
     " Vim Wiki
     Plug 'vimwiki/vimwiki'
 
-    " Jupyter Notebooks
-    Plug 'bfredl/nvim-ipy'
-    Plug 'szymonmaszke/vimpyter'
-
     " When you type one bracket, you get two
     Plug 'Raimondi/delimitMate'
 
