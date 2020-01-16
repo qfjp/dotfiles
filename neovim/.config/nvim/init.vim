@@ -384,20 +384,6 @@ let g:maplocalleader = ' '
     " Undo tree
     Plug 'mbbill/undotree'
 
-    Plug 'ncm2/ncm2'
-    Plug 'roxma/nvim-yarp'
-
-    " NOTE: you need to install completion sources to get completions. Check
-    " our wiki page for a list of sources: https://github.com/ncm2/ncm2/wiki
-    Plug 'ncm2/ncm2-bufword'
-    Plug 'ncm2/ncm2-path'
-    Plug 'ncm2/ncm2-ultisnips'
-    Plug 'ncm2/ncm2-tmux'
-
-    " Snippet Engine
-    Plug 'SirVer/ultisnips'
-    Plug 'honza/vim-snippets'
-
     " Haskell
     Plug 'neovimhaskell/haskell-vim', {'for' : 'haskell'}
 
@@ -414,11 +400,8 @@ let g:maplocalleader = ' '
     Plug 'tpope/vim-surround'
     Plug 'tpope/vim-speeddating'
 
-    Plug 'autozimu/LanguageClient-neovim', {
-                \ 'branch': 'next',
-                \ 'do': 'bash install.sh',
-                \}
-    Plug 'junegunn/fzf'
+    Plug 'neoclide/coc.nvim', {'branch': 'release'}
+    Plug 'scalameta/coc-metals', {'do': 'yarn-install --frozen-lockfile'}
 
     Plug 'Shougo/echodoc.vim'
 
@@ -580,146 +563,129 @@ let g:maplocalleader = ' '
             au BufWritePre * try | undojoin | Neoformat | catch /^Vim\%((\a\+)\)\=:E790/ | finally | silent Neoformat | endtry
         augroup END
     " }}}
-    " {{{ Jupyter
-    " ------------
-        let g:nvim_ipy_perform_mappings = 0
-        let g:ipy_celldef = ['^```{.python .input[^{}]*}$', '^```$']
-        map <silent> <leader><CR> <Plug>(IPy-RunCell)
-    " }}}
     " {{{ Completion
     " -------------
-        " suppress the annoying 'match x of y', 'The only match' and 'Pattern not
-        " found' messages
+
+        " Better display for messages
+        set cmdheight=2
+
+        " don't give |ins-completion-menu| messages.
         set shortmess+=c
 
-        " CTRL-C doesn't trigger the InsertLeave autocmd . map to <ESC> instead.
-        inoremap <c-c> <ESC>
+        " always show signcolumns
+        set signcolumn=yes
 
-        " When the <Enter> key is pressed while the popup menu is visible, it only
-        " hides the menu. Use this mapping to close the menu and also start a new
-        " line.
-        inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
-        inoremap <silent> <expr> <CR> ncm2_ultisnips#expand_or("\<CR>", 'n')
+        " Use tab for trigger completion with characters ahead and navigate.
+        " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+        inoremap <silent><expr> <TAB>
+              \ pumvisible() ? "\<C-n>" :
+              \ <SID>check_back_space() ? "\<TAB>" :
+              \ coc#refresh()
+        inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
-        " Use <TAB> to select the popup menu:
-        inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-        inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-        inoremap <C-n> <C-x><C-o>
+        function! s:check_back_space() abort
+          let col = col('.') - 1
+          return !col || getline('.')[col - 1]  =~# '\s'
+        endfunction
 
-        " wrap existing omnifunc
-        " Note that omnifunc does not run in background and may probably block the
-        " editor. If you don't want to be blocked by omnifunc too often, you could
-        " add 180ms delay before the omni wrapper:
-        "  'on_complete': ['ncm2#on_complete#delay', 180,
-        "               \ 'ncm2#on_complete#omni', 'csscomplete#CompleteCSS'],
-        au User Ncm2Plugin call ncm2#register_source({
-                \ 'name' : 'css',
-                \ 'priority': 9,
-                \ 'subscope_enable': 1,
-                \ 'scope': ['css','scss'],
-                \ 'mark': 'css',
-                \ 'word_pattern': '[\w\-]+',
-                \ 'complete_pattern': ':\s*',
-                \ 'on_complete': ['ncm2#on_complete#omni', 'csscomplete#CompleteCSS'],
-                \ })
-        au User Ncm2Plugin call ncm2#register_source({
-                \ 'name' : 'vimtex',
-                \ 'priority': 1,
-                \ 'subscope_enable': 1,
-                \ 'complete_length': 1,
-                \ 'scope': ['tex'],
-                \ 'matcher': {'name': 'combine',
-                \           'matchers': [
-                \               {'name': 'abbrfuzzy', 'key': 'menu'},
-                \               {'name': 'prefix', 'key': 'word'},
-                \           ]},
-                \ 'mark': 'tex',
-                \ 'word_pattern': '\w+',
-                \ 'complete_pattern': g:vimtex#re#ncm,
-                \ 'on_complete': ['ncm2#on_complete#omni', 'vimtex#complete#omnifunc'],
-                \ })
-        autocmd BufEnter * call ncm2#enable_for_buffer()
+        " Use <c-space> to trigger completion.
+        inoremap <silent><expr> <c-space> coc#refresh()
 
-        " LaTeX (rubber) macro
-        nnoremap <leader>c :w<CR>:!rubber --pdf --warn all %<CR>
+        " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
+        " Coc only does snippet and additional edit on confirm.
+        inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+        " Or use `complete_info` if your vim support it, like:
+        " inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
 
-        " View PDF macro; '%:r' is current file's root (base) name.
-        nnoremap <leader>v :!mupdf %:r.pdf &<CR><CR>
+        " Use `[g` and `]g` to navigate diagnostics
+        nmap <silent> [g <Plug>(coc-diagnostic-prev)
+        nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+        " Remap keys for gotos
+        nmap <silent> gd <Plug>(coc-definition)
+        nmap <silent> gy <Plug>(coc-type-definition)
+        nmap <silent> gi <Plug>(coc-implementation)
+        nmap <silent> gr <Plug>(coc-references)
+
+        " Use K to show documentation in preview window
+        nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+        function! s:show_documentation()
+          if (index(['vim','help'], &filetype) >= 0)
+            execute 'h '.expand('<cword>')
+          else
+            call CocAction('doHover')
+          endif
+        endfunction
+
+        " Highlight symbol under cursor on CursorHold
+        autocmd CursorHold * silent call CocActionAsync('highlight')
+
+        " Remap for rename current word
+        nmap <leader>rn <Plug>(coc-rename)
+
+        " Remap for format selected region
+        xmap <leader>f  <Plug>(coc-format-selected)
+        nmap <leader>f  <Plug>(coc-format-selected)
+
+        augroup mygroup
+          autocmd!
+          " Setup formatexpr specified filetype(s).
+          autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+          " Update signature help on jump placeholder
+          autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+        augroup end
+
+        " Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
+        xmap <leader>a  <Plug>(coc-codeaction-selected)
+        nmap <leader>a  <Plug>(coc-codeaction-selected)
+
+        " Remap for do codeAction of current line
+        nmap <leader>ac  <Plug>(coc-codeaction)
+        " Fix autofix problem of current line
+        nmap <leader>qf  <Plug>(coc-fix-current)
+
+        " Create mappings for function text object, requires document symbols feature of languageserver.
+        xmap if <Plug>(coc-funcobj-i)
+        xmap af <Plug>(coc-funcobj-a)
+        omap if <Plug>(coc-funcobj-i)
+        omap af <Plug>(coc-funcobj-a)
+
+        " Use <TAB> for select selections ranges, needs server support, like: coc-tsserver, coc-python
+        nmap <silent> <TAB> <Plug>(coc-range-select)
+        xmap <silent> <TAB> <Plug>(coc-range-select)
+
+        " Use `:Format` to format current buffer
+        command! -nargs=0 Format :call CocAction('format')
+
+        " Use `:Fold` to fold current buffer
+        command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+
+        " use `:OR` for organize import of current buffer
+        command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
+
+        " Add status line support, for integration with other plugin, checkout `:h coc-status`
+        set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+
+        " Using CocList
+        " Show all diagnostics
+        nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+        " Manage extensions
+        nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
+        " Show commands
+        nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
+        " Find symbol of current document
+        nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
+        " Search workspace symbols
+        nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
+        " Do default action for next item.
+        nnoremap <silent> <space>j  :<C-u>CocNext<CR>
+        " Do default action for previous item.
+        nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
+        " Resume latest coc list
+        nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 
         set completeopt=noinsert,menuone,noselect
-        set completefunc=LanguageClient#complete
-
-        let g:LanguageClient_serverCommands = {
-            \ 'c': ['cquery', '--log-file=/tmp/cq.log'],
-            \ 'cpp': ['cquery', '--log-file=/tmp/cq.log'],
-            \ 'haskell': ['hie-wrapper', '--lsp'],
-            \ 'tex': ['java', '-jar', '/usr/share/java/texlab/texlab.jar'],
-            \ 'python': ['pyls'],
-            \ 'rust': ['rls'],
-            \ 'scala': ['metals-vim'],
-            \ 'scheme': ['racket', '-l', 'racket-langserver'],
-            \ }
-        let g:LanguageClient_rootMarkers = {
-            \ 'scala': ['build.sbt'],
-            \ }
-
-        augroup LanguageClient
-            autocmd!
-
-            au BufWritePost * sign unplace *
-        augroup END
-
-
-        let g:LanguageClient_diagnosticsDisplay =
-                    \{
-                    \    1: {
-                    \        "name": "Error",
-                    \        "texthl": "ALEError",
-                    \        "signText": "●",
-                    \        "signTexthl": "ALEErrorSign",
-                    \        "virtualTexthl": "Error",
-                    \    },
-                    \    2: {
-                    \        "name": "Warning",
-                    \        "texthl": "ALEWarning",
-                    \        "signText": "●",
-                    \        "signTexthl": "ALEWarningSign",
-                    \        "virtualTexthl": "Todo",
-                    \    },
-                    \    3: {
-                    \        "name": "Information",
-                    \        "texthl": "ALEInfo",
-                    \        "signText": "●",
-                    \        "signTexthl": "ALEInfoSign",
-                    \        "virtualTexthl": "Todo",
-                    \    },
-                    \    4: {
-                    \        "name": "Hint",
-                    \        "texthl": "ALEInfo",
-                    \        "signText": "●",
-                    \        "signTexthl": "ALEHintSign",
-                    \        "virtualTexthl": "Todo",
-                    \    },
-                    \}
-        highlight ALEInfoSign    ctermfg=blue   ctermbg=237
-        highlight ALEWarningSign ctermfg=yellow ctermbg=237
-        highlight ALEErrorSign   ctermfg=red    ctermbg=237
-        highlight ALEHintSign    ctermfg=green  ctermbg=237
-
-        nnoremap gm :call LanguageClient_contextMenu()<CR>
-        nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
-        nnoremap <silent> gK :call LanguageClient#textDocument_definition()<CR>
-        nnoremap <silent> gr :call LanguageClient#textDocument_rename()<CR>
-        let g:LanguageClient_useVirtualText = 0
-    " }}}
-    " {{{ UltiSnips
-    " -------------
-        let g:UltiSnipsExpandTrigger = "<tab>"
-        let g:UltiSnipsJumpForwardTrigger='<c-j>'
-        let g:UltiSnipsJumpBackwardTrigger  = '<c-k>'
-        let g:UltiSnipsSnippetDirectories = [ 'plugged/ultisnips/UltiSnips'
-                                          \ , 'bundle/mysnips'
-                                          \ ]
     " }}}
     " {{{ Delimitmate
     " -------------
@@ -863,7 +829,7 @@ let g:maplocalleader = ' '
     " }}}
     " {{{ Git Gutter
     " --------------
-        set updatetime=750
+        set updatetime=300
     " }}}
     " {{{ Goyo
     " --------
