@@ -297,14 +297,13 @@ let g:maplocalleader = ' '
     noremap <silent> gj j
     noremap <silent> gk k
 
-    "cnoreabbrev <expr> e getcmdtype() == ":" && getcmdline() == 'e' ? 'tabe' : 'e'
     noremap <C-n> :bnext<CR>
+    inoremap <silent><expr> <C-n>
+          \ pumvisible() ? "\<C-n>" : "\<C-x>\<C-o>"
+    inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
     noremap <C-b> :bprev<CR>
     noremap <leader>n :tabnext<CR>
     noremap <leader>b :tabprev<CR>
-
-    " make line completion easier
-    imap <C-l> <C-x><C-l>
 
     " Use ; for : in normal and visual mode, less keystrokes
     nnoremap ; :
@@ -398,13 +397,9 @@ let g:maplocalleader = ' '
     Plug 'tpope/vim-surround'
     Plug 'tpope/vim-speeddating'
 
-    Plug 'neoclide/coc.nvim', {'branch': 'release'}
-    Plug 'scalameta/coc-metals', {'do': 'yarn-install --frozen-lockfile'}
+    Plug 'neovim/nvim-lsp'
 
     Plug 'Shougo/echodoc.vim'
-
-    " Autoformatting
-    Plug 'sbdchd/neoformat'
 
     Plug 'itchyny/lightline.vim'
     Plug 'mengelbrecht/lightline-bufferline'
@@ -531,36 +526,6 @@ let g:maplocalleader = ' '
     " --------------
         nnoremap <leader>u :UndotreeToggle<CR>
     " }}}
-    " {{{ Autoformat
-    " --------------
-        let g:neoformat_sql_mysqlformat = {
-                \ 'exe': 'sqlformat',
-                \ 'args': ['-k', 'upper', '--reindent', '--comma_first', 'True', '-'],
-                \ 'stdin': 1,
-                \ }
-
-        let g:neoformat_tex_mylatexindent = {
-                \ 'exe': 'latexindent',
-                \ 'args': ['-m', '-sl', '-g /dev/stderr', '2>/dev/null'],
-                \ 'stdin': 1,
-                \}
-
-        let g:neoformat_enabled_python = ['black', 'isort']
-        let g:neoformat_enabled_haskell = ['hindent', 'stylishhaskell']
-        let g:neoformat_enabled_tex = ['mylatexindent']
-        let g:neoformat_enabled_sql = ['mysqlformat']
-
-        " Enable tab to spaces conversion
-        let g:neoformat_basic_format_retab = 1
-
-        " Enable trimmming of trailing whitespace
-        let g:neoformat_basic_format_trim = 1
-
-        augroup fmt
-            autocmd!
-            au BufWritePre * try | undojoin | Neoformat | catch /^Vim\%((\a\+)\)\=:E790/ | finally | silent Neoformat | endtry
-        augroup END
-    " }}}
     " {{{ Completion
     " -------------
 
@@ -568,122 +533,90 @@ let g:maplocalleader = ' '
         set cmdheight=2
 
         " don't give |ins-completion-menu| messages.
-        set shortmess+=c
+        "set shortmess+=c
+        set completeopt-=preview
 
         " always show signcolumns
         set signcolumn=yes
 
-        " Use tab for trigger completion with characters ahead and navigate.
-        " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
-        inoremap <silent><expr> <TAB>
-              \ pumvisible() ? "\<C-n>" :
-              \ <SID>check_back_space() ? "\<TAB>" :
-              \ coc#refresh()
-        inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+        let g:LspDiagnosticsErrorSign = "●"
+        let g:LspDiagnosticsWarningSign = "●"
+        let g:LspDiagnosticsInformationSign = "●"
+        let g:LspDiagnosticsHintSign = "●"
+        highlight LspDiagnosticInformation ctermfg=blue   ctermbg=none
+        highlight LspDiagnosticsWarning    ctermfg=yellow ctermbg=none
+        highlight LspDiagnosticsError      ctermfg=red    ctermbg=none
+        highlight LspDiagnosticHint        ctermfg=green  ctermbg=none
 
-        function! s:check_back_space() abort
-          let col = col('.') - 1
-          return !col || getline('.')[col - 1]  =~# '\s'
-        endfunction
-
-        " Use <c-space> to trigger completion.
-        inoremap <silent><expr> <c-space> coc#refresh()
-
-        " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
-        " Coc only does snippet and additional edit on confirm.
-        inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-        " Or use `complete_info` if your vim support it, like:
-        " inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
-
-        " Use `[g` and `]g` to navigate diagnostics
-        nmap <silent> [g <Plug>(coc-diagnostic-prev)
-        nmap <silent> ]g <Plug>(coc-diagnostic-next)
-
-        " Remap keys for gotos
-        nmap <silent> gd <Plug>(coc-definition)
-        nmap <silent> gy <Plug>(coc-type-definition)
-        nmap <silent> gi <Plug>(coc-implementation)
-        nmap <silent> gr <Plug>(coc-references)
-
-        " Use K to show documentation in preview window
-        nnoremap <silent> K :call <SID>show_documentation()<CR>
-
-        function! s:show_documentation()
-          if (index(['vim','help'], &filetype) >= 0)
-            execute 'h '.expand('<cword>')
-          else
-            call CocAction('doHover')
-          endif
-        endfunction
-
-        " Highlight symbol under cursor on CursorHold
-        autocmd CursorHold * silent call CocActionAsync('highlight')
-
-        " Remap for rename current word
-        nmap <leader>rn <Plug>(coc-rename)
-
-        " Remap for format selected region
-        xmap <leader>f  <Plug>(coc-format-selected)
-        nmap <leader>f  <Plug>(coc-format-selected)
-
-        augroup mygroup
-          autocmd!
-          " Setup formatexpr specified filetype(s).
-          autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-          " Update signature help on jump placeholder
-          autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-        augroup end
-
-        " Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
-        xmap <leader>a  <Plug>(coc-codeaction-selected)
-        nmap <leader>a  <Plug>(coc-codeaction-selected)
-
-        " Remap for do codeAction of current line
-        nmap <leader>ac  <Plug>(coc-codeaction)
-        " Fix autofix problem of current line
-        nmap <leader>qf  <Plug>(coc-fix-current)
-
-        " Create mappings for function text object, requires document symbols feature of languageserver.
-        xmap if <Plug>(coc-funcobj-i)
-        xmap af <Plug>(coc-funcobj-a)
-        omap if <Plug>(coc-funcobj-i)
-        omap af <Plug>(coc-funcobj-a)
-
-        " Use <TAB> for select selections ranges, needs server support, like: coc-tsserver, coc-python
-        nmap <silent> <TAB> <Plug>(coc-range-select)
-        xmap <silent> <TAB> <Plug>(coc-range-select)
-
-        " Use `:Format` to format current buffer
-        command! -nargs=0 Format :call CocAction('format')
-
-        " Use `:Fold` to fold current buffer
-        command! -nargs=? Fold :call     CocAction('fold', <f-args>)
-
-        " use `:OR` for organize import of current buffer
-        command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
-
-        " Add status line support, for integration with other plugin, checkout `:h coc-status`
-        set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
-
-        " Using CocList
-        " Show all diagnostics
-        nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
-        " Manage extensions
-        nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
-        " Show commands
-        nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
-        " Find symbol of current document
-        nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
-        " Search workspace symbols
-        nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
-        " Do default action for next item.
-        nnoremap <silent> <space>j  :<C-u>CocNext<CR>
-        " Do default action for previous item.
-        nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
-        " Resume latest coc list
-        nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
-
-        set completeopt=noinsert,menuone,noselect
+        "set completeopt=noinsert,menuone,noselect
+        nnoremap <silent> gs    <cmd>lua vim.lsp.buf.declaration()<CR>
+        nnoremap <silent> gd    <cmd>lua vim.lsp.buf.definition()<CR>
+        nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
+        nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
+        nnoremap <silent> gk    <cmd>lua vim.lsp.buf.signature_help()<CR>
+        nnoremap <silent> 1gD   <cmd>lua vim.lsp.buf.type_defintion()<CR>
+        nnoremap <silent> gk    <cmd>lua vim.lsp.util.show_line_diagnostics()<CR>
+        augroup LspGroup
+            autocmd!
+            autocmd Filetype python  setlocal omnifunc=v:lua.vim.lsp.omnifunc
+            autocmd Filetype vim     setlocal omnifunc=v:lua.vim.lsp.omnifunc
+            autocmd Filetype haskell setlocal omnifunc=v:lua.vim.lsp.omnifunc
+            autocmd Filetype scala   setlocal omnifunc=v:lua.vim.lsp.omnifunc
+            autocmd Filetype tex     setlocal omnifunc=v:lua.vim.lsp.omnifunc
+            autocmd Filetype json    setlocal omnifunc=v:lua.vim.lsp.omnifunc
+            autocmd BufWritePre *.py    lua vim.lsp.buf.formatting()
+            autocmd BufWritePre *.hs    lua vim.lsp.buf.formatting()
+            autocmd BufWritePre *.scala lua vim.lsp.buf.formatting()
+        augroup END
+        lua << EOF
+        local nvim_lsp = require 'nvim_lsp'
+        nvim_lsp.pyls.setup{
+            settings = {
+                pyls = {
+                    plugins = {
+                        black = {
+                            enabled = true;
+                        };
+                    };
+                };
+            };
+        }
+        nvim_lsp.jsonls.setup{
+            cmd = {"json-languageserver", "--stdio"};
+        };
+        nvim_lsp.vimls.setup{}
+        nvim_lsp.metals.setup{}
+        nvim_lsp.hie.setup{
+            init_options = {
+                languageServerHaskell = {
+                    logFile = "/tmp/hie-logs.txt";
+                    liquidOn = true;
+                    formattingProvider = "ormolu";
+                    formatOnImportOn = true;
+                };
+            };
+        }
+        nvim_lsp.texlab.setup{
+            settings = {
+                bibtex = {
+                    formatting = {
+                        lineLength = 80;
+                    };
+                };
+                latex = {
+                    build = {
+                        args = {"-outdir", "build", "-pdf", "-interaction=nonstopmode", "-synctex=1"};
+                        executable = "latexmk";
+                        onSave = true;
+                        outputDirectory = "build";
+                    };
+                    lint = {
+                        onChange = true;
+                    };
+                };
+            };
+        }
+EOF
     " }}}
     " {{{ Delimitmate
     " -------------
@@ -698,14 +631,6 @@ let g:maplocalleader = ' '
         let g:delimitMate_expand_space = 1
         let g:delimitMate_expand_cr = 1
     " }}}
-    " {{{ Python Things
-    " -----------------
-        augroup Python
-            autocmd!
-
-            autocmd FileType python let b:neoformat_run_all_formatters=1
-        augroup END
-    " }}}
     " {{{ Haskell things
     " -----------------
         let g:no_haskell_conceal = 1
@@ -715,7 +640,6 @@ let g:maplocalleader = ' '
             autocmd BufNewFile,BufRead *.fr setfiletype frege
             autocmd FileType haskell set cinkeys=0{,0},0),0#,!<Tab>,;,:,o,O,e
             autocmd FileType haskell set indentkeys=!<Tab>,o,O
-            autocmd FileType haskell let b:neoformat_run_all_formatters=1
         augroup END
 
         " neovimhaskell/haskell-vim
