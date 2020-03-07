@@ -29,9 +29,8 @@ js tri.config.set("searchurls", {"gentoo_wiki": "https://wiki.gentoo.org/index.p
 js tri.config.set("searchurls", {"qwant": "https://www.qwant.com/?q="})
 set hintfiltermode vimperator-reflow
 set hintchars asdfghjkl
-set csp clobber
 set updatenaglastversion 1.17.0
-set storageloc local
+set storageloc sync
 
 " Binds
 bind ;c hint -c [class*="expand"],[class="togg"]
@@ -182,6 +181,8 @@ bind zI zoom 3
 bind zO zoom 0.3
 bind . repeat
 bind <SA-ArrowUp><SA-ArrowUp><SA-ArrowDown><SA-ArrowDown><SA-ArrowLeft><SA-ArrowRight><SA-ArrowLeft><SA-ArrowRight>ba open https://www.youtube.com/watch?v=M3iOROuTuMA
+
+autocmd TabEnter .* unfocus
 
 " For syntax highlighting see https://github.com/tridactyl/vim-tridactyl
 " vim: set filetype=tridactyl
