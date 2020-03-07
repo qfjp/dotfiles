@@ -30,7 +30,6 @@ let g:maplocalleader = ' '
         highlight Folded guifg='#ba8baf' guibg=none gui=bold
     endif
     highlight SpellCap ctermbg=8
-    let g:Guifont = 'Fantasque Sans Mono:10'
 
     highlight Conceal ctermbg=none
 " }}}
