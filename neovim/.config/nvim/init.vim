@@ -1,5 +1,7 @@
 scriptencoding utf-8
 
+let config_path = $HOME . '/.config/'
+
 let g:mapleader = ' '
 let g:maplocalleader = ' '
 
@@ -35,7 +37,7 @@ let g:maplocalleader = ' '
 
 " {{{ Greek char maps
 " ---------------
-    source $HOME/.config/nvim/greek.vim
+    exec 'source ' . config_path . 'nvim/greek.vim'
 " }}}
 
 " {{{ Search Options
@@ -340,7 +342,7 @@ let g:maplocalleader = ' '
     augroup VimFiles
         autocmd!
         " Better help navigation
-        autocmd FileType help source ~/.config/nvim/ftplugin/help.vim
+        autocmd FileType help exec 'source ' . config_path . 'nvim/ftplugin/help.vim'
     augroup END
 
     augroup Scala
@@ -366,7 +368,7 @@ let g:maplocalleader = ' '
     " {{{ Pathogen Infection
     " ----------------------
     call pathogen#infect()
-    call plug#begin('~/.config/nvim/plugged')
+    call plug#begin(config_path . 'nvim/plugged')
 
     " Vim Wiki
     Plug 'vimwiki/vimwiki'
@@ -766,7 +768,7 @@ let g:maplocalleader = ' '
         let g:startify_custom_indices = map(range(0,100), 'NrToHint(v:val, g:startify_indices)')
 
         let g:startify_files_number = 4
-        let g:startify_bookmarks = ['~/.config/nvim/init.vim', '~/.zshrc']
+        let g:startify_bookmarks = [config_path . 'nvim/init.vim', $HOME . '/.zshrc']
         let g:startify_list_order = [
                     \ ['MRU'],
                     \ 'files',
@@ -782,8 +784,8 @@ let g:maplocalleader = ' '
                     \ '.git/index',
                     \ 'plugged/.*/doc',
                     \ 'nvim/runtime/doc*',
-                    \ $HOME .'.config/nvimrc',
-                    \ $HOME .'/.zshrc',
+                    \ config_path . 'nvim/init.vim',
+                    \ $HOME . '/.zshrc',
                     \ ]
 
         function! s:filter_header(lines) abort
