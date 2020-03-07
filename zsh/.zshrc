@@ -285,7 +285,6 @@ econs()
 
         export PAGER="vimpager"
         export MANPAGER="nvim -R -S $HOME/.config/nvim/vimpagerrc -c 'set ft=man' -"
-        export MANPATH="$(manpath):/usr/share/man"
         [ -z "$EDITOR" ] && export EDITOR='nvim'
 
     # }}}
