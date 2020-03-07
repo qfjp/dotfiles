@@ -397,6 +397,8 @@ let g:maplocalleader = ' '
     Plug 'tpope/vim-speeddating'
 
     Plug 'neovim/nvim-lsp'
+    Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
+    Plug 'Shougo/deoplete-lsp'
 
     Plug 'Shougo/echodoc.vim'
 
@@ -534,6 +536,7 @@ let g:maplocalleader = ' '
         " don't give |ins-completion-menu| messages.
         "set shortmess+=c
         set completeopt-=preview
+        let g:deoplete#enable_at_startup = 1
 
         " always show signcolumns
         set signcolumn=yes
