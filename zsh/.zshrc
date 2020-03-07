@@ -292,9 +292,10 @@ econs()
     # {{{ Path Additions
 
         export PATH="$HOME/bin:$PATH"
-        export PATH="$PATH:$HOME/.local/bin"
+        export PATH="$HOME/.local/bin:$PATH"
         export PATH="$HOME/bin/macros:$PATH"
         export PATH="$PATH:$HOME/.cabal/bin"
+        export PATH="$PATH:$HOME/.yarn/bin/"
         export LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH"
         # PySpark
         export PYTHONPATH="/opt/apache-spark/python/lib/py4j-0.10.7-src.zip:/opt/apache-spark/python"
