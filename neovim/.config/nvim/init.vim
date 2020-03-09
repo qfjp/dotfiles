@@ -402,6 +402,8 @@ let g:maplocalleader = ' '
 
     Plug 'Shougo/echodoc.vim'
 
+    Plug 'sbdchd/neoformat'
+
     Plug 'itchyny/lightline.vim'
     Plug 'mengelbrecht/lightline-bufferline'
     Plug 'ryanoasis/vim-devicons'
@@ -526,6 +528,37 @@ let g:maplocalleader = ' '
     " {{{ Gundo
     " --------------
         nnoremap <leader>u :UndotreeToggle<CR>
+    " }}}
+    " {{{ Autoformat
+    " --------------
+        let g:neoformat_sql_mysqlformat = {
+                \ 'exe': 'sqlformat',
+                \ 'args': ['-k', 'upper', '--reindent', '--comma_first', 'True', '-'],
+                \ 'stdin': 1,
+                \ }
+
+        let g:neoformat_tex_mylatexindent = {
+                \ 'exe': 'latexindent',
+                \ 'args': ['-m', '-sl', '-g /dev/stderr', '2>/dev/null'],
+                \ 'stdin': 1,
+                \}
+
+        let g:neoformat_enabled_tex = ['mylatexindent']
+        let g:neoformat_enabled_sql = ['mysqlformat']
+        let g:neoformat_enabled_scalariform = ['scalariform']
+
+        " Enable tab to spaces conversion
+        let g:neoformat_basic_format_retab = 1
+
+        " Enable trimmming of trailing whitespace
+        let g:neoformat_basic_format_trim = 1
+
+        let g:neoformat_run_all_formatters = 1
+
+        augroup fmt
+            autocmd!
+            au BufWritePre * try | undojoin | Neoformat | catch /^Vim\%((\a\+)\)\=:E790/ | finally | silent Neoformat | endtry
+        augroup END
     " }}}
     " {{{ Completion
     " -------------
