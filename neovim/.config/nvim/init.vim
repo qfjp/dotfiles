@@ -551,13 +551,15 @@ let g:maplocalleader = ' '
         highlight LspDiagnosticHint        ctermfg=green  ctermbg=none
 
         "set completeopt=noinsert,menuone,noselect
-        nnoremap <silent> gs    <cmd>lua vim.lsp.buf.declaration()<CR>
-        nnoremap <silent> gd    <cmd>lua vim.lsp.buf.definition()<CR>
-        nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
-        nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
-        nnoremap <silent> gk    <cmd>lua vim.lsp.buf.signature_help()<CR>
-        nnoremap <silent> 1gD   <cmd>lua vim.lsp.buf.type_defintion()<CR>
-        nnoremap <silent> gk    <cmd>lua vim.lsp.util.show_line_diagnostics()<CR>
+        nnoremap <silent> gs  <cmd>lua vim.lsp.buf.declaration()<CR>
+        nnoremap <silent> gd  <cmd>lua vim.lsp.buf.definition()<CR>
+        nnoremap <silent> K   <cmd>lua vim.lsp.buf.hover()<CR>
+        nnoremap <silent> gD  <cmd>lua vim.lsp.buf.implementation()<CR>
+        nnoremap <silent> gk  <cmd>lua vim.lsp.buf.signature_help()<CR>
+        nnoremap <silent> 1gD <cmd>lua vim.lsp.buf.type_defintion()<CR>
+        nnoremap <silent> gk  <cmd>lua vim.lsp.util.show_line_diagnostics()<CR>
+        nnoremap <silent> gn  <cmd>lua vim.lsp.buf.formatting()<CR>
+
         augroup LspGroup
             autocmd!
             autocmd Filetype python  setlocal omnifunc=v:lua.vim.lsp.omnifunc
