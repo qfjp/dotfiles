@@ -529,6 +529,7 @@ econs()
       fzf --height 50% "$@" --border
     }
 
+    # Fuzzy find versioned files
     gf() {
       is_in_git_repo || return
       git -c color.status=always status --short |
@@ -537,6 +538,7 @@ econs()
       cut -c4- | sed 's/.* -> //'
     }
 
+    # Branches
     gb() {
       is_in_git_repo || return
       git branch -a --color=always | grep -v '/HEAD\s' | sort |
@@ -546,6 +548,7 @@ econs()
       sed 's#^remotes/##'
     }
 
+    # Tags
     gt() {
       is_in_git_repo || return
       git tag --sort -version:refname |
@@ -553,6 +556,7 @@ econs()
         --preview 'git show --color=always {} | head -'$LINES
     }
 
+    # commit hashes
     gn() {
       is_in_git_repo || return
       git log --date=short --format="%C(green)%C(bold)%cd %C(auto)%h%d %s (%an)" --graph --color=always |
@@ -562,6 +566,7 @@ econs()
       grep -o "[a-f0-9]\{7,\}"
     }
 
+    # remotes
     gr() {
       is_in_git_repo || return
       git remote -v | awk '{print $1 "\t" $2}' | uniq |
