@@ -568,9 +568,6 @@ let g:maplocalleader = ' '
             autocmd Filetype scala   setlocal omnifunc=v:lua.vim.lsp.omnifunc
             autocmd Filetype tex     setlocal omnifunc=v:lua.vim.lsp.omnifunc
             autocmd Filetype json    setlocal omnifunc=v:lua.vim.lsp.omnifunc
-            autocmd BufWritePre *.py    lua vim.lsp.buf.formatting()
-            autocmd BufWritePre *.hs    lua vim.lsp.buf.formatting()
-            autocmd BufWritePre *.scala lua vim.lsp.buf.formatting()
         augroup END
         lua << EOF
         local nvim_lsp = require 'nvim_lsp'
