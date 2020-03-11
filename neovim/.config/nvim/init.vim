@@ -424,7 +424,6 @@ let g:maplocalleader = ' '
 
     " Git-friendliness
     Plug 'airblade/vim-gitgutter'
-    Plug 'jreybert/vimagit'
 
     Plug 'junegunn/vim-easy-align'
 
