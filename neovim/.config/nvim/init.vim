@@ -790,6 +790,7 @@ EOF
     " }}}
     " {{{ Goyo
     " --------
+        let g:limelight_priority = -1
         let g:limelight_conceal_ctermfg = 240
         function! s:goyo_enter()
           highlight ALEInfoSign    guifg=blue   guibg=none ctermfg=blue   ctermbg=none
@@ -799,9 +800,8 @@ EOF
 
           silent !tmux set status off
           set nocursorline
-          set noshowmode
           set noshowcmd
-          set scrolloff=999
+          GitGutterDisable
           Limelight
           " ...
         endfunction
@@ -816,7 +816,7 @@ EOF
           set cursorline
           set showmode
           set showcmd
-          set scrolloff=5
+          GitGutterEnable
           Limelight!
           " ...
         endfunction
