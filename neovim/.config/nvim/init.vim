@@ -446,6 +446,7 @@ let g:maplocalleader = ' '
     call plug#end()
     " }}}
     colorscheme janah
+    highlight Comment guifg=#df5f5f ctermfg=167 guibg=none ctermbg=none gui=none cterm=none
 
     " {{{ VimWiki
     " -----------
