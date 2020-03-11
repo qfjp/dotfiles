@@ -619,7 +619,9 @@ let g:maplocalleader = ' '
             cmd = {"json-languageserver", "--stdio"};
         };
         nvim_lsp.vimls.setup{}
-        nvim_lsp.metals.setup{}
+        nvim_lsp.metals.setup{
+            cmd = {"metals-vim"};
+        }
         nvim_lsp.hie.setup{
             init_options = {
                 languageServerHaskell = {
