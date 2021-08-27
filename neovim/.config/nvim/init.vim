@@ -450,6 +450,12 @@ let g:maplocalleader = ' '
     " }}}
     colorscheme janah
 
+    " {{{ LustyJuggler Fix (Archlinux)
+    " --------------------------------
+        let g:ruby_host_prog = '/usr/bin/neovim-ruby-host'
+    " }}}
+
+
     " {{{ VimWiki
     " -----------
         augroup Wiki
