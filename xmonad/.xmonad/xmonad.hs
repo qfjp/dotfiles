@@ -175,7 +175,7 @@ staloneCmd = do
   (xres, _)  <- getResolution
   iconHeight <- ioIconHeight
   let geoX      = floor $ fromIntegral xres * fudge :: Int
-      geoString = "1x1+" ++ show geoX ++ "+1"
+      geoString = "1x1+" ++ show geoX ++ "+5"
   return
     $  "stalonetray -i "
     ++ show iconHeight
@@ -207,7 +207,7 @@ myWorkspaceBar = do
     ++ height
     ++ " -w "
     ++ show width
-    ++ " -sa c -x 5 -y 0 -e 'onstart=lower' -dock"
+    ++ " -sa c -x 5 -y 5 -e 'onstart=lower' -dock"
 
 myWorkspaces :: [String]
 myWorkspaces =

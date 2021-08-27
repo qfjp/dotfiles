@@ -32,7 +32,7 @@ comptonCmd = do
   intHeight <- ioHeight
   let height  = show intHeight
       compReg = xres - 10
-  return $ "picom -CGf"
+  return $ "picom -f --corner-radius 8"
 
 flashfocusCmd :: IO String
 flashfocusCmd = return "flashfocus"
