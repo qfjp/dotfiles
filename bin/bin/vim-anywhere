@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
-file=$(mktemp)
-kitty --class=UniversalEditor -o remember_window_size=no zsh -c "nvim $file"
+TEMP_FILE=$(mktemp)
+touch "$TEMP_FILE"
+chmod o-r "$TEMP_FILE"
 
+kitty --class=UniversalEditor -o remember_window_size=no zsh -c "nvim $TEMP_FILE"
 sleep 0.5
-xdotool type "$(cat $file)"
+xdotool type "$(cat $TEMP_FILE)"
 
-rm $file
+rm $TEMP_FILE
