@@ -425,6 +425,8 @@ myKeys conf@XConfig { XMonad.modMask = modm } =
        , ((0, 0x1008FF11), spawn "$HOME/bin/macros/vol-control 1.50dB-")
        , ((0, 0x1008FF12), spawn "$HOME/bin/macros/vol-control m")
        , ((0, 0x1008FF13), spawn "$HOME/bin/macros/vol-control 1.50dB+")
+       , ((0, 0x1008FF14), spawn "$HOME/bin/macros/toggle-mic-mute") -- XF86AudioPlay
+       , ((0, 0x1008FF31), spawn "$HOME/bin/macros/toggle-mic-mute") -- XF86AudioPause
        , ( (0, 0x1008FF02)
          , spawn "$HOME/bin/bright $(expr $($HOME/bin/bright) + 100)"
          )
