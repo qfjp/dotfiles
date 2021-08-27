@@ -12,7 +12,10 @@ import           XMonad.Actions.FloatKeys       ( keysResizeWindow )
 import           XMonad.Actions.RotSlaves       ( rotAllDown
                                                 , rotAllUp
                                                 )
-import           XMonad.Hooks.Place
+import           XMonad.Hooks.Place             ( placeHook
+                                                , smart
+                                                , withGaps
+                                                )
 
 import           XMonad.Hooks.DynamicLog        ( dynamicLogWithPP
                                                 , dzenPP
@@ -56,7 +59,14 @@ import           XMonad.Util.Font               ( Align
                                                   , AlignRight
                                                   )
                                                 )
-import           XMonad.Util.Loggers
+import           XMonad.Util.Loggers            ( Logger
+                                                , date
+                                                , fixedWidthL
+                                                , logCmd
+                                                , logLayout
+                                                , logTitle
+                                                , wrapL
+                                                )
 import           XMonad.Util.Run                ( spawnPipe )
 
 import           System.Exit                    ( exitSuccess )
