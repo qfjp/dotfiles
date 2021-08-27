@@ -164,6 +164,7 @@ econs()
             zgen prezto 'utility'
             zgen prezto 'completion'
             zgen prezto 'ssh'
+            zgen prezto 'gpg'
             zgen prezto 'command-not-found'
             zgen prezto 'prompt'
 
@@ -296,6 +297,8 @@ econs()
         # PySpark
         export PYTHONPATH="/opt/apache-spark/python/lib/py4j-0.10.7-src.zip:/opt/apache-spark/python"
         export JUPYTERLAB_DIR=$HOME/.local/share/jupyter/lab
+
+        export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
 
     # }}}
 
