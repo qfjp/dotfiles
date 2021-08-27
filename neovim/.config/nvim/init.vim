@@ -299,6 +299,9 @@ let g:maplocalleader = ' '
     noremap <C-n> :bnext<CR>
     inoremap <silent><expr> <C-n>
           \ pumvisible() ? "\<C-n>" : "\<C-x>\<C-o>"
+    inoremap <silent><expr> <C-j>
+          \ pumvisible() ? "\<C-n>" : "\<C-x>\<C-o>"
+    inoremap <silent> <C-k> <C-p>
     inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
     noremap <C-b> :bprev<CR>
     noremap <leader>n :tabnext<CR>
