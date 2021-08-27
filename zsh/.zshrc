@@ -1,8 +1,4 @@
-export HM_PATH=https://github.com/rycee/home-manager/archive/master.tar.gz
 OS_PREFIX='/usr'
-[ -e /etc/nixos/configuration.nix  ] && OS_PREFIX=/run/current-system/sw
-HM_SESSION="$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
-[ -e "$HM_SESSION"  ] && . "$HM_SESSION"; unset HM_SESSION
 export OS_PREFIX
 
 # {{{ Profiling
