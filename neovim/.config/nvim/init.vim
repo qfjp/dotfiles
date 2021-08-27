@@ -606,8 +606,8 @@ let g:maplocalleader = ' '
             autocmd Filetype json    setlocal omnifunc=v:lua.vim.lsp.omnifunc
         augroup END
         lua << EOF
-        local nvim_lsp = require 'nvim_lsp'
-        nvim_lsp.pyls.setup{
+        local lspconfig = require 'lspconfig'
+        lspconfig.pyls.setup{
             settings = {
                 pyls = {
                     plugins = {
@@ -618,12 +618,14 @@ let g:maplocalleader = ' '
                 };
             };
         }
-        nvim_lsp.jsonls.setup{
+        lspconfig.jsonls.setup{
             cmd = {"json-languageserver", "--stdio"};
         };
-        nvim_lsp.vimls.setup{}
-        nvim_lsp.metals.setup{}
-        nvim_lsp.hie.setup{
+        lspconfig.vimls.setup{}
+        lspconfig.metals.setup{
+            cmd = {"metals-client"};
+        }
+        lspconfig.hie.setup{
             init_options = {
                 languageServerHaskell = {
                     logFile = "/tmp/hie-logs.txt";
@@ -633,7 +635,7 @@ let g:maplocalleader = ' '
                 };
             };
         }
-        nvim_lsp.texlab.setup{
+        lspconfig.texlab.setup{
             settings = {
                 bibtex = {
                     formatting = {
