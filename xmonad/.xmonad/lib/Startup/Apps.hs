@@ -5,7 +5,7 @@ import           System.Environment (getEnv)
 import           XMonad
 
 spawnedApps :: [String]
-spawnedApps = ["dzen2", "stalonetray", "compton", "flashfocus"]
+spawnedApps = ["dzen2", "stalonetray", "picom", "flashfocus"]
 
 killSpawns :: X ()
 killSpawns = mapM_ (\x -> spawn ("killall " ++ x)) spawnedApps
@@ -32,7 +32,7 @@ comptonCmd = do
     intHeight <- ioHeight
     let height = show intHeight
         compReg = xres - 10
-    return $ "compton -CGf"
+    return $ "picom -CGf"
 
 flashfocusCmd :: IO String
 flashfocusCmd = return "flashfocus"
