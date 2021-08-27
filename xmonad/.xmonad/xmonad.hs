@@ -518,12 +518,15 @@ myWindowManage =
 placeHook' = placeHook $ withGaps (16, 0, 16, 0) (smart (0.5, 0.5))
 
 --------------------------------------------------------------------------------
+layoutModifiers =
+  avoidStruts . smartBorders . toggleLayouts (noBorders Full) . spacing 5
+
 -- Layouts:
 myLayout =
-  (avoidStruts . smartBorders . toggleLayouts (noBorders Full) . spacing 5)
-    (tiled ||| reflectHoriz tiled ||| Mirror tiled ||| reflectVert
-      (Mirror tiled)
-    )
+  layoutModifiers
+    $ (tiled ||| reflectHoriz tiled ||| Mirror tiled ||| reflectVert
+        (Mirror tiled)
+      )
  where
   tiled   = Tall nmaster delta ratio
   nmaster = 1 -- The default number of windows in the master pane
