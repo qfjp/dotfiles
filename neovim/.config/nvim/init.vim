@@ -14,7 +14,7 @@ let g:maplocalleader = ' '
     syntax enable
 
     set background=dark
-    highlight Search cterm=none gui=none guibg=grey ctermbg=247
+    highlight Search     cterm=none gui=none guibg=grey ctermbg=247
     highlight MatchParen cterm=none gui=none guibg=grey ctermbg=247
 
     set cursorline  " NOTE: CAN LEAD TO SIGNIFICANT SLOWDOWNS
@@ -29,9 +29,9 @@ let g:maplocalleader = ' '
     if has('nvim')
         highlight Folded guifg='#ba8baf' guibg=none gui=bold
     endif
-    highlight SpellCap ctermbg=8
+    highlight SpellCap guibg=8 ctermbg=8
 
-    highlight Conceal ctermbg=none
+    highlight Conceal guibg=none ctermbg=none
 " }}}
 
 " {{{ Greek char maps
@@ -145,7 +145,7 @@ let g:maplocalleader = ' '
     \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
     \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
     highlight SpecialKey ctermfg=red cterm=none
-    highlight Folded ctermbg=none ctermfg=magenta cterm=bold
+    highlight Folded guibg=none guifg=magenta gui=bold ctermbg=none ctermfg=magenta cterm=bold
 
     "highlight SpecialKey ctermbg=none ctermfg=none
     set listchars=""
@@ -427,7 +427,6 @@ let g:maplocalleader = ' '
 
     " Git-friendliness
     Plug 'airblade/vim-gitgutter'
-    Plug 'jreybert/vimagit'
 
     Plug 'junegunn/vim-easy-align'
 
@@ -449,6 +448,7 @@ let g:maplocalleader = ' '
     call plug#end()
     " }}}
     colorscheme janah
+    highlight Comment guifg=#df5f5f ctermfg=167 guibg=none ctermbg=none gui=none cterm=none
 
     " {{{ LustyJuggler Fix (Archlinux)
     " --------------------------------
@@ -587,10 +587,10 @@ let g:maplocalleader = ' '
         let g:LspDiagnosticsWarningSign = "●"
         let g:LspDiagnosticsInformationSign = "●"
         let g:LspDiagnosticsHintSign = "●"
-        highlight LspDiagnosticInformation ctermfg=blue   ctermbg=none
-        highlight LspDiagnosticsWarning    ctermfg=yellow ctermbg=none
-        highlight LspDiagnosticsError      ctermfg=red    ctermbg=none
-        highlight LspDiagnosticHint        ctermfg=green  ctermbg=none
+        highlight LspDiagnosticInformation guifg=blue   guibg=none ctermfg=blue   ctermbg=none
+        highlight LspDiagnosticsWarning    guifg=yellow guibg=none ctermfg=yellow ctermbg=none
+        highlight LspDiagnosticsError      guifg=red    guibg=none ctermfg=red    ctermbg=none
+        highlight LspDiagnosticHint        guifg=green  guibg=none ctermfg=green  ctermbg=none
 
         "set completeopt=noinsert,menuone,noselect
         nnoremap <silent> gs  <cmd>lua vim.lsp.buf.declaration()<CR>
@@ -801,33 +801,33 @@ EOF
     " }}}
     " {{{ Goyo
     " --------
+        let g:limelight_priority = -1
         let g:limelight_conceal_ctermfg = 240
         function! s:goyo_enter()
-          highlight ALEInfoSign    ctermfg=blue   ctermbg=none
-          highlight ALEWarningSign ctermfg=yellow ctermbg=none
-          highlight ALEErrorSign   ctermfg=red    ctermbg=none
-          highlight ALEHintSign    ctermfg=green  ctermbg=none
+          highlight ALEInfoSign    guifg=blue   guibg=none ctermfg=blue   ctermbg=none
+          highlight ALEWarningSign guifg=yellow guibg=none ctermfg=yellow ctermbg=none
+          highlight ALEErrorSign   guifg=red    guibg=none ctermfg=red    ctermbg=none
+          highlight ALEHintSign    guifg=green  guibg=none ctermfg=green  ctermbg=none
 
           silent !tmux set status off
           set nocursorline
-          set noshowmode
           set noshowcmd
-          set scrolloff=999
+          GitGutterDisable
           Limelight
           " ...
         endfunction
 
         function! s:goyo_leave()
-          highlight ALEInfoSign    ctermfg=blue   ctermbg=237
-          highlight ALEWarningSign ctermfg=yellow ctermbg=237
-          highlight ALEErrorSign   ctermfg=red    ctermbg=237
-          highlight ALEHintSign    ctermfg=green  ctermbg=237
+          highlight ALEInfoSign    guifg=blue   guibg=237 ctermfg=blue   ctermbg=237
+          highlight ALEWarningSign guifg=yellow guibg=237 ctermfg=yellow ctermbg=237
+          highlight ALEErrorSign   guifg=red    guibg=237 ctermfg=red    ctermbg=237
+          highlight ALEHintSign    guifg=green  guibg=237 ctermfg=green  ctermbg=237
 
           silent !tmux set status on
           set cursorline
           set showmode
           set showcmd
-          set scrolloff=5
+          GitGutterEnable
           Limelight!
           " ...
         endfunction
