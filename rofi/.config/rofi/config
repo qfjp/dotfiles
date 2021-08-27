@@ -1,4 +1,4 @@
-rofi.modi:                           ssh,run,combi
+rofi.modi:                           ssh,run,emoji,combi
 rofi.columns:                        1
 rofi.ssh-client:                     mosh
 rofi.ssh-command:                    {terminal} {ssh-client} {host}
