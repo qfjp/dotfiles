@@ -394,10 +394,8 @@ myKeys conf@XConfig { XMonad.modMask = modm } =
        , ((modm, xK_apostrophe)              , spawn $ XMonad.terminal conf)
        , ((modm .|. shiftMask, xK_Return)    , spawn "GDK_SCALE=2 nvim-gtk")
        , ((modm .|. shiftMask, xK_apostrophe), spawn "GDK_SCALE=2 nvim-gtk")
-       , ( (modm, xK_p)
-         , spawn "/usr/bin/env rofi -combi-mode run,window -show combi"
-         )
        , ((modm, xK_i)                  , spawn "/usr/bin/env rofi-pass")
+       , ((modm, xK_p), spawn "/usr/bin/env rofi -show combi")
        , ((modm .|. shiftMask, xK_i), spawn "/usr/bin/env rofi-pass --insert")
        , ((modm, xK_e)                  , spawn "$HOME/bin/vim-anywhere")
        , ((modm .|. shiftMask, xK_c)    , kill)
