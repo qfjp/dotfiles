@@ -1,26 +1,39 @@
-rofi.modi:                           ssh,run,emoji,combi
-rofi.columns:                        1
-rofi.ssh-client:                     mosh
-rofi.ssh-command:                    {terminal} {ssh-client} {host}
-rofi.sort:                           true
-rofi.sorting-method:                 fzf
-rofi.sidebar-mode:                   true
-rofi.matching:                       fuzzy
-rofi.dpi:                            0
-rofi.click-to-exit:                  false
+configuration {
+    click-to-exit:                  false;
+    combi-modi:                     "window,run";
+    display-combi:                  "run";
+    display-drun:                   "desktop";
+    display-filebrowser:            true;
+    dpi:                            0;
+    drun-display-format:            "[<span weight="600" size='large'>{name}</span>] [<span weight='300' size='x-small'><i>({comment})</i></span>]";
+    matching:                       "fuzzy";
+    modi:                           "ssh,emoji,combi,drun,filebrowser";
+    monitor:                        "-4";
+    scroll-method:                  1;
+    sidebar-mode: true;
+    show-icons:                     true;
+    sort:                           true;
+    sorting-method:                 "fzf";
+    ssh-client:                     "mosh";
+    ssh-command:                    "{terminal} {ssh-client} {host}";
+    terminal:                       "kitty";
+    window-format:                  "<span weight="600"><i>{w:1}</i></span> <span weight="900">{c:0}</span> <span weight='100' size='small'>{t}</span>";
+    window-thumbnail:               true;
 
 
-rofi.kb-primary-paste:               Control+v,Insert
-rofi.kb-secondary-paste:             Control+V,Shift+Insert
-rofi.kb-move-char-back:              Left
-rofi.kb-remove-char-forward:         Control+d
-rofi.kb-remove-char-back:            BackSpace
-rofi.kb-delete-entry:                Delete
-rofi.kb-mode-next:                   Control+n,Super+l,Control+l
-rofi.kb-mode-previous:               Control+b,Control+p,Super+h,Control+h
-rofi.kb-row-up:                      Up,Super+k,Control+k
-rofi.kb-row-down:                    Down,Super+j,Control+j
+    kb-accept-entry:                "Control+m,Return,KP_Enter";
+    kb-delete-entry:                "Delete";
+    kb-mode-complete:               "Control+Tab";
+    kb-mode-next:                   "Control+n,Super+l,Control+l";
+    kb-mode-previous:               "Control+b,Control+p,Super+h,Control+h";
+    kb-move-char-back:              "Left";
+    kb-remove-char-forward:         "Control+d";
+    kb-remove-char-back:            "BackSpace";
+    kb-primary-paste:               "Control+v,Insert";
+    kb-remove-to-eol:               "";
+    kb-row-up:                      "Up,Super+k,Control+k";
+    kb-row-down:                    "Down,Super+j,Control+j";
+    kb-secondary-paste:             "Control+V,Shift+Insert";
 
-rofi.kb-remove-to-eol:
-rofi.kb-accept-entry:                Control+m,Return,KP_Enter
-rofi.theme: /usr/share/rofi/themes/arthur.rasi
+    theme: "/usr/share/rofi/themes/arthur.rasi";
+}
