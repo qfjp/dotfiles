@@ -31,6 +31,7 @@ set hintfiltermode vimperator-reflow
 set hintchars asdfghjkl
 set updatenaglastversion 1.17.0
 set storageloc sync
+set editorcmd kitty nvim %f '+normal%lGzv%c|'
 
 " Binds
 bind ;c hint -c [class*="expand"],[class="togg"]
