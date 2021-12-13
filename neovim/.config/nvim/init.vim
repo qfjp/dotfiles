@@ -452,8 +452,6 @@ let g:maplocalleader = ' '
 
     Plug 'rliang/termedit.nvim'
 
-    Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
-
     call plug#end()
     " }}}
     colorscheme janah
@@ -893,26 +891,6 @@ EOF
         autocmd! User GoyoLeave nested call <SID>goyo_leave()
 
         nnoremap <leader>g :Goyo<CR>
-    " }}}
-    " {{{ firenvim
-    " ------------
-       if exists('g:started_by_firenvim')
-           set laststatus=0
-       endif
-       let g:firenvim_config = {
-      \      'globalSettings': {
-      \          'alt': 'all',
-      \      },
-      \      'localSettings': {
-      \          '.*': {
-      \              'cmdline': 'firenvim',
-      \              'priority': 0,
-      \              'selector': 'textarea, div[role="textbox"]',
-      \              'takeover': 'never',
-      \          },
-      \      },
-      \}
-       au BufEnter bethesda2.cloud.databricks.com_*.txt set filetype=scala
     " }}}
 
 " }}}
