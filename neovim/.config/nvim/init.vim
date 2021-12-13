@@ -395,6 +395,9 @@ let g:maplocalleader = ' '
     " Haskell
     Plug 'neovimhaskell/haskell-vim', {'for' : 'haskell'}
 
+    " Scala
+    Plug 'scalameta/nvim-metals'
+
     " Repeat vim plugin commands with .
     Plug 'tpope/vim-repeat'
 
@@ -662,6 +665,7 @@ EOF
             autocmd Filetype python    setlocal omnifunc=v:lua.vim.lsp.omnifunc
             autocmd Filetype vim       setlocal omnifunc=v:lua.vim.lsp.omnifunc
             autocmd Filetype haskell   setlocal omnifunc=v:lua.vim.lsp.omnifunc
+            autocmd FileType scala,sbt lua require("metals").initialize_or_attach({})
             autocmd FileType scala,sbt setlocal omnifunc=v:lua.vim.lsp.omnifunc
             autocmd Filetype tex       setlocal omnifunc=v:lua.vim.lsp.omnifunc
             autocmd Filetype json      setlocal omnifunc=v:lua.vim.lsp.omnifunc
@@ -683,9 +687,6 @@ EOF
             cmd = {"json-languageserver", "--stdio"};
         };
         lspconfig.vimls.setup{}
-        lspconfig.metals.setup{
-            cmd = {"metals-client"};
-        }
         lspconfig.hie.setup{
             init_options = {
                 languageServerHaskell = {
