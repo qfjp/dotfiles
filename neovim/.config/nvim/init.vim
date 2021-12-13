@@ -408,7 +408,7 @@ let g:maplocalleader = ' '
     Plug 'tpope/vim-surround'
     Plug 'tpope/vim-speeddating'
 
-    Plug 'neovim/nvim-lsp'
+    Plug 'neovim/nvim-lspconfig'
     Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
     Plug 'Shougo/deoplete-lsp'
 
@@ -653,23 +653,24 @@ EOF
         nnoremap <silent> gd  <cmd>lua vim.lsp.buf.definition()<CR>
         nnoremap <silent> K   <cmd>lua vim.lsp.buf.hover()<CR>
         nnoremap <silent> gD  <cmd>lua vim.lsp.buf.implementation()<CR>
-        nnoremap <silent> gk  <cmd>lua vim.lsp.buf.signature_help()<CR>
+        nnoremap <silent> gK  <cmd>lua vim.lsp.buf.signature_help()<CR>
         nnoremap <silent> 1gD <cmd>lua vim.lsp.buf.type_defintion()<CR>
         nnoremap <silent> gk  <cmd>lua vim.lsp.util.show_line_diagnostics()<CR>
         nnoremap <silent> gn  <cmd>lua vim.lsp.buf.formatting()<CR>
 
+        set shortmess-=F
         augroup LspGroup
             autocmd!
-            autocmd Filetype python  setlocal omnifunc=v:lua.vim.lsp.omnifunc
-            autocmd Filetype vim     setlocal omnifunc=v:lua.vim.lsp.omnifunc
-            autocmd Filetype haskell setlocal omnifunc=v:lua.vim.lsp.omnifunc
-            autocmd Filetype scala   setlocal omnifunc=v:lua.vim.lsp.omnifunc
-            autocmd Filetype tex     setlocal omnifunc=v:lua.vim.lsp.omnifunc
-            autocmd Filetype json    setlocal omnifunc=v:lua.vim.lsp.omnifunc
+            autocmd Filetype python    setlocal omnifunc=v:lua.vim.lsp.omnifunc
+            autocmd Filetype vim       setlocal omnifunc=v:lua.vim.lsp.omnifunc
+            autocmd Filetype haskell   setlocal omnifunc=v:lua.vim.lsp.omnifunc
+            autocmd FileType scala,sbt setlocal omnifunc=v:lua.vim.lsp.omnifunc
+            autocmd Filetype tex       setlocal omnifunc=v:lua.vim.lsp.omnifunc
+            autocmd Filetype json      setlocal omnifunc=v:lua.vim.lsp.omnifunc
         augroup END
         lua << EOF
         local lspconfig = require 'lspconfig'
-        lspconfig.pyls.setup{
+        lspconfig.pylsp.setup{
             settings = {
                 pyls = {
                     plugins = {
