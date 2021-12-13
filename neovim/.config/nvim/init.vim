@@ -372,6 +372,14 @@ let g:maplocalleader = ' '
     call pathogen#infect()
     call plug#begin(config_path . 'nvim/plugged')
 
+    " Async Lib
+    Plug 'nvim-lua/plenary.nvim'
+
+    " Searching, Listing
+    Plug 'nvim-treesitter/nvim-treesitter'
+    Plug 'nvim-telescope/telescope.nvim'
+    Plug 'nvim-telescope/telescope-fzf-native.nvim', {'do': 'make'}
+
     " Vim Wiki
     Plug 'vimwiki/vimwiki'
 
@@ -538,6 +546,53 @@ let g:maplocalleader = ' '
     " {{{ Gundo
     " --------------
         nnoremap <leader>u :UndotreeToggle<CR>
+    " }}}
+    " {{{ Telescope
+    " -------------
+        lua << EOF
+        require('telescope').setup {
+            extensions = {
+                fzf = {
+                    fuzzy = true,
+                    override_generic_sorter = true,
+                    override_file_sorter = true,
+                    case_mode = "smart_case"
+                }
+            }
+        }
+        require('telescope').load_extension('fzf')
+EOF
+        nnoremap <leader>ff <cmd>Telescope find_files<cr>
+        nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+        nnoremap <leader>fb <cmd>Telescope buffers<cr>
+        nnoremap <leader>fh <cmd>Telescope help_tags<cr>
+    " }}}
+    " {{{ Treesitter
+    " --------------
+        lua << EOF
+        require'nvim-treesitter.configs'.setup {
+            ensure_installed = "maintained",
+            sync_install = false,
+            highlight = {
+                enable = true,
+                additional_vim_regex_highlighting = false,
+            },
+            indent = {
+                enable = true,
+            },
+            incremental_selection = {
+                enable = true,
+                keymaps = {
+                    init_selection = '<Backspace>',
+                    scope_incremental = '<Backspace>',
+                    node_incremental = '<TAB>',
+                    node_decremental = '<S-TAB>'
+                },
+            },
+        }
+EOF
+        set foldmethod=expr
+        set foldexpr=nvim_treesitter#foldexpr()
     " }}}
     " {{{ Autoformat
     " --------------
