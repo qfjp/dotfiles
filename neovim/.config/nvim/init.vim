@@ -213,63 +213,64 @@ let g:maplocalleader = ' '
     set viewoptions-=options
     augroup Folds
         autocmd!
-        autocmd FileType vim setlocal foldmethod=marker
-        autocmd FileType zsh setlocal foldmethod=marker
+        autocmd FileType vim setlocal foldmethod=marker | setlocal foldtext=SimpleFoldText()
+        autocmd FileType zsh setlocal foldmethod=marker | setlocal foldtext=SimpleFoldText()
     augroup END
+    set foldtext=CFoldText()
 
-    set foldtext=FoldText()
-
-    function! FoldText()
-        let l:lpadding = &foldcolumn
-        redir => l:signs
-        execute 'silent sign place buffer='.bufnr('%')
-        redir End
-        let l:lpadding += l:signs =~? 'id=' ? 2 : 0
-
-        if exists('+relativenumber')
-            if (&number)
-                let l:lpadding += max([&numberwidth, strlen(line('$'))]) + 1
-            elseif (&relativenumber)
-                let l:lpadding += max( [&numberwidth
-                                   \ , strlen(v:foldstart + 1 - line('w0'))
-                                   \ , strlen(line('w$') - v:foldstart + 1)
-                                   \ , strlen(v:foldstart + 1)]) + 1
-            endif
-        else
-            if (&number)
-                let l:lpadding += max([&numberwidth, strlen(line('$'))]) + 1
-            endif
-        endif
-
-        " expand tabs
-        let l:start = substitute( getline(v:foldstart)
-                    \           , '\t', repeat(' ', &tabstop), 'g')
-        let l:start = substitute(l:start, '["#] *{', '', '')
-        let l:start = substitute(l:start, '{{', '', '')
-        let l:next = substitute( getline(v:foldstart + 1)
-                    \           , '\t', repeat(' ', &tabstop), 'g')
-        let l:next = substitute(l:next, ' *" ', '', '')
-        let l:end = substitute( substitute( getline(v:foldend)
-                  \                       , '\t', repeat(' ', &tabstop), 'g')
-                  \           , '^\s*', '', 'g')
-
-        let l:info = l:next .' (' . (v:foldend - v:foldstart + 1) . ')'
-        let l:infolen = strlen(substitute(l:info, '.', 'x', 'g'))
-        let l:width = winwidth(0) - l:lpadding - l:infolen
-
-        let l:separator = ' … '
-        let l:separatorlen = strlen(substitute(l:separator, '.', 'x', 'g'))
-        let l:start = strpart( l:start , 0
-                    \        , l:width - strlen(substitute( l:end
-                    \                                     , '.', 'x', 'g'))
-                    \                  - l:separatorlen )
-
-        let l:text = l:start
-
-        return l:text . repeat( ' '
-                    \         , l:width - strlen( substitute(l:text
-                    \                           , '.', 'x', 'g'))) . l:info
+    function! PadToRight(lstring, rstring)
+        let l:width = (winwidth('.') - 0)
+        let l:offset =  repeat(" ", l:width - strlen(a:lstring . a:rstring))
+        return a:lstring . l:offset . a:rstring
     endfunction
+
+    function! SimpleFoldText()
+        let l:ell = ' ⋯ '
+        let l:start = getline(v:foldstart)
+        let l:end = trim(getline(v:foldend))
+        let l:quotepattern = "^\\s*\\(\"\\|#\\)\\s*\\({{{\\|}}}\\)\\?"
+        if l:start =~ l:quotepattern
+            let l:start = substitute(l:start, l:quotepattern, " ", "")
+        endif
+        if l:end =~ l:quotepattern
+            let l:end = substitute(l:end, l:quotepattern, " ", "")
+        endif
+        let l:linestring = " === " . len(getline(v:foldstart, v:foldend)) . " lines === "
+        return PadToRight(l:start . " " . l:ell . " " . l:end, l:linestring)
+    endfunction
+
+    " Actually designed with scala in mind...
+    function! CFoldText()
+        let l:ell = " ⋯ "
+        let l:lines = getline(v:foldstart, v:foldend)
+        let l:size = len(l:lines)
+        let l:linestring = " === " . l:size . " lines === "
+        if (getline(v:foldstart) =~ "{$") || (getline(v:foldstart) =~ "=$")
+            let l:result = getline(v:foldstart) . l:ell . trim(getline(v:foldend)) . ' '
+            return PadToRight(l:result, l:linestring)
+        endif
+        let l:ix = 0
+        let l:hadComma = 0
+        for l:line in l:lines
+            if l:ix != 0
+                let l:lines[l:ix] = trim(l:lines[l:ix])
+            endif
+            if l:hadComma
+                let l:lines[l:ix] = " " . l:lines[l:ix]
+            endif
+            if l:line =~ "):.*= {"
+                break
+            endif
+            let l:hadComma = 0
+            if l:line =~ ",$"
+                let l:hadComma = 1
+            endif
+            let l:ix = l:ix + 1
+        endfor
+        let l:result = join(l:lines[:l:ix], "") . l:ell . trim(getline(v:foldend)) . ' '
+        return PadToRight(l:result, l:linestring)
+    endfunction
+
 " }}}
 
 " {{{ Keymaps
