@@ -82,9 +82,12 @@ import           XMonad.Hooks.FadeInactive
 import           Data.Monoid
 import qualified XMonad.Util.ExtensibleState   as XS
 import           XMonad.Util.Timer
-
 import           Numeric                        ( readHex
                                                 , showHex
+import           Utils                          ( getOffset
+                                                , getResolution
+                                                , ioIconHeight
+                                                , ioLineHeight
                                                 )
 
 import           Startup.Apps
