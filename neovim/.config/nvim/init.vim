@@ -323,6 +323,10 @@ let g:maplocalleader = ' '
     " Toggle spellchecker #(spelling, dictionary)
     nnoremap <silent> <leader>c :set spell!<CR>
 
+    " Shift + J/K moves selected lines down/up in visual mode
+    vnoremap J :m '>+1<CR>gv=gv
+    vnoremap K :m '<-2<CR>gv=gv
+
 " }}}
 
 " {{{ Auto Commands
@@ -631,14 +635,20 @@ EOF
                 \}
 
         let g:neoformat_scala_myscalariform = {
-                \ 'exe': 'C:\Users\daniel.pade\bin\scalariform.cmd',
-                \ 'args': ['--stdin'],
+                \ 'exe': 'java',
+                \ 'args': ['-jar', $HOME . '/bin/scalariform-0.2.10.jar', '--preferenceFile=' . $HOME . '/.config/scalariform/scalariform.conf' ,'--stdin'],
                 \ 'stdin': 1,
                 \ }
 
+        let g:neoformat_scala_myscalafmt = {
+                    \ 'exe' : 'scalafmt',
+                    \ 'args' : ['--stdin', '--config', $HOME . '/.scalafmt.conf'],
+                    \ 'stdin' : 1,
+                    \}
+
         let g:neoformat_enabled_tex = ['mylatexindent']
         let g:neoformat_enabled_sql = ['mysqlformat']
-        let g:neoformat_enabled_scalariform = ['myscalariform']
+        let g:neoformat_enabled_scala = ['myscalariform']
 
         " Enable tab to spaces conversion
         let g:neoformat_basic_format_retab = 1
