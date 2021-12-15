@@ -251,22 +251,25 @@ let g:maplocalleader = ' '
         let l:ix = 0
         let l:hadComma = 0
         for l:line in l:lines
+            let l:curline = l:line
             if l:ix != 0
-                let l:lines[l:ix] = trim(l:lines[l:ix])
+                let l:curline = trim(l:curline)
             endif
             if l:hadComma
-                let l:lines[l:ix] = " " . l:lines[l:ix]
+                let l:curline = " " . l:curline
             endif
-            if l:line =~ "):.*= {"
-                break
-            endif
+            let l:curline = substitute(l:curline, "\\(\\S\\+\\)\\s\\+", "\\1 ", "")
             let l:hadComma = 0
-            if l:line =~ ",$"
+            if l:curline =~ ",$"
                 let l:hadComma = 1
             endif
+            let l:lines[l:ix] = l:curline
             let l:ix = l:ix + 1
+            if l:curline =~ "):.*= {"
+                break
+            endif
         endfor
-        let l:result = join(l:lines[:l:ix], "") . l:ell . trim(getline(v:foldend)) . ' '
+        let l:result = join(l:lines[:l:ix - 1], "") . l:ell . trim(getline(v:foldend)) . ' '
         return PadToRight(l:result, l:linestring)
     endfunction
 
