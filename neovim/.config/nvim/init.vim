@@ -448,7 +448,7 @@ let g:maplocalleader = ' '
 
     Plug 'rbgrouleff/bclose.vim'
 
-    Plug 'sjbach/Lusty'
+    "Plug 'sjbach/Lusty'
 
     Plug 'junegunn/limelight.vim'
     Plug 'junegunn/goyo.vim'
@@ -627,9 +627,15 @@ EOF
                 \ 'stdin': 1,
                 \}
 
+        let g:neoformat_scala_myscalariform = {
+                \ 'exe': 'C:\Users\daniel.pade\bin\scalariform.cmd',
+                \ 'args': ['--stdin'],
+                \ 'stdin': 1,
+                \ }
+
         let g:neoformat_enabled_tex = ['mylatexindent']
         let g:neoformat_enabled_sql = ['mysqlformat']
-        let g:neoformat_enabled_scalariform = ['scalariform']
+        let g:neoformat_enabled_scalariform = ['myscalariform']
 
         " Enable tab to spaces conversion
         let g:neoformat_basic_format_retab = 1
@@ -811,7 +817,7 @@ EOF
         let g:startify_custom_indices = map(range(0,100), 'NrToHint(v:val, g:startify_indices)')
 
         let g:startify_files_number = 4
-        let g:startify_bookmarks = [config_path . 'nvim/init.vim', $HOME . '/.zshrc']
+        let g:startify_bookmarks = [config_path . 'nvim\init.vim', $HOME . '\.zshrc']
         let g:startify_list_order = [
                     \ ['MRU'],
                     \ 'files',
@@ -827,8 +833,8 @@ EOF
                     \ '.git/index',
                     \ 'plugged/.*/doc',
                     \ 'nvim/runtime/doc*',
-                    \ config_path . 'nvim/init.vim',
-                    \ $HOME . '/.zshrc',
+                    \ config_path . 'nvim\\init.vim',
+                    \ $HOME . '\\.zshrc',
                     \ ]
 
         function! s:filter_header(lines) abort
@@ -877,6 +883,8 @@ EOF
     " --------
         let g:limelight_priority = -1
         let g:limelight_conceal_ctermfg = 240
+        let g:limelight_conceal_guifg = 240 " #262626
+        let g:limelight_paragraph_span = 0
         function! s:goyo_enter()
           highlight ALEInfoSign    guifg=blue   guibg=none ctermfg=blue   ctermbg=none
           highlight ALEWarningSign guifg=yellow guibg=none ctermfg=yellow ctermbg=none
@@ -899,8 +907,9 @@ EOF
 
           silent !tmux set status on
           set cursorline
-          set showmode
+          "set showmode
           set showcmd
+          "set scrolloff=5
           GitGutterEnable
           Limelight!
           " ...

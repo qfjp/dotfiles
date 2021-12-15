@@ -1,5 +1,5 @@
 syn match scalaScaladocBegin "/\*\*" nextgroup=scalaScaladocBrief skipwhite contained
-syn match scalaScaladocBrief /[ `_A-Za-z0-9$]\+\./ contained
+syn match scalaScaladocBrief /\(\/\*\*\s*\)\@<=[^ .][^.]\+\(\.\)\@=/ contained
 syn region scalaMultilineComment start="/\*" end="\*/" contains=scalaTodo,@Spell keepend fold
 syn region scalaScaladocComment start="/\*\*" end="\*/" contains=scalaScaladocComment,scalaScaladocBegin,scalaScaladocBrief,scalaDocLinks,scalaParameterAnnotation,scalaCommentAnnotation,scalaTodo,scalaCommentCodeBlock,@Spell keepend fold
 
