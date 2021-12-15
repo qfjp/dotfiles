@@ -141,9 +141,8 @@ let g:maplocalleader = ' '
 
     set conceallevel=0
 
-    map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
-    \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
-    \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+    " Requires treesitter/playground plugin
+    nnoremap <F10> :TSHighlightCapturesUnderCursor<CR>
     highlight SpecialKey ctermfg=red cterm=none
     highlight Folded guibg=none guifg=magenta gui=bold ctermbg=none ctermfg=magenta cterm=bold
 
@@ -377,6 +376,7 @@ let g:maplocalleader = ' '
 
     " Searching, Listing
     Plug 'nvim-treesitter/nvim-treesitter'
+    Plug 'nvim-treesitter/playground'
     Plug 'nvim-telescope/telescope.nvim'
     Plug 'nvim-telescope/telescope-fzf-native.nvim', {'do': 'make'}
 
@@ -588,6 +588,24 @@ EOF
                     scope_incremental = '<Backspace>',
                     node_incremental = '<TAB>',
                     node_decremental = '<S-TAB>'
+                },
+            },
+            playground = {
+                enable = true,
+                disable = {},
+                updatetime = 25,
+                persist_queries = false,
+                keybindings = {
+                    toggle_query_editor = 'o',
+                    toggle_hi_groups = 'i',
+                    toggle_injected_languages = 't',
+                    toggle_anonymous_nodes = 'a',
+                    toggle_language_display = 'I',
+                    focus_language = 'f',
+                    unfocus_language = 'F',
+                    update = 'R',
+                    goto_node = '<cr>',
+                    show_help = '?',
                 },
             },
         }
