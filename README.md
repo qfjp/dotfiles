@@ -14,9 +14,14 @@ If everything went well, all of the dot files should be in place.
 
 ## Uninstall
 
-```bash
+```bash {data-filename="zsh"}
 cd "$HOME/.config/dotfiles"
 stow -D -t "$HOME" *(/)
+```
+
+```bash {data-filename="bash"}
+cd $HOME/.config/dotfiles
+stow -t $HOME $(for file in *; do if [ -d "$file" ]; then printf "$file "; fi; done)
 ```
 
 ## Other config files
