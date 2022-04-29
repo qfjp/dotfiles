@@ -14,7 +14,7 @@ commands in a terminal:
 
 2. Change to the directory:
     ```bash
-    cd "$HOME/.config/dotfiles"
+    cd "$DOTFILES_DIR"
     ```
 
 3. Stow the config files as symlinks:
