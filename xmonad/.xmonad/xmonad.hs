@@ -196,12 +196,15 @@ myWorkspaceBar = do
     $  "dzen2 -p -ta l -bg '"
     ++ col2string ltstGrey
     ++ "'"
-    ++ " -fn \"PragmataPro:Bold:size=10\""
+    ++ " -fn \"" ++ fontString ++ "\" "
     ++ " -h "
     ++ height
     ++ " -w "
-    ++ show width
-    ++ " -sa c -x 5 -y 5 -e 'onstart=lower' -dock"
+    ++ show barWidth
+    ++ " -sa c "
+    ++ " -x " ++ (show $ xoff + gapSize)
+    ++ " -y " ++ (show $ yoff + gapSize)
+    ++ " -e 'onstart=lower' -dock"
 
 myWorkspaces :: [String]
 myWorkspaces =
