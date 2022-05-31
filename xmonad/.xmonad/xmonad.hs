@@ -151,11 +151,11 @@ main = do
 -- hooks, layouts
 staloneCmd :: IO String
 staloneCmd = do
-  fudge      <- staloneFudgeFactor
-  (xres, _)  <- getResolution
-  iconHeight <- ioIconHeight
-  let geoX      = floor $ fromIntegral xres * fudge :: Int
-      geoString = "1x1+" ++ show geoX ++ "+5"
+  (xres, _   ) <- getResolution
+  (xoff, yoff) <- getOffset
+  iconHeight   <- ioIconHeight
+  let geoX      = (floor . (* 0.8) $ fromIntegral xres) + xoff :: Int
+      geoString = "1x1+" ++ show geoX ++ "+" ++ (show $ yoff + 5)
   return
     $  "stalonetray -i "
     ++ show iconHeight
@@ -172,12 +172,27 @@ myNavigation2DConfig = def { defaultTiledNavigation = centerNavigation
                            , floatNavigation        = centerNavigation
                            }
 
+gapSize :: Integral a => a
+gapSize = 5
+
+fontSize :: Integral a => a
+fontSize = 10
+
+fontString :: String
+fontString = "PragmataPro:Bold:size=" ++ show fontSize
+
+maxBarChars :: (Integral a, Read a) => IO a
+maxBarChars = do
+  xres <- ((-2 * gapSize) +) . fst <$> getResolution
+  return $ xres `div` fontSize
+
 -- Command to launch statusbar
 myWorkspaceBar :: IO String
 myWorkspaceBar = do
-  intHeight <- ioHeight
-  width     <- barWidth
-  let height = show intHeight
+  intLineHeight <- ioLineHeight
+  barWidth      <- ((-2 * gapSize) +) . fst <$> getResolution
+  (xoff, yoff)  <- getOffset
+  let height = show intLineHeight
   return
     $  "dzen2 -p -ta l -bg '"
     ++ col2string ltstGrey
@@ -240,11 +255,11 @@ myLogHook h = do
   title   <- fmap (fromMaybe "") logTitle
   layout  <- fmap (fromMaybe "") logLayout
   battery <- fmap (fromMaybe "") batLog
-  fudge   <- io winTitleFudgeFactor
+  maxChars <- io maxBarChars
   let titleLen  = length' . shorten maxTitleLen $ title
       layoutLen = length layout
       batLen    = length battery
-      buffer    = replicate (fudge - titleLen - layoutLen - batLen) ' '
+      buffer    = replicate (maxChars - titleLen - layoutLen - batLen) ' '
   dynamicLogWithPP $ dzenPP
     { ppCurrent         = const $ wrap (fgbg lterGrey ltstGrey ++ " ") "" "●"
     , ppVisible = const $ wrap (fgbg (brighten lterGrey) ltstGrey ++ " ") "" "●"
