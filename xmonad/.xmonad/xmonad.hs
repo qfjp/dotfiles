@@ -44,7 +44,7 @@ import           XMonad.Hooks.DynamicLog        ( dynamicLogWithPP
                                                 )
 import           XMonad.Hooks.EwmhDesktops      ( ewmh )
 import           XMonad.Hooks.ManageDocks       ( ToggleStruts(ToggleStruts)
-                                                , avoidStruts
+                                                , avoidStrutsOn
                                                 , docks
                                                 , manageDocks
                                                 )
@@ -59,7 +59,7 @@ import           XMonad.Layout.NoBorders        ( noBorders
 import           XMonad.Layout.Reflect          ( reflectHoriz
                                                 , reflectVert
                                                 )
-import           XMonad.Layout.Spacing          ( spacing )
+import           XMonad.Layout.Spacing          ( spacingRaw, Border(Border) )
 import           XMonad.Layout.ToggleLayouts
 import qualified XMonad.StackSet               as W
 import           XMonad.Util.Font               ( Align
@@ -416,7 +416,14 @@ placeHook' = placeHook $ withGaps (16, 0, 16, 0) (smart (0.5, 0.5))
 
 --------------------------------------------------------------------------------
 layoutModifiers =
-  avoidStruts . smartBorders . toggleLayouts (noBorders Full) . spacing 5
+  avoidStrutsOn [U]
+    . smartBorders
+    . toggleLayouts (noBorders Full)
+    . spacingRaw False
+                 (Border gapSize gapSize gapSize gapSize)
+                 True
+                 (Border gapSize gapSize gapSize gapSize)
+                 True
 
 -- Layouts:
 myLayout =
