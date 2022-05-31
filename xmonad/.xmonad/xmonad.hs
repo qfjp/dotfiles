@@ -60,11 +60,8 @@ import           XMonad.Layout.Reflect          ( reflectHoriz
                                                 , reflectVert
                                                 )
 import           XMonad.Layout.Spacing          ( spacing )
-import           XMonad.Layout.Spiral           ( spiral )
 import           XMonad.Layout.ToggleLayouts
-
 import qualified XMonad.StackSet               as W
-
 import           XMonad.Util.Font               ( Align
                                                   ( AlignCenter
                                                   , AlignLeft
