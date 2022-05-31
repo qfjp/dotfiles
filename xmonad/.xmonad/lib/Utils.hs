@@ -20,6 +20,9 @@ import           System.Process                 ( StdStream(CreatePipe)
                                                 , std_out
                                                 )
 
+displayForBar :: String
+displayForBar = "HDMI-0"
+
 list2Tup :: [a] -> (a, a)
 list2Tup (x : y : _) = (x, y)
 list2Tup _           = undefined
@@ -74,9 +77,12 @@ containsAllOf x y =
   in  length (x' `intersect` y') == (length . nub) y'
 
 getGeo :: IO (String, String)
-getGeo = do
+getGeo = getGeoFromDisplay "primary"
+
+getGeoFromDisplay :: String -> IO (String, String)
+getGeoFromDisplay disp = do
   xrandrLines <- lines <$> xrandr
-  let primary      = (!! 0) $ filter ("primary" `isInfixOf`) xrandrLines
+  let primary      = (!! 0) $ filter (disp `isInfixOf`) xrandrLines
       primGeo      = (!! 0) . filter (`containsAllOf` "x+") . words $ primary
       primGeoSplit = splitOneOf "+x" primGeo
   return
@@ -85,7 +91,7 @@ getGeo = do
     )
 
 getResolution :: (Integral a, Read a) => IO (a, a)
-getResolution = (convertTup . list2Tup . splitOn "x" . fst) <$> getGeo
+getResolution = (convertTup . list2Tup . splitOn "x" . fst) <$> getGeoFromDisplay displayForBar
 
 getOffset :: (Integral a, Read a) => IO (a, a)
-getOffset = (convertTup . list2Tup . splitOn "+" . snd) <$> getGeo
+getOffset = (convertTup . list2Tup . splitOn "+" . snd) <$> getGeoFromDisplay displayForBar
