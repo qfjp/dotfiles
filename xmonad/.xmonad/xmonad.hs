@@ -81,7 +81,6 @@ import           XMonad.Hooks.FadeInactive
 
 import           Data.Monoid
 import qualified XMonad.Util.ExtensibleState   as XS
-import           XMonad.Util.Timer
 import           Numeric                        ( readHex
                                                 , showHex
 import           Utils                          ( getOffset
@@ -100,32 +99,6 @@ laptopHost = "krang"
 
 maxTitleLen :: Int
 maxTitleLen = 100
-
--- wrapper for the Timer id, so it can be stored as custom mutable state
-data TidState = TID TimerId
-  deriving Typeable
-
-instance ExtensionClass TidState where
-  initialValue = TID 0
-
--- start the initial timer, store its id
-clockStartupHook = startTimer 1 >>= XS.put . TID
-
-clockEventHook e = do
-  (TID t) <- XS.get -- get the recent Timer id
-  handleTimer t e $ -- run the following if e matches the id
-                    do
-    tid <- startTimer 1
-    XS.put . TID $ tid -- restart the timer, store the new id
-    state <- ask
-    logHook . config $ state -- get the loghook and run it
-    return Nothing
-  return $ All True
-winTitleFudgeFactor :: IO Int
-winTitleFudgeFactor = return 190
-
-staloneFudgeFactor :: IO Double
-staloneFudgeFactor = return 0.88
 
 substring :: String -> String -> Bool
 substring (x : xs) [] = False
