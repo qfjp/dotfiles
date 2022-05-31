@@ -88,7 +88,6 @@ import           XMonad.Layout.WindowNavigation
 
 import           XMonad.Hooks.FadeInactive
 
-import           Data.Monoid
 import qualified XMonad.Util.ExtensibleState   as XS
 import           Utils                          ( getOffset
                                                 , getResolution
