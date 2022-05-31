@@ -97,7 +97,6 @@ import           Utils                          ( getOffset
                                                 )
 
 import           Startup.Apps
-import           Startup.Utils
 
 desktopHost, laptopHost :: String
 desktopHost = "franky"
