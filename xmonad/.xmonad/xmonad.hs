@@ -45,7 +45,7 @@ import           XMonad.Hooks.DynamicLog        ( dynamicLogWithPP
 import           XMonad.Hooks.EwmhDesktops      ( ewmh )
 import           XMonad.Hooks.ManageDocks       ( ToggleStruts(ToggleStruts)
                                                 , avoidStruts
-                                                , docksEventHook
+                                                , docks
                                                 , manageDocks
                                                 )
 import           XMonad.Hooks.ManageHelpers     ( doFullFloat
@@ -127,7 +127,7 @@ main = do
   _                <- spawnPipe staloneString
   _                <- spawnPipe comptonString
   _                <- spawnPipe flashfocusString
-  xmonad $ ewmh . withNavigation2DConfig myNavigation2DConfig $ def
+  xmonad $ ewmh . withNavigation2DConfig myNavigation2DConfig . docks $ def
     { focusFollowsMouse  = False
     , workspaces         = myWorkspaces
     , focusedBorderColor = "#ff950e"
@@ -140,7 +140,6 @@ main = do
     , logHook            = myLogHook dzenLeftBar
     , manageHook         = manageDocks <+> myManageHook
     , startupHook        = myStartupHook
-    , handleEventHook    = docksEventHook <+> clockEventHook
     , modMask            = mod1Mask
     }
 
