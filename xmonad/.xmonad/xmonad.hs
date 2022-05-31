@@ -117,8 +117,8 @@ prefix (x : xs) (y : ys) = (x == y) && prefix xs ys
 
 main :: IO ()
 main = do
-  leftBarString    <- myWorkspaceBar
-  dzenLeftBar      <- spawnPipe leftBarString
+  dzenCommand      <- myWorkspaceBar
+  dzenProcess      <- spawnPipe dzenCommand
   staloneString    <- staloneCmd
   comptonString    <- comptonCmd
   flashfocusString <- flashfocusCmd
@@ -135,7 +135,7 @@ main = do
     , keys               = myKeys
     , mouseBindings      = myMouseBindings
     , layoutHook         = myLayout
-    , logHook            = myLogHook dzenLeftBar
+    , logHook            = myLogHook dzenProcess
     , manageHook         = manageDocks <+> myManageHook
     , startupHook        = myStartupHook
     , modMask            = mod1Mask
