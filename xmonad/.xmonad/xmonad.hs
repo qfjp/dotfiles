@@ -426,7 +426,7 @@ myWindowManage =
     , "google-chrome"
     ]
   myTorrents    = ["Deluge"]
-  myChats       = ["Microsoft Teams - Preview", "Slack"]
+  myChats       = ["Microsoft Teams - Preview", "Slack", "Signal", "TelegramDesktop"]
   myGames       = ["dosbox", "Steam", "pcsx2", "zenity"]
   myClassFloats = ["feh", "gnuplot", "mpv", "UniversalEditor"]
   myTitleFloats = ["Microsoft Teams Notification"]
