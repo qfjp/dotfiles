@@ -48,53 +48,24 @@ Emacs.font: Fantasque Sans Mono-10
 
 Vim.font: Fantasque Sans Mono-10
 
-! Base16 Default
-! Scheme: Chris Kempson (http://chriskempson.com)
+*foreground:   #f8f8f2
+*background:   #272822
+*cursorColor:  #f8f8f2
 
-#define base00 #181818
-#define base01 #282828
-#define base02 #383838
-#define base03 #585858
-#define base04 #b8b8b8
-#define base05 #d8d8d8
-#define base06 #e8e8e8
-#define base07 #f8f8f8
-#define base08 #ab4642
-#define base09 #dc9656
-#define base0A #f7ca88
-#define base0B #a1b56c
-#define base0C #86c1b9
-#define base0D #7cafc2
-#define base0E #ba8baf
-#define base0F #a16946
+*color0:       #272822
+*color1:       #f92672
+*color2:       #a6e22e
+*color3:       #f4bf75
+*color4:       #66d9ef
+*color5:       #ae81ff
+*color6:       #a1efe4
+*color7:       #989892
 
-XTerm.foreground:   base05
-XTerm.background:   base00
-XTerm.cursorColor:  base05
-
-XTerm.color0:       base00
-XTerm.color1:       base08
-XTerm.color2:       base0B
-XTerm.color3:       base0A
-XTerm.color4:       base0D
-XTerm.color5:       base0E
-XTerm.color6:       base0C
-XTerm.color7:       #787878
-
-XTerm.color8:       base03
-XTerm.color9:       base08
-XTerm.color10:      base0B
-XTerm.color11:      base0A
-XTerm.color12:      base0D
-XTerm.color13:      base0E
-XTerm.color14:      base0C
-XTerm.color15:      base07
-
-! Note: colors beyond 15 might not be loaded (e.g., xterm, urxvt),
-! use 'shell' template to set these if necessary
-XTerm.color16:      base09
-XTerm.color17:      base0F
-XTerm.color18:      base01
-XTerm.color19:      base02
-XTerm.color20:      base04
-XTerm.color21:      base06
+*color8:       #75715e
+*color9:       #f92672
+*color10:      #a6e22e
+*color11:      #f4bf75
+*color12:      #66d9ef
+*color13:      #ae81ff
+*color14:      #a1efe4
+*color15:      #f9f8f5
