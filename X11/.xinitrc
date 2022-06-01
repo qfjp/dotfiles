@@ -17,6 +17,7 @@ OS_PREFIX='/usr'
 [ -e /etc/nixos/configuration.nix  ] && OS_PREFIX=/run/current-system/sw
 export OS_PREFIX
 
+xset s off && xset -dpms
 xsetroot -cursor_name left_ptr &
 
 autocutsel -fork &
@@ -24,11 +25,9 @@ autocutsel -selection PRIMARY -fork &
 volnoti &
 numlockx &
 nm-applet &
-unclutter --ignore-scrolling --exclude-root &
 dunst &
 udiskie -s &
 xmodmap "$HOME/.Xmodmap" &
-(sleep 10 && xcape -t=0 -e 'Control_L=Escape') &
 xrdb ~/.Xdefaults &
 eval "$(cat ~/.fehbg)" &
 "$HOME/bin/screensaver/autolock.sh" &
