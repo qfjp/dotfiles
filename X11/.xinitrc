@@ -30,4 +30,3 @@ udiskie -s &
 xmodmap "$HOME/.Xmodmap" &
 xrdb ~/.Xdefaults &
 eval "$(cat ~/.fehbg)" &
-"$HOME/bin/screensaver/autolock.sh" &
