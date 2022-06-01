@@ -97,6 +97,7 @@ import           Utils                          ( getOffset
 
 import           Startup.Apps
 
+import           XMonad.Actions.Warp            ( warpToWindow )
 desktopHost, laptopHost :: String
 desktopHost = "franky"
 laptopHost = "krang"
@@ -314,6 +315,8 @@ myKeys conf@XConfig { XMonad.modMask = modm } =
        , ((modm .|. shiftMask, xK_i), spawn "/usr/bin/env rofi-pass --insert")
        , ((modm, xK_e)                  , spawn "$HOME/bin/vim-anywhere")
        , ((modm .|. shiftMask, xK_c)    , kill)
+       , ((modm, xK_semicolon)               , warpToWindow 1 1)
+       , ((modm .|. shiftMask, xK_semicolon) , warpToWindow (1%2) (1%2))
        , ((modm, xK_space)              , sendMessage NextLayout)
     --  Reset the layouts on the current workspace to default
        , ((modm .|. shiftMask, xK_space), setLayout $ XMonad.layoutHook conf)
