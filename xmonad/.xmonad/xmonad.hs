@@ -16,7 +16,6 @@ import           Bar.Colors                     ( brighten
 import qualified Data.Map                      as M
 import           Data.Maybe
 import           Data.Ratio                     ( (%) )
-import           Data.Word
 
 import           XMonad                  hiding ( Color )
 
@@ -84,7 +83,6 @@ import           System.IO                      ( Handle
                                                 )
 
 import           XMonad.Actions.Navigation2D
-import           XMonad.Layout.WindowNavigation
 
 import           XMonad.Hooks.FadeInactive
 
