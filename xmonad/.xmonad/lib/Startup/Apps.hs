@@ -4,7 +4,9 @@ import           System.Environment             ( getEnv )
 import           Utils                          ( getResolution
                                                 , ioLineHeight
                                                 )
-import           XMonad
+import           XMonad                         ( X
+                                                , spawn
+                                                )
 
 spawnedApps :: [String]
 spawnedApps = ["dzen2", "stalonetray", "picom", "flashfocus"]

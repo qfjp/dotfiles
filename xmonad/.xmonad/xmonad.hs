@@ -13,21 +13,26 @@ import           Bar.Colors                     ( brighten
                                                 , orange
                                                 , textGrey
                                                 )
+
 import qualified Data.Map                      as M
-import           Data.Maybe
+import           Data.Maybe                     ( fromMaybe )
 import           Data.Ratio                     ( (%) )
 
 import           XMonad                  hiding ( Color )
-
 import           XMonad.Actions.FloatKeys       ( keysResizeWindow )
+import           XMonad.Actions.Navigation2D    ( Direction2D(D, L, R, U)
+                                                , Navigation2DConfig
+                                                , centerNavigation
+                                                , defaultTiledNavigation
+                                                , floatNavigation
+                                                , windowGo
+                                                , windowSwap
+                                                , withNavigation2DConfig
+                                                )
 import           XMonad.Actions.RotSlaves       ( rotAllDown
                                                 , rotAllUp
                                                 )
-import           XMonad.Hooks.Place             ( placeHook
-                                                , smart
-                                                , withGaps
-                                                )
-
+import           XMonad.Actions.Warp            ( warpToWindow )
 import           XMonad.Hooks.DynamicLog        ( dynamicLogWithPP
                                                 , dzenPP
                                                 , ppCurrent
@@ -42,6 +47,7 @@ import           XMonad.Hooks.DynamicLog        ( dynamicLogWithPP
                                                 , wrap
                                                 )
 import           XMonad.Hooks.EwmhDesktops      ( ewmh )
+import           XMonad.Hooks.FadeInactive      ( fadeInactiveLogHook )
 import           XMonad.Hooks.ManageDocks       ( ToggleStruts(ToggleStruts)
                                                 , avoidStrutsOn
                                                 , docks
@@ -50,17 +56,25 @@ import           XMonad.Hooks.ManageDocks       ( ToggleStruts(ToggleStruts)
 import           XMonad.Hooks.ManageHelpers     ( doFullFloat
                                                 , isFullscreen
                                                 )
+import           XMonad.Hooks.Place             ( placeHook
+                                                , smart
+                                                , withGaps
+                                                )
 import           XMonad.Hooks.SetWMName         ( setWMName )
-
 import           XMonad.Layout.NoBorders        ( noBorders
                                                 , smartBorders
                                                 )
 import           XMonad.Layout.Reflect          ( reflectHoriz
                                                 , reflectVert
                                                 )
-import           XMonad.Layout.Spacing          ( spacingRaw, Border(Border) )
-import           XMonad.Layout.ToggleLayouts
+import           XMonad.Layout.Spacing          ( Border(Border)
+                                                , spacingRaw
+                                                )
+import           XMonad.Layout.ToggleLayouts    ( ToggleLayout(Toggle)
+                                                , toggleLayouts
+                                                )
 import qualified XMonad.StackSet               as W
+import qualified XMonad.Util.ExtensibleState   as XS
 import           XMonad.Util.Font               ( Align
                                                   ( AlignCenter
                                                   , AlignLeft
@@ -82,20 +96,18 @@ import           System.IO                      ( Handle
                                                 , hPutStrLn
                                                 )
 
-import           XMonad.Actions.Navigation2D
 
-import           XMonad.Hooks.FadeInactive
-
-import qualified XMonad.Util.ExtensibleState   as XS
+import           Startup.Apps                   ( comptonCmd
+                                                , flashfocusCmd
+                                                , killSpawns
+                                                )
 import           Utils                          ( getOffset
                                                 , getResolution
                                                 , ioIconHeight
                                                 , ioLineHeight
                                                 )
 
-import           Startup.Apps
 
-import           XMonad.Actions.Warp            ( warpToWindow )
 desktopHost, laptopHost :: String
 desktopHost = "franky"
 laptopHost = "krang"
