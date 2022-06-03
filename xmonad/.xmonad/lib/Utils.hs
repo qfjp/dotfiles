@@ -91,7 +91,9 @@ getGeoFromDisplay disp = do
     )
 
 getResolution :: (Integral a, Read a) => IO (a, a)
-getResolution = (convertTup . list2Tup . splitOn "x" . fst) <$> getGeoFromDisplay displayForBar
+getResolution = (convertTup . list2Tup . splitOn "x" . fst)
+  <$> getGeoFromDisplay displayForBar
 
 getOffset :: (Integral a, Read a) => IO (a, a)
-getOffset = (convertTup . list2Tup . splitOn "+" . snd) <$> getGeoFromDisplay displayForBar
+getOffset = (convertTup . list2Tup . splitOn "+" . snd)
+  <$> getGeoFromDisplay displayForBar

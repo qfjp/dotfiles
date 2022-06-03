@@ -207,14 +207,18 @@ myWorkspaceBar = do
     $  "dzen2 -p -ta l -bg '"
     ++ col2string ltstGrey
     ++ "'"
-    ++ " -fn \"" ++ fontString ++ "\" "
+    ++ " -fn \""
+    ++ fontString
+    ++ "\" "
     ++ " -h "
     ++ height
     ++ " -w "
     ++ show barWidth
     ++ " -sa c "
-    ++ " -x " ++ (show $ xoff + gapSize)
-    ++ " -y " ++ (show $ yoff + gapSize)
+    ++ " -x "
+    ++ (show $ xoff + gapSize)
+    ++ " -y "
+    ++ (show $ yoff + gapSize)
     ++ " -e 'onstart=lower' -dock"
 
 myWorkspaces :: [String]
@@ -265,9 +269,9 @@ length' (x : xs) | x == '—'  = 2 + length' xs
 myLogHook :: Handle -> X ()
 myLogHook h = do
   fadeInactiveLogHook 1.00
-  title   <- fmap (fromMaybe "") logTitle
-  layout  <- fmap (fromMaybe "") logLayout
-  battery <- fmap (fromMaybe "") batLog
+  title    <- fmap (fromMaybe "") logTitle
+  layout   <- fmap (fromMaybe "") logLayout
+  battery  <- fmap (fromMaybe "") batLog
   maxChars <- io maxBarChars
   let titleLen  = length' . shorten maxTitleLen $ title
       layoutLen = length layout
@@ -320,39 +324,39 @@ myKeys conf@XConfig { XMonad.modMask = modm } =
        , ((modm, xK_apostrophe)              , spawn $ XMonad.terminal conf)
        , ((modm .|. shiftMask, xK_Return)    , spawn "GDK_SCALE=2 nvim-gtk")
        , ((modm .|. shiftMask, xK_apostrophe), spawn "GDK_SCALE=2 nvim-gtk")
-       , ((modm, xK_i)                  , spawn "/usr/bin/env rofi-pass")
+       , ((modm, xK_i)                       , spawn "/usr/bin/env rofi-pass")
        , ((modm, xK_p), spawn "/usr/bin/env rofi -show combi")
        , ((modm .|. shiftMask, xK_i), spawn "/usr/bin/env rofi-pass --insert")
-       , ((modm, xK_e)                  , spawn "$HOME/bin/vim-anywhere")
-       , ((modm .|. shiftMask, xK_c)    , kill)
+       , ((modm, xK_e)                       , spawn "$HOME/bin/vim-anywhere")
+       , ((modm .|. shiftMask, xK_c)         , kill)
        , ((modm, xK_semicolon)               , warpToWindow 1 1)
-       , ((modm .|. shiftMask, xK_semicolon) , warpToWindow (1%2) (1%2))
-       , ((modm, xK_space)              , sendMessage NextLayout)
+       , ((modm .|. shiftMask, xK_semicolon) , warpToWindow (1 % 2) (1 % 2))
+       , ((modm, xK_space)                   , sendMessage NextLayout)
     --  Reset the layouts on the current workspace to default
        , ((modm .|. shiftMask, xK_space), setLayout $ XMonad.layoutHook conf)
        , ((modm, xK_f), sendMessage ToggleStruts >> sendMessage (Toggle "Full"))
     -- Resize viewed windows to the correct size
-       , ((modm, xK_n)                  , refresh)
-       , ((modm, xK_o)                  , windows W.focusDown)
-       , ((modm .|. shiftMask, xK_o)    , windows W.swapMaster)
-       , ((modm, xK_l)                  , windowGo R False)
-       , ((modm, xK_h)                  , windowGo L False)
-       , ((modm, xK_k)                  , windowGo U False)
-       , ((modm, xK_j)                  , windowGo D False)
-       , ((modm .|. shiftMask, xK_l)    , windowSwap R False)
-       , ((modm .|. shiftMask, xK_h)    , windowSwap L False)
-       , ((modm .|. shiftMask, xK_k)    , windowSwap U False)
-       , ((modm .|. shiftMask, xK_j)    , windowSwap D False)
-       , ((modm .|. controlMask, xK_h)  , sendMessage Shrink)
-       , ((modm .|. controlMask, xK_l)  , sendMessage Expand)
-       , ((modm .|. controlMask, xK_k)  , sendMessage (IncMasterN 1))
-       , ((modm .|. controlMask, xK_j)  , sendMessage (IncMasterN (-1)))
-       , ((modm, xK_m)                  , windows W.focusMaster)
-       , ((modm, xK_t)                  , toggleFloat)
-       , ((modm, xK_comma)              , rotAllUp)
-       , ((modm, xK_period)             , rotAllDown)
-       , ((modm, xK_b)                  , sendMessage ToggleStruts)
-       , ((modm .|. shiftMask, xK_q)    , io exitSuccess)
+       , ((modm, xK_n)                       , refresh)
+       , ((modm, xK_o)                       , windows W.focusDown)
+       , ((modm .|. shiftMask, xK_o)         , windows W.swapMaster)
+       , ((modm, xK_l)                       , windowGo R False)
+       , ((modm, xK_h)                       , windowGo L False)
+       , ((modm, xK_k)                       , windowGo U False)
+       , ((modm, xK_j)                       , windowGo D False)
+       , ((modm .|. shiftMask, xK_l)         , windowSwap R False)
+       , ((modm .|. shiftMask, xK_h)         , windowSwap L False)
+       , ((modm .|. shiftMask, xK_k)         , windowSwap U False)
+       , ((modm .|. shiftMask, xK_j)         , windowSwap D False)
+       , ((modm .|. controlMask, xK_h)       , sendMessage Shrink)
+       , ((modm .|. controlMask, xK_l)       , sendMessage Expand)
+       , ((modm .|. controlMask, xK_k)       , sendMessage (IncMasterN 1))
+       , ((modm .|. controlMask, xK_j)       , sendMessage (IncMasterN (-1)))
+       , ((modm, xK_m)                       , windows W.focusMaster)
+       , ((modm, xK_t)                       , toggleFloat)
+       , ((modm, xK_comma)                   , rotAllUp)
+       , ((modm, xK_period)                  , rotAllDown)
+       , ((modm, xK_b)                       , sendMessage ToggleStruts)
+       , ((modm .|. shiftMask, xK_q)         , io exitSuccess)
        , ( (modm, xK_q)
          , killSpawns >> spawn "xmonad --recompile; xmonad --restart"
          )
@@ -436,7 +440,7 @@ myWindowManage =
     , "google-chrome"
     ]
   myTorrents    = ["Deluge"]
-  myChats       = ["Microsoft Teams - Preview", "Slack", "Signal", "TelegramDesktop"]
+  myChats = ["Microsoft Teams - Preview", "Slack", "Signal", "TelegramDesktop"]
   myGames       = ["dosbox", "Steam", "pcsx2", "zenity"]
   myClassFloats = ["feh", "gnuplot", "mpv", "UniversalEditor"]
   myTitleFloats = ["Microsoft Teams Notification"]
