@@ -78,6 +78,7 @@ let g:maplocalleader = ' '
 
     set linebreak
     set breakindent
+    set showbreak=-→
 
     " Try to get the indent to be more like emacs
     " Taken from some dude, with his comments paraphrased by me
