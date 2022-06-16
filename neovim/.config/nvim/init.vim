@@ -420,6 +420,7 @@ let g:maplocalleader = ' '
     Plug 'tpope/vim-speeddating'
 
     Plug 'neovim/nvim-lspconfig'
+    Plug 'williamboman/nvim-lsp-installer'
     Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
     Plug 'Shougo/deoplete-lsp'
 
@@ -714,6 +715,7 @@ EOF
             autocmd Filetype json      setlocal omnifunc=v:lua.vim.lsp.omnifunc
         augroup END
         lua << EOF
+        require("nvim-lsp-installer").setup {}
         local lspconfig = require 'lspconfig'
         lspconfig.pylsp.setup{
             settings = {
