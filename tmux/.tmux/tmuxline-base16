@@ -7,6 +7,7 @@
 # 9 -> 238 -> #444444
 
 set -g status-bg "colour0"
+set -g status-fg "colour250"
 set -g status-justify "left"
 set -g status-left-length "100"
 set -g status "on"
@@ -15,9 +16,9 @@ setw -g window-status-separator ""
 
 #          
 
-set -g status-left "#[fg=colour81]#[fg=colour237,bg=colour81,bold] #S #[fg=colour81,bg=colour0,nobold,nounderscore,noitalics]"
+set -g status-left '#[fg=colour81]#[fg=colour237,bg=colour81,bold] #S #[fg=colour81,bg=colour0,nobold,nounderscore,noitalics] #(cat #{socket_path}-\#{session_id}-vimbridge)'
 
-set -g status-right "#[fg=colour239,nobold,nounderscore,noitalics]#[fg=colour250,bg=colour239] %Y-%m-%d #[fg=colour245,bg=colour239]#[fg=colour238,bg=colour245] %I:%M %p #[fg=colour81,bg=colour245,nobold,nounderscore,noitalics]#[fg=colour237,bg=colour81] #h #[fg=colour81,bg=colour237,bold]"
+set -g status-right '#(cat #{socket_path}-\#{session_id}-vimbridge-R)  #[fg=colour239,nobold,nounderscore,noitalics]#[fg=colour250,bg=colour239] %Y-%m-%d #[fg=colour245,bg=colour239]#[fg=colour238,bg=colour245] %I:%M %p #[fg=colour81,bg=colour245,nobold,nounderscore,noitalics]#[fg=colour237,bg=colour81] #h #[fg=colour81,bg=colour237,bold]'
 
 setw -g window-status-format " #[fg=colour245]  #I  #W  "
 

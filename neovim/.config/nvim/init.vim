@@ -8,7 +8,7 @@ let g:maplocalleader = ' '
 " {{{ Theme
 " ---------------
     set noshowmode
-    set laststatus=2 "always show the status line
+    set laststatus=0 "always show the status line
     " enable 256 color mode
     filetype plugin on
     syntax enable
@@ -432,6 +432,7 @@ let g:maplocalleader = ' '
 
     " Tmux integration
     Plug 'christoomey/vim-tmux-navigator'
+    Plug 'vimpostor/vim-tpipeline'
 
     " Markdown
     Plug 'mattly/vim-markdown-enhancements'
@@ -494,6 +495,10 @@ let g:maplocalleader = ' '
         let g:gitgutter_sign_removed='┃'
         let g:gitgutter_sign_removed_first_line='╓'
         let g:gitgutter_sign_modified_removed='┣'
+    " }}}
+    " {{{ TPipeline
+        let g:tpipeline_autoembed = 0
+        let g:tpipeline_statusline = '%!lightline#statusline(0)'
     " }}}
     " {{{ Lightline
         let g:lightline = {
