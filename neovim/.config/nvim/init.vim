@@ -424,8 +424,9 @@ let g:maplocalleader = ' '
 
     Plug 'neovim/nvim-lspconfig'
     Plug 'williamboman/nvim-lsp-installer'
-    Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
-    Plug 'Shougo/deoplete-lsp'
+    Plug 'ms-jpq/coq_nvim', { branch : 'coq' }
+    Plug 'ms-jpq/coq.artifacts', { branch : 'artifacts' }
+    Plug 'ms-jpq/coq.thirdparty', { branch : '3p' }
 
     Plug 'Shougo/echodoc.vim'
 
@@ -687,14 +688,17 @@ EOF
         " always show signcolumns
         set signcolumn=yes
 
-        let g:LspDiagnosticsErrorSign = "●"
-        let g:LspDiagnosticsWarningSign = "●"
-        let g:LspDiagnosticsInformationSign = "●"
-        let g:LspDiagnosticsHintSign = "●"
-        highlight LspDiagnosticInformation guifg=blue   guibg=none ctermfg=blue   ctermbg=none
-        highlight LspDiagnosticsWarning    guifg=yellow guibg=none ctermfg=yellow ctermbg=none
-        highlight LspDiagnosticsError      guifg=red    guibg=none ctermfg=red    ctermbg=none
-        highlight LspDiagnosticHint        guifg=green  guibg=none ctermfg=green  ctermbg=none
+        sign define DiagnosticSignError text=● texthl=DiagnosticSignError
+        sign define DiagnosticSignWarn  text=● texthl=DiagnosticSignWarn
+        sign define DiagnosticSignInfo  text=● texthl=DiagnosticSignInfo
+        sign define DiagnosticSignHint  text=● texthl=DiagnosticSignHint
+        augroup ColorSchemeLspMod
+            autocmd!
+            autocmd ColorScheme * highlight DiagnosticSignInfo  guifg=skyblue     guibg=none ctermfg=blue   ctermbg=none
+            autocmd ColorScheme * highlight DiagnosticSignWarn  guifg=yellow      guibg=none ctermfg=yellow ctermbg=none
+            autocmd ColorScheme * highlight DiagnosticSignError guifg=red         guibg=none ctermfg=red    ctermbg=none
+            autocmd ColorScheme * highlight DiagnosticSignHint  guifg=lightgreen  guibg=none ctermfg=green  ctermbg=none
+        augroup END
 
         "set completeopt=noinsert,menuone,noselect
         nnoremap <silent> gs  <cmd>lua vim.lsp.buf.declaration()<CR>
@@ -718,8 +722,31 @@ EOF
             autocmd Filetype json      setlocal omnifunc=v:lua.vim.lsp.omnifunc
         augroup END
         lua << EOF
+        -- unicode geo shapes
+        -- ◺◹ ◸◿  ◣◥ ◤◢  ◟◝ ◜◞
+        vim.g.coq_settings = {
+            auto_start = "shut-up",
+            keymap = { jump_to_mark = "<c-y>" },
+            display = {
+                pum = {
+                    --kind_context =  {" [", "]"},
+                    --source_context = {"「", "」"},
+                    --kind_context =  {" ◺", "◹"},
+                    --source_context = {" ◣", "◥"},
+                    kind_context =  {" ", ""},
+                    source_context = {"::", ""}
+                },
+                preview = {
+                    border = "double",
+                },
+                icons = {
+                    mode = "short",
+                },
+            },
+        }
         require("nvim-lsp-installer").setup {}
         local lspconfig = require 'lspconfig'
+        local coq = require 'coq'
         lspconfig.pylsp.setup{
             settings = {
                 pyls = {
@@ -910,11 +937,6 @@ EOF
         let g:limelight_conceal_guifg = 240 " #262626
         let g:limelight_paragraph_span = 0
         function! s:goyo_enter()
-          highlight ALEInfoSign    guifg=blue   guibg=none ctermfg=blue   ctermbg=none
-          highlight ALEWarningSign guifg=yellow guibg=none ctermfg=yellow ctermbg=none
-          highlight ALEErrorSign   guifg=red    guibg=none ctermfg=red    ctermbg=none
-          highlight ALEHintSign    guifg=green  guibg=none ctermfg=green  ctermbg=none
-
           silent !tmux set status off
           set nocursorline
           set noshowcmd
@@ -924,11 +946,6 @@ EOF
         endfunction
 
         function! s:goyo_leave()
-          highlight ALEInfoSign    guifg=blue   guibg=237 ctermfg=blue   ctermbg=237
-          highlight ALEWarningSign guifg=yellow guibg=237 ctermfg=yellow ctermbg=237
-          highlight ALEErrorSign   guifg=red    guibg=237 ctermfg=red    ctermbg=237
-          highlight ALEHintSign    guifg=green  guibg=237 ctermfg=green  ctermbg=237
-
           silent !tmux set status on
           set cursorline
           "set showmode
