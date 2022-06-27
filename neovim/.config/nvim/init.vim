@@ -144,8 +144,11 @@ let g:maplocalleader = ' '
 
     " Requires treesitter/playground plugin
     nnoremap <F10> :TSHighlightCapturesUnderCursor<CR>
-    highlight SpecialKey ctermfg=red cterm=none
-    highlight Folded guibg=none guifg=magenta gui=bold ctermbg=none ctermfg=magenta cterm=bold
+    augroup ColorSchemeFoldMod
+        autocmd!
+        autocmd ColorScheme * highlight SpecialKey ctermfg=red cterm=none
+        autocmd ColorScheme * highlight Folded guibg=none guifg=magenta gui=bold ctermbg=none ctermfg=magenta cterm=bold
+    augroup END
 
     "highlight SpecialKey ctermbg=none ctermfg=none
     set listchars=""
