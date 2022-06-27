@@ -470,9 +470,12 @@ let g:maplocalleader = ' '
     Plug 'rliang/termedit.nvim'
 
     call plug#end()
+    augroup ColorSchemeComment
+        autocmd!
+        autocmd ColorScheme * highlight Comment guifg=#df5f5f ctermfg=167 guibg=none ctermbg=none gui=none cterm=none
+    augroup END
+
     " }}}
-    colorscheme janah
-    highlight Comment guifg=#df5f5f ctermfg=167 guibg=none ctermbg=none gui=none cterm=none
 
     " {{{ LustyJuggler Fix (Archlinux)
     " --------------------------------
@@ -962,3 +965,4 @@ EOF
     " }}}
 
 " }}}
+colorscheme janah
