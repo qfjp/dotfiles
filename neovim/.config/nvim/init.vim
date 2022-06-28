@@ -161,46 +161,44 @@ let g:maplocalleader = ' '
 
 " {{{ Nvim Terminal mode
 " ---------------
-    if has('nvim')
-      let $VISUAL = 'nvr -cc split --remote-wait'
-      tnoremap <c-w> <c-\><c-n>
-      augroup Terminal
-          autocmd!
-          autocmd TermOpen * setlocal nocursorline
+    let $VISUAL = 'nvr -cc split --remote-wait'
+    tnoremap <c-w> <c-\><c-n>
+    augroup Terminal
+        autocmd!
+        autocmd TermOpen * setlocal nocursorline
 
-          " Black
-          autocmd TermOpen * let b:terminal_color_0  = '#272822'
-          autocmd TermOpen * let b:terminal_color_8  = '#75715e'
+        " Black
+        autocmd TermOpen * let b:terminal_color_0  = '#272822'
+        autocmd TermOpen * let b:terminal_color_8  = '#75715e'
 
-          " Red
-          autocmd TermOpen * let b:terminal_color_1  = '#f92672'
-          autocmd TermOpen * let b:terminal_color_9  = '#f92672'
+        " Red
+        autocmd TermOpen * let b:terminal_color_1  = '#f92672'
+        autocmd TermOpen * let b:terminal_color_9  = '#f92672'
 
-          " Green
-          autocmd TermOpen * let b:terminal_color_2  = '#a6e22e'
-          autocmd TermOpen * let b:terminal_color_10 = '#a6e22e'
+        " Green
+        autocmd TermOpen * let b:terminal_color_2  = '#a6e22e'
+        autocmd TermOpen * let b:terminal_color_10 = '#a6e22e'
 
-          " Yellow
-          autocmd TermOpen * let b:terminal_color_3  = '#f4bf75'
-          autocmd TermOpen * let b:terminal_color_11 = '#f4bf75'
+        " Yellow
+        autocmd TermOpen * let b:terminal_color_3  = '#f4bf75'
+        autocmd TermOpen * let b:terminal_color_11 = '#f4bf75'
 
-          " Blue
-          autocmd TermOpen * let b:terminal_color_4  = '#66d9ef'
-          autocmd TermOpen * let b:terminal_color_12 = '#66d9ef'
+        " Blue
+        autocmd TermOpen * let b:terminal_color_4  = '#66d9ef'
+        autocmd TermOpen * let b:terminal_color_12 = '#66d9ef'
 
-          " Magenta
-          autocmd TermOpen * let b:terminal_color_5  = '#ae81ff'
-          autocmd TermOpen * let b:terminal_color_13 = '#ae81ff'
+        " Magenta
+        autocmd TermOpen * let b:terminal_color_5  = '#ae81ff'
+        autocmd TermOpen * let b:terminal_color_13 = '#ae81ff'
 
-          " Cyan
-          autocmd TermOpen * let b:terminal_color_6  = '#a1efe4'
-          autocmd TermOpen * let b:terminal_color_14 = '#a1efe4'
+        " Cyan
+        autocmd TermOpen * let b:terminal_color_6  = '#a1efe4'
+        autocmd TermOpen * let b:terminal_color_14 = '#a1efe4'
 
-          " White
-          autocmd TermOpen * let b:terminal_color_7  = '#989892'
-          autocmd TermOpen * let b:terminal_color_15 = '#f9f8f5'
-      augroup END
-  endif
+        " White
+        autocmd TermOpen * let b:terminal_color_7  = '#989892'
+        autocmd TermOpen * let b:terminal_color_15 = '#f9f8f5'
+    augroup END
 " }}}
 
 " {{{ Folds
