@@ -161,7 +161,7 @@ let g:maplocalleader = ' '
 
 " {{{ Nvim Terminal mode
 " ---------------
-    let $VISUAL = 'nvr -cc split --remote-wait'
+    let $NVIM_LISTEN_ADDRESS=v:servername
     tnoremap <c-w> <c-\><c-n>
     augroup Terminal
         autocmd!
