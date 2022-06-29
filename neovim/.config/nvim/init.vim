@@ -267,7 +267,7 @@ let g:maplocalleader = ' '
             endif
             let l:lines[l:ix] = l:curline
             let l:ix = l:ix + 1
-            if l:curline =~ "):.*= {"
+            if l:line =~ ")\\s*:.*= {"
                 break
             endif
         endfor
