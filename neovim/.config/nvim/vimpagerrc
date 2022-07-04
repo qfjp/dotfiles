@@ -1,6 +1,8 @@
-source $HOME/.config/nvim/init.vim
+lua require('init')
 
 let g:no_man_maps = 1
+let g:easycomplete_lsp_checking = 0
+let g:easycomplete_diagnostics_enable = 0
 
 set laststatus=0
 set scrolloff=0
@@ -32,3 +34,7 @@ map b <C-U>
 
 map j <c-e>
 map k <c-y>
+
+if exists(":QuickScopeToggle")
+    let b:qs_local_disable=1
+endif
