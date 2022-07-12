@@ -13,7 +13,18 @@
 
 (local wk (Require :which-key))
 
-;;(g! config_path (.. vim.env.HOME :/.config/))
+;; {{{ Plugin Configs
+;; ------------------
+(when (pcall require :cmp)
+  (require :completion_config))
+
+(when (pcall require :gitsigns)
+  (require :gitsigns_config))
+
+(when (pcall require :nvim-treesitter)
+  (require :treesitter_config))
+
+;; }}}
 
 (when (or vim.g.goneovim vim.g.neovide)
   (augroup! :Gui [[UIEnter]
