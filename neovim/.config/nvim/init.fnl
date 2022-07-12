@@ -1,15 +1,15 @@
 (require-macros :hibiscus.core)
 (require-macros :hibiscus.vim)
 
-(fn RequireAnd [module func]
+(fn RequireAnd [mod func]
   "Reload module cache, then call function"
-  ((. (require :plenary.reload) :reload_module) module)
-  ((. (require module) func)))
+  ((. (require :plenary.reload) :reload_module) mod)
+  ((. (require mod) func)))
 
-(fn Require [module]
+(fn Require [mod]
   "Reload module cache"
-  ((. (require :plenary.reload) :reload_module) module)
-  (require module))
+  ((. (require :plenary.reload) :reload_module) mod)
+  (require mod))
 
 (local wk (Require :which-key))
 
