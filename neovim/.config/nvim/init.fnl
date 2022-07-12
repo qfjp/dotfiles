@@ -373,7 +373,13 @@
 (g! netrw_list_hide "^\\.")
 (g! netrw_hide 1)
 ;; }}}
-(exec [[:colorscheme :janah]])
+
+(fn hasColorScheme [name]
+  (let [pat (.. :colors/ name :.vim)]
+    (= 0 (vimfn :empty (vimfn :globpath (. vim.opt.rtp :_value) pat)))))
+
+(when (hasColorScheme :janah)
+  (exec [[:colorscheme :janah]]))
 
 (require :neoformat_config)
 
