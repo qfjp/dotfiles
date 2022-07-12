@@ -26,6 +26,8 @@ set norelativenumber
 
 noh " Start without highlights
 
+let mapleader="<c-a>"
+let maplocalleader="<c-a>"
 map q :q!<CR>
 map <SPACE> <C-D>
 map b <C-U>
