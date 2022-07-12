@@ -19,8 +19,6 @@
   ((. (require :plenary.reload) :reload_module) mod)
   (require mod))
 
-(local wk (Require :which-key))
-
 ;; {{{ Plugin Configs
 ;; ------------------
 (when (pcall require :cmp)
@@ -290,65 +288,63 @@
 
 ;; {{{ Keymaps
 ;; -----------
-
-(wk.register {:<C-a> [:<Home> :Home]
-              :<C-e> [:<End> :End]
-              :<C-f> [:<Right> "Char Forward"]
-              :<C-b> [:<Left> "Char Back"]
-              :<Esc> {:b [:<Home> :Home] :f [:<End> :End]}
-              :w {:name :write ";" [":w<CR>" "Quick Write"]}}
-             {:nowait true :mode :c})
-
-(wk.register {:s {:name :Sayonara
-                  ";" [:Sayonara!<CR> "Forget File Buffer"]
-                  "a;" [:Sayonara!<CR> "Forget File Buffer And Layout"]}}
-             {:mode :c :silent false})
-
-(wk.register {:g {:k [:k "Move up one actual line"]
-                  :j [:j "Move down one actual line"]
-                  :0 [:0 "Move to the beginning of the current (actual) line"]
-                  :$ ["$" "Move to the end of the current (actual) line"]
-                  :f [":e <cfile><CR>" "Open file (always)"]}
-              :<leader> {:name :leader
-                         :c [":set spell!<CR>" "Spell Checker"]
-                         :n [":tabnext<CR>" "Next Tab"]
-                         :b [":tabprev<CR>" "Prev Tab"]
-                         :l {:name :LustyJuggler}}
-              :z {:name :folds
-                  "[" [":set foldlevel=99<CR>" "Open all folds"]
-                  "]" [":set foldlevel=0<CR>" "Close all folds"]}
-              :<C-w> {:name :+window
-                      :c [":tabnew<CR>" "Create New Tab"]
-                      :n [":tabnext<CR>" "Next Tab"]
-                      :b [":tabprev<CR>" "Prev Tab"]}
-              :<C-f> [":TSHighlightCapturesUnderCursor<CR>"
-                      "Show Highlight Group"]
-              :<F10> [":TSHighlightCapturesUnderCursor<CR>"
-                      "Show Highlight Group"]
-              :<C-n> [":bnext<CR>" "Next Buffer"]
-              :<C-b> [":bprev<CR>" "Prev Buffer"]
-              :k [:gk "Move up one visual line"]
-              :j [:gj "Move down one visual line"]
-              :0 [:g0 "Move to the beginning of the current (visual) line"]
-              :$ [:g$ "Move to the end of the current (visual) line"]
-              :<C-s> [":Scratch<CR>" "Scratch Buffer"]
-              :n ["n:lua HlNext(0.4)<CR>" "Glow Next"]
-              :N ["N:lua HlNext(0.4)<CR>" "Glow Prev"]
-              ";" [":" "Quick Command"]} {:mode :n})
-
-(wk.register {:jk [:<Esc> "Quick Escape"]
-              :<C-n> ["pumvisible() ? \"\\<C-n>\" : \"\\<C-x>\\<C-o>\""
-                      "Next Item"]
-              :<C-j> ["pumvisible() ? \"\\<C-n>\" : \"\\<C-x>\\<C-o>\""
-                      "Next Item"]
-              :<C-k> [:<C-p> "Prev Item"]
-              :<S-Tab> ["pumvisible() ? \"\\<C-p> : \"\\<C-h>\"" "Prev Item"]}
-             {:mode :i})
-
-(wk.register {:J [":m '>+1<CR>gv=gv" "Move Line Up"]
-              :K [":m '<-2<CR>gv=gv" "Move Line Down"]} {:mode :v})
-
-(map! [t] :<C-w> "<c-\\><c-n>")
+(when (pcall require :which-key)
+  (let [wk (require :which-key)]
+    (wk.register {:<C-a> [:<Home> :Home]
+                  :<C-e> [:<End> :End]
+                  :<C-f> [:<Right> "Char Forward"]
+                  :<C-b> [:<Left> "Char Back"]
+                  :<Esc> {:b [:<Home> :Home] :f [:<End> :End]}
+                  :w {:name :write ";" [":w<CR>" "Quick Write"]}}
+                 {:nowait true :mode :c})
+    (wk.register {:s {:name :Sayonara
+                      ";" [:Sayonara!<CR> "Forget File Buffer"]
+                      "a;" [:Sayonara!<CR> "Forget File Buffer And Layout"]}}
+                 {:mode :c :silent false})
+    (wk.register {:g {:k [:k "Move up one actual line"]
+                      :j [:j "Move down one actual line"]
+                      :0 [:0
+                          "Move to the beginning of the current (actual) line"]
+                      :$ ["$" "Move to the end of the current (actual) line"]
+                      :f [":e <cfile><CR>" "Open file (always)"]}
+                  :<leader> {:name :leader
+                             :c [":set spell!<CR>" "Spell Checker"]
+                             :n [":tabnext<CR>" "Next Tab"]
+                             :b [":tabprev<CR>" "Prev Tab"]
+                             :l {:name :LustyJuggler}}
+                  :z {:name :folds
+                      "[" [":set foldlevel=99<CR>" "Open all folds"]
+                      "]" [":set foldlevel=0<CR>" "Close all folds"]}
+                  :<C-w> {:name :+window
+                          :c [":tabnew<CR>" "Create New Tab"]
+                          :n [":tabnext<CR>" "Next Tab"]
+                          :b [":tabprev<CR>" "Prev Tab"]}
+                  :<C-f> [":TSHighlightCapturesUnderCursor<CR>"
+                          "Show Highlight Group"]
+                  :<F10> [":TSHighlightCapturesUnderCursor<CR>"
+                          "Show Highlight Group"]
+                  :<C-n> [":bnext<CR>" "Next Buffer"]
+                  :<C-b> [":bprev<CR>" "Prev Buffer"]
+                  :k [:gk "Move up one visual line"]
+                  :j [:gj "Move down one visual line"]
+                  :0 [:g0 "Move to the beginning of the current (visual) line"]
+                  :$ [:g$ "Move to the end of the current (visual) line"]
+                  :<C-s> [":Scratch<CR>" "Scratch Buffer"]
+                  :n ["n:lua HlNext(0.4)<CR>" "Glow Next"]
+                  :N ["N:lua HlNext(0.4)<CR>" "Glow Prev"]
+                  ";" [":" "Quick Command"]} {:mode :n})
+    (wk.register {:jk [:<Esc> "Quick Escape"]
+                  :<C-n> ["pumvisible() ? \"\\<C-n>\" : \"\\<C-x>\\<C-o>\""
+                          "Next Item"]
+                  :<C-j> ["pumvisible() ? \"\\<C-n>\" : \"\\<C-x>\\<C-o>\""
+                          "Next Item"]
+                  :<C-k> [:<C-p> "Prev Item"]
+                  :<S-Tab> ["pumvisible() ? \"\\<C-p> : \"\\<C-h>\""
+                            "Prev Item"]} {:mode :i})
+    (wk.register {:J [":m '>+1<CR>gv=gv" "Move Line Up"]
+                  :K [":m '<-2<CR>gv=gv" "Move Line Down"]}
+                 {:mode :v})
+    (map! [t] :<C-w> "<c-\\><c-n>")))
 
 ;; }}}
 
