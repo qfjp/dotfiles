@@ -1,58 +1,42 @@
-" {{{ Completion
-" -------------
+-- {{{ Completion
+-- -------------
 
-    " Better display for messages
-    set cmdheight=2
+    -- Better display for messages
+    vim.opt.cmdheight = 2
+    vim.opt.completeopt = {"menu", "menuone", "noselect"}
+    vim.opt.signcolumn = "auto"
+    vim.cmd[[sign define DiagnosticSignError text=● texthl=DiagnosticSignError]]
+    vim.cmd[[sign define DiagnosticSignWarn  text=● texthl=DiagnosticSignWarn]]
+    vim.cmd[[sign define DiagnosticSignInfo  text=● texthl=DiagnosticSignInfo]]
+    vim.cmd[[sign define DiagnosticSignHint  text=● texthl=DiagnosticSignHint]]
 
-    " don't give |ins-completion-menu| messages.
-    "set shortmess+=c
-    "set completeopt-=preview
-    set completeopt=menu,menuone,noselect
+    local colorSchemeLsp = vim.api.nvim_create_augroup("ColorSchemeLspMod", {clear = true})
+    vim.api.nvim_create_autocmd("ColorScheme", {group = colorSchemeLsp, nested = false, once = false, pattern = "*", callback = function()
+      vim.cmd[[highlight DiagnosticSignInfo  guifg=skyblue guibg=none ctermfg=blue ctermbg=none]]
+       vim.cmd[[highlight DiagnosticSignWarn  guifg=yellow guibg=none ctermfg=yellow ctermbg=none]]
+       vim.cmd[[highlight DiagnosticSignError guifg=red guibg=none ctermfg=red ctermbg=none]]
+       vim.cmd[[highlight DiagnosticSignHint  guifg=lightgreen guibg=none ctermfg=green ctermbg=none]]
+    end})
+    vim.keymap.set("n", "gdf", function() vim.diagnostic.open_float() end, {silent = true})
+    vim.keymap.set("n", "gdn", function() vim.diagnostic.goto_next() end, {silent = true})
+    vim.keymap.set("n", "gdp", function() vim.diagnostic.goto_prev() end, {silent = true})
+    vim.keymap.set("n", "gdh", function() vim.diagnostic.hide() end, {silent = true})
+    vim.keymap.set("n", "gds", function() vim.diagnostic.show() end, {silent = true})
 
-    set signcolumn=auto
+    vim.keymap.set("n", "gs",  function() vim.lsp.buf.declaration() end, {silent = true})
+    vim.keymap.set("n", "gd",  function() vim.lsp.buf.definition() end, {silent = true})
+    vim.keymap.set("n", "K",   function() vim.lsp.buf.hover() end, {silent = true})
+    vim.keymap.set("n", "gD",  function() vim.lsp.buf.implementation() end, {silent = true})
+    vim.keymap.set("n", "gK",  function() vim.lsp.buf.signature_help() end, {silent = true})
+    vim.keymap.set("n", "1gD", function() vim.lsp.buf.type_defintion() end, {silent = true})
+    vim.keymap.set("n", "gk",  function() vim.lsp.util.show_line_diagnostics() end, {silent = true})
+    vim.keymap.set("n", "gn",  function() vim.lsp.buf.formatting() end, {silent = true})
 
-    nnoremap <silent> gdf <cmd>lua vim.diagnostic.open_float()<CR>
-    nnoremap <silent> gdn <cmd>lua vim.diagnostic.goto_next()<CR>
-    nnoremap <silent> gdp <cmd>lua vim.diagnostic.goto_prev()<CR>
-    nnoremap <silent> gdh <cmd>lua vim.diagnostic.hide()<CR>
-    nnoremap <silent> gds <cmd>lua vim.diagnostic.show()<CR>
+    vim.opt.shortmess:remove({"F"})
 
-    sign define DiagnosticSignError text=● texthl=DiagnosticSignError
-    sign define DiagnosticSignWarn  text=● texthl=DiagnosticSignWarn
-    sign define DiagnosticSignInfo  text=● texthl=DiagnosticSignInfo
-    sign define DiagnosticSignHint  text=● texthl=DiagnosticSignHint
-    augroup ColorSchemeLspMod
-        autocmd!
-        autocmd ColorScheme * highlight DiagnosticSignInfo  guifg=skyblue     guibg=none ctermfg=blue   ctermbg=none
-        autocmd ColorScheme * highlight DiagnosticSignWarn  guifg=yellow      guibg=none ctermfg=yellow ctermbg=none
-        autocmd ColorScheme * highlight DiagnosticSignError guifg=red         guibg=none ctermfg=red    ctermbg=none
-        autocmd ColorScheme * highlight DiagnosticSignHint  guifg=lightgreen  guibg=none ctermfg=green  ctermbg=none
-    augroup END
+    local lspGroup = vim.api.nvim_create_augroup("LspGroup", {clear = true})
+    vim.api.nvim_create_autocmd("FileType", {group = lspGroup, nested = false, once = false, pattern = {"python", "vim", "haskell", "scala", "sbt", "tex", "json"}, command = "setlocal omnifunc=v:lua.vim.lsp.omnifunc"})
 
-    "set completeopt=noinsert,menuone,noselect
-    nnoremap <silent> gs  <cmd>lua vim.lsp.buf.declaration()<CR>
-    nnoremap <silent> gd  <cmd>lua vim.lsp.buf.definition()<CR>
-    nnoremap <silent> K   <cmd>lua vim.lsp.buf.hover()<CR>
-    nnoremap <silent> gD  <cmd>lua vim.lsp.buf.implementation()<CR>
-    nnoremap <silent> gK  <cmd>lua vim.lsp.buf.signature_help()<CR>
-    nnoremap <silent> 1gD <cmd>lua vim.lsp.buf.type_defintion()<CR>
-    nnoremap <silent> gk  <cmd>lua vim.lsp.util.show_line_diagnostics()<CR>
-    nnoremap <silent> gn  <cmd>lua vim.lsp.buf.formatting()<CR>
-
-    set shortmess-=F
-
-    augroup LspGroup
-        autocmd!
-        autocmd Filetype python    setlocal omnifunc=v:lua.vim.lsp.omnifunc
-        autocmd Filetype vim       setlocal omnifunc=v:lua.vim.lsp.omnifunc
-        autocmd Filetype haskell   setlocal omnifunc=v:lua.vim.lsp.omnifunc
-        autocmd FileType scala,sbt setlocal omnifunc=v:lua.vim.lsp.omnifunc
-        autocmd Filetype tex       setlocal omnifunc=v:lua.vim.lsp.omnifunc
-        autocmd Filetype json      setlocal omnifunc=v:lua.vim.lsp.omnifunc
-    augroup END
-
-
-    lua << EOF
     -- unicode geo shapes
     -- ◺◹ ◸◿  ◣◥ ◤◢  ◟◝ ◜◞
     vim.g.coq_settings = {
@@ -298,5 +282,4 @@
         };
         capabilites = capabilites
     };
-EOF
-" }}}
+-- }}}

@@ -1,11 +1,10 @@
-" {{{ Git (signs)
-" ----------
-    let g:gitgutter_sign_added='┃'
-    let g:gitgutter_sign_modified='┃'
-    let g:gitgutter_sign_removed='┃'
-    let g:gitgutter_sign_removed_first_line='╓'
-    let g:gitgutter_sign_modified_removed='┣'
-    lua << EOF
+-- {{{ Git (signs)
+-- ----------
+    vim.g.gitgutter_sign_added='┃'
+    vim.g.gitgutter_sign_modified='┃'
+    vim.g.gitgutter_sign_removed='┃'
+    vim.g.gitgutter_sign_removed_first_line='╓'
+    vim.g.gitgutter_sign_modified_removed='┣'
       require('gitsigns').setup {
         signs = {
           add          = {hl = 'GitSignsAdd'   , text = '┃', numhl='GitSignsAddNr'   , linehl='GitSignsAddLn'},
@@ -66,5 +65,4 @@
       map('n', '<leader>td', gs.toggle_deleted)
       -- Text object
       map('n', 'ih', ':<C-U>Gitsigns select_hunk<CR>')
-EOF
-    " }}}
+-- }}}

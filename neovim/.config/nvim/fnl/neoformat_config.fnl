@@ -1,56 +1,53 @@
-" {{{ Autoformat
-" --------------
-    let g:neoformat_sql_mysqlformat = {
-            \ 'exe': 'sqlformat',
-            \ 'args': ['-k', 'upper', '--reindent', '--comma_first', 'True', '-'],
-            \ 'stdin': 1,
-            \ }
+(require-macros :hibiscus.core)
+(require-macros :hibiscus.vim)
+(g! neoformat_sql_mysqlformat {:args [:-k
+                                      :upper
+                                      :--reindent
+                                      :--comma_first
+                                      :True
+                                      "-"]
+                               :exe :sqlformat
+                               :stdin 1})
 
-    let g:neoformat_tex_mylatexindent = {
-            \ 'exe': 'latexindent',
-            \ 'args': ['-m', '-sl', '-g /dev/stderr', '2>/dev/null'],
-            \ 'stdin': 1,
-            \}
+(g! neoformat_tex_mylatexindent {:args [:-m :-sl "-g /dev/stderr" :2>/dev/null]
+                                 :exe :latexindent
+                                 :stdin 1})
 
-    let g:neoformat_scala_myscalariform = {
-            \ 'exe': 'java',
-            \ 'args': ['-jar', $HOME . '/bin/scalariform-0.2.10.jar', '--preferenceFile=' . $HOME . '/.config/scalariform/scalariform.conf' ,'--stdin'],
-            \ 'stdin': 1,
-            \ }
+(g! neoformat_scala_myscalariform {:args [:-jar
+                                          (.. (os.getenv :HOME)
+                                              :/bin/scalariform-0.2.10.jar)
+                                          (.. :--preferenceFile=
+                                              (os.getenv :HOME)
+                                              :/.config/scalariform/scalariform.conf
+                                              :--stdin)]
+                                   :exe :java
+                                   :stdin 1})
 
-    let g:neoformat_scala_myscalafmt = {
-                \ 'exe' : 'scalafmt',
-                \ 'args' : ['--stdin', '--config', $HOME . '/.scalafmt.conf'],
-                \ 'stdin' : 1,
-                \}
+(g! neoformat_scala_myscalafmt {:args [:--stdin
+                                       :--config
+                                       (.. (os.getenv :HOME) :/.scalafmt.conf)]
+                                :exe :scalafmt
+                                :stdin 1})
 
-    let g:neoformat_sh_myshfmt = {
-                \ 'exe': 'shfmt',
-                \ 'args': ['-ln', 'bash', '-i', '4', '-bn'],
-                \}
-    let g:neoformat_sh_myshfmt = {
-                \ 'exe': 'shfmt',
-                \ 'args': ['-ln', 'bash', '-i', '2', '-bn'],
-                \}
+(g! neoformat_sh_myshfmt {:args [:-ln :bash :-i :4 :-bn] :exe :shfmt})
 
-    let g:neoformat_enabled_tex = ['mylatexindent']
-    let g:neoformat_enabled_sql = ['mysqlformat']
-    let g:neoformat_enabled_scala = ['myscalariform']
-    let g:neoformat_enabled_sh = ['myshfmt']
-    let g:neoformat_enabled_zsh = []
-    let g:neoformat_enabled_c = []
-    let g:neoformat_enabled_haskell = []
+(g! neoformat_fennel_fnlfmt {:exe :fnlfmt})
 
-    " Enable tab to spaces conversion
-    let g:neoformat_basic_format_retab = 1
+(g! neoformat_enabled_tex [:mylatexindent])
+(g! neoformat_enabled_sql [:mysqlformat])
+(g! neoformat_enabled_scala [:myscalariform])
+(g! neoformat_enabled_sh [:myshfmt])
+(g! neoformat_enabled_zsh [])
+(g! neoformat_enabled_c [])
+(g! neoformat_enabled_haskell [])
+(g! neoformat_enabled_fennel [:fnlfmt])
 
-    " Enable trimmming of trailing whitespace
-    let g:neoformat_basic_format_trim = 1
+(g! neoformat_basic_format_retab 1)
 
-    let g:neoformat_run_all_formatters = 1
+; tabs->spaces
+(g! neoformat_basic_format_trim 1)
 
-    "augroup fmt
-    "    autocmd!
-    "    autocmd BufWritePre * undojoin | Neoformat
-    "augroup END
-" }}}
+;trim whitespace
+(g! neoformat_run_all_formatters 1)
+(augroup! :Fmt [[BufWritePre] "*" :Neoformat])
+

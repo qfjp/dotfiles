@@ -1,6 +1,5 @@
-" {{{ Treesitter
-" --------------
-    lua << EOF
+-- {{{ Treesitter
+-- --------------
     require'nvim-treesitter.configs'.setup {
         ensure_installed = {"c", "lua", "haskell", "scala", "vim", "json", "bash", "latex", "make", "python", 'java'},
         sync_install = false,
@@ -40,7 +39,6 @@
             },
         },
     }
-EOF
-    set foldmethod=expr
-    set foldexpr=nvim_treesitter#foldexpr()
-" }}}
+    vim.opt.foldmethod = "expr"
+    vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+-- }}}
