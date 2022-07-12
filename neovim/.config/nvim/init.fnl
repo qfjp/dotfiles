@@ -1,6 +1,14 @@
 (require-macros :hibiscus.core)
 (require-macros :hibiscus.vim)
 
+(fn g [var_name]
+  "Create a global var"
+  (. vim.g var_name))
+
+(fn vimfn [func_name ...]
+  "Use a vim function"
+  ((. vim.fn func_name) ...))
+
 (fn RequireAnd [mod func]
   "Reload module cache, then call function"
   ((. (require :plenary.reload) :reload_module) mod)
@@ -26,7 +34,7 @@
 
 ;; }}}
 
-(when (or vim.g.goneovim vim.g.neovide)
+(when (or (g :goneovim) (g :neovide))
   (augroup! :Gui [[UIEnter]
                   *
                   (fn []
@@ -36,7 +44,7 @@
                     (set! showtabline 2)
                     (g! neovide_no_idle true)
                     (g! neovide_cursor_vfx_mode :wireframe)
-                    (when vim.g.goneovim
+                    (when (g :goneovim)
                       (exec [GonvimSmoothCursor])
                       (exec [GonvimSmoothScroll])))]))
 
@@ -54,7 +62,7 @@
 
 ;; {{{ Greek Char Maps
 ;; -------------------
-(exec [[:source (.. (vim.fn.stdpath :config) :/greek.vim)]])
+(exec [[:source (.. (vimfn :stdpath :config) :/greek.vim)]])
 
 ;; }}}
 
@@ -76,7 +84,7 @@
                   :ctermbg=red]])
           (let [search_text (vim.api.nvim_eval "@/")
                 target_pat (.. "\\c\\%#" search_text)
-                ring (vim.fn.matchadd :SearchBlink target_pat 101)
+                ring (vimfn :matchadd :SearchBlink target_pat 101)
                 sleep_str (string.format "%sm" (* blinktime 200))
                 call_str (string.format "matchdelete(%s)" ring)]
             (exec [[:redraw "|" :sleep sleep_str "|" :call call_str]]))))
@@ -130,18 +138,18 @@
 (augroup! :QFixToggle [[BufWinEnter]
                        [quickfix]
                        #(do
-                          (g! qfix_win (vim.fn.bufnr "$"))
+                          (g! qfix_win (vimfn :bufnr "$"))
                           (set! nolist)
                           (set! colorcolumn :0))]
           [[BufWinLeave]
            [quickfix]
-           #(when (and (vim.fn.exists vim.g.qfix_win)
-                       (= vim.g.qfix_win (vim.fn.expand :<abuf>)))
+           #(when (and (vimfn :exists (g :qfix_win))
+                       (= (g :qfix_win) (vimfn :expand :<abuf>)))
               (exec [[:unlet! "g:qfix_win"]]))])
 
 (fn ScratchBuf []
   (var scratchname :scratch)
-  (var scratchbuf (vim.fn.bufnr scratchname))
+  (var scratchbuf (vimfn :bufnr scratchname))
   (when (= -1 scratchbuf)
     (do
       (set scratchbuf (vim.api.nvim_create_buf true true))
@@ -173,35 +181,34 @@
 ;; {{{ Nvim Terminal mode
 ;; ----------------------
 (set vim.env.NVIM_LISTEN_ADDRESS vim.v.servername)
-(augroup! :Terminal
-          [[TermOpen]
-           "*"
-           (fn []
-             (set! filetype :terminal)
-             ;; Black
-             (set vim.b.terminal_color_0 "#272822")
-             (set vim.b.terminal_color_8 "#75715e")
-             ;; Red
-             (set vim.b.terminal_color_1 "#f92672")
-             (set vim.b.terminal_color_9 "#f92672")
-             ;; Green
-             (set vim.b.terminal_color_2 "#a6e22e")
-             (set vim.b.terminal_color_10 "#a6e22e")
-             ;; Yellow
-             (set vim.b.terminal_color_3 "#f4bf75")
-             (set vim.b.terminal_color_11 "#f4bf75")
-             ;; Blue
-             (set vim.b.terminal_color_4 "#66d9ef")
-             (set vim.b.terminal_color_12 "#66d9ef")
-             ;; Magenta
-             (set vim.b.terminal_color_5 "#ae81ff")
-             (set vim.b.terminal_color_13 "#ae81ff")
-             ;; Cyan
-             (set vim.b.terminal_color_6 "#a1efe4")
-             (set vim.b.terminal_color_14 "#a1efe4")
-             ;; White
-             (set vim.b.terminal_color_7 "#989892")
-             (set vim.b.terminal_color_15 "#f9f8f5"))])
+(augroup! :Terminal [[TermOpen]
+                     "*"
+                     (fn []
+                       (set! filetype :terminal)
+                       ;; Black
+                       (b! terminal_color_0 "#272822")
+                       (b! terminal_color_8 "#75715e")
+                       ;; Red
+                       (b! terminal_color_1 "#f92672")
+                       (b! terminal_color_9 "#f92672")
+                       ;; Green
+                       (b! terminal_color_2 "#a6e22e")
+                       (b! terminal_color_10 "#a6e22e")
+                       ;; Yellow
+                       (b! terminal_color_3 "#f4bf75")
+                       (b! terminal_color_11 "#f4bf75")
+                       ;; Blue
+                       (b! terminal_color_4 "#66d9ef")
+                       (b! terminal_color_12 "#66d9ef")
+                       ;; Magenta
+                       (b! terminal_color_5 "#ae81ff")
+                       (b! terminal_color_13 "#ae81ff")
+                       ;; Cyan
+                       (b! terminal_color_6 "#a1efe4")
+                       (b! terminal_color_14 "#a1efe4")
+                       ;; White
+                       (b! terminal_color_7 "#989892")
+                       (b! terminal_color_15 "#f9f8f5"))])
 
 ;; }}}
 
@@ -222,21 +229,23 @@
 (set! foldtext "v:lua.CFoldText()")
 
 (fn PadToRight [lstring rstring]
-  (let [width (vim.fn.winwidth ".")
+  (let [width (vimfn :winwidth ".")
         offset (string.rep " " (- width (string.len (.. lstring rstring))))]
     (.. lstring offset rstring)))
 
 (global SimpleFoldText (fn []
                          (let [ell " ⋯ "
-                               vstart (vim.fn.getline vim.v.foldstart)
-                               vend (vim.fn.trim (vim.fn.getline vim.v.foldened))
+                               vstart (vimfn :getline vim.v.foldstart)
+                               vend (vimfn :trim
+                                           (vimfn :getline vim.v.foldened))
                                startpattern "^%s*[\"#-;]+%-?%s*{{{"
                                endpattern "^%s*[\"#-;]+%-?%s*}}}"
                                vstartPrime (string.gsub vstart startpattern "")
                                vendPrime (string.gsub vend endpattern "")
                                linestring (.. " === "
-                                              (table.maxn (vim.fn.getline vim.v.foldstart
-                                                                          vim.v.foldend))
+                                              (table.maxn (vimfn :getline
+                                                                 vim.v.foldstart
+                                                                 vim.v.foldend))
                                               " lines === ")]
                            (PadToRight (.. vstartPrime " " ell " " vendPrime)
                                        linestring))))
@@ -244,13 +253,13 @@
 (global CFoldText
         (fn []
           (let [ell " ⋯ "
-                lines (vim.fn.getline vim.v.foldstart vim.v.foldend)
+                lines (vimfn :getline vim.v.foldstart vim.v.foldend)
                 size (table.maxn lines)
                 linestring (.. " === " size " lines === ")
-                vstart (vim.fn.getline vim.v.foldstart)]
+                vstart (vimfn :getline vim.v.foldstart)]
             (if (or (string.match vstart "{$") (string.match vstart "-$"))
                 (PadToRight (.. vstart ell
-                                (vim.fn.trim (vim.fn.getline vim.v.foldend)))
+                                (vimfn :trim (vimfn :getline vim.v.foldend)))
                             linestring)
                 (do
                   (var had_comma false)
@@ -261,7 +270,7 @@
                       (var curline line)
                       (when (not= ix 1)
                         (do
-                          (set curline (vim.fn.trim curline))
+                          (set curline (vimfn :trim curline))
                           (set curline (string.gsub curline "%s+" " "))))
                       (when had_comma
                         (set curline (.. " " curline))
@@ -352,7 +361,7 @@
 
 (augroup! :HelpFiles [[FileType]
                       [help]
-                      (.. "source " (vim.fn.stdpath :config)
+                      (.. "source " (vimfn :stdpath :config)
                           :/ftplugin/help.vim)])
 
 (augroup! :Scala [[BufNewFile BufRead] :*.sc "set ft=scala"])
