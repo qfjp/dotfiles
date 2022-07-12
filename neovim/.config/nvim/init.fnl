@@ -172,7 +172,10 @@
 (augroup! :ColorSchemeMods
           [[ColorScheme]
            *
-           "highlight SpecialKey ctermfg=red cterm=none | highlight Folded guifg=magenta gui=bold ctermbg=none ctermfg=magenta cterm=bold | highlight VertSplit guibg=none ctermbg=none guifg=#afafaf ctermfg=237 | highlight Comment guifg=#df5f5f ctermfg=167 guibg=none ctermbg=none gui=none cterm=none"])
+           (.. "highlight SpecialKey ctermfg=red cterm=none"
+               "| highlight Folded guifg=magenta gui=bold ctermbg=none ctermfg=magenta cterm=bold"
+               "| highlight VertSplit guibg=none ctermbg=none guifg=#afafaf ctermfg=237"
+               "| highlight Comment guifg=#df5f5f ctermfg=167 guibg=none ctermbg=none gui=none cterm=none")])
 
 (set! listchars "tab:▕░,trail:▒,extends:>,precedes:<")
 
