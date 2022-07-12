@@ -367,3 +367,5 @@
 ;; }}}
 (exec [[:colorscheme :janah]])
 
+(require :neoformat_config)
+
