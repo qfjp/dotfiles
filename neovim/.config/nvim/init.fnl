@@ -30,6 +30,8 @@
 (when (pcall require :nvim-treesitter)
   (require :treesitter_config))
 
+(require :startify_config)
+
 ;; }}}
 
 (when (or (g :goneovim) (g :neovide))
