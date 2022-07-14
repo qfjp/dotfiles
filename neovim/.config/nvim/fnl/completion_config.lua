@@ -199,13 +199,12 @@
     lspconfig.bashls.setup{
         cmd = {"bash-language-server", "start"};
         filetypes = {"sh", "bash", "zsh"};
-        capabilites = capabilites
+        capabilities = capabilities
     };
     lspconfig.cssls.setup{
-        capabilities = capabilites;
+        capabilities = capabilities;
         cmd = {"vscode-css-languageserver", "--stdio"};
         filetypes = {"css", "scss", "less"};
-        capabilites = capabilites
     }
     lspconfig.sumneko_lua.setup {
         settings = {
@@ -224,7 +223,7 @@
                 },
             },
         },
-        capabilites = capabilites
+        capabilities = capabilities
     }
     lspconfig.pylsp.setup{
         settings = {
@@ -236,11 +235,11 @@
                 };
             };
         };
-        capabilites = capabilites
+        capabilities = capabilities
     };
     lspconfig.jsonls.setup{
         cmd = {"json-languageserver", "--stdio"};
-        capabilites = capabilites
+        capabilities = capabilities
     };
     lspconfig.vimls.setup{
         filetypes = {"vim"};
@@ -248,7 +247,7 @@
         initializationOptions = {
             isNeovim = true;
         };
-        capabilites = capabilites
+        capabilities = capabilities
     }
     lspconfig.hls.setup{
         cmd = {"haskell-language-server-wrapper", "--lsp"};
@@ -259,7 +258,7 @@
             };
         };
         single_file_support = true;
-        capabilites = capabilites
+        capabilities = capabilities
     };
     lspconfig.texlab.setup{
         settings = {
@@ -280,6 +279,6 @@
                 };
             };
         };
-        capabilites = capabilites
+        capabilities = capabilities
     };
 -- }}}
