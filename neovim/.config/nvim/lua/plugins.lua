@@ -189,6 +189,7 @@ plugins.packer_table = {function(use)
     use {'camspiers/lens.vim', requires = {'camspiers/animate.vim'}}
     use {'j-hui/fidget.nvim', configure = FidgetSetup()
     }
+    use {'norcalli/nvim-colorizer.lua', config = function() require('colorizer').setup() end}
 
     -- Formatting
     use 'junegunn/vim-easy-align'
