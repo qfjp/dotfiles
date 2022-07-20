@@ -23,28 +23,6 @@
     local lspGroup = vim.api.nvim_create_augroup("LspGroup", {clear = true})
     vim.api.nvim_create_autocmd("FileType", {group = lspGroup, nested = false, once = false, pattern = {"python", "vim", "haskell", "scala", "sbt", "tex", "json"}, command = "setlocal omnifunc=v:lua.vim.lsp.omnifunc"})
 
-    -- unicode geo shapes
-    -- ◺◹ ◸◿  ◣◥ ◤◢  ◟◝ ◜◞
-    vim.g.coq_settings = {
-        auto_start = "shut-up",
-        keymap = { jump_to_mark = "<c-y>" },
-        display = {
-            pum = {
-                --kind_context =  {" [", "]"},
-                --source_context = {"「", "」"},
-                --kind_context =  {" ◺", "◹"},
-                --source_context = {" ◣", "◥"},
-                kind_context =  {" ", ""},
-                source_context = {"::", ""}
-            },
-            preview = {
-                border = "double",
-            },
-            icons = {
-                mode = "short",
-            },
-        },
-    }
     local cmp_group = vim.api.nvim_create_augroup("CmpColors", {clear = true})
     vim.api.nvim_create_autocmd("ColorScheme", {
         pattern = "*", group = cmp_group
@@ -164,7 +142,6 @@
 
     require("nvim-lsp-installer").setup {}
     local lspconfig = require 'lspconfig'
-    --local coq = require 'coq'
     lspconfig.bashls.setup{
         cmd = {"bash-language-server", "start"};
         filetypes = {"sh", "bash", "zsh"};
