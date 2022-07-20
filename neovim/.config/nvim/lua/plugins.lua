@@ -133,6 +133,7 @@ plugins.packer_table = {function(use)
         ,ft = {'clojure', 'fennel', 'lisp', 'scheme'}
         ,run = 'cargo build --release'
         }
+    use {'p00f/nvim-ts-rainbow'}
     use {'mnacamura/vim-fennel-syntax', ft='fennel'}
     use {'Olical/conjure'}
     use {'udayvir-singh/hibiscus.nvim'}
