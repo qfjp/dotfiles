@@ -178,13 +178,9 @@ bind a current_url bmark
 bind A bmark
 bind zi zoom 0.1 true
 bind zo zoom -0.1 true
-bind zm zoom 0.5 true
-bind zr zoom -0.5 true
-bind zM zoom 0.5 true
-bind zR zoom -0.5 true
 bind zz zoom 1
-bind zI zoom 3
-bind zO zoom 0.3
+bind zI zoom 0.5 true
+bind zO zoom -0.5 true
 bind . repeat
 bind <SA-ArrowUp><SA-ArrowUp><SA-ArrowDown><SA-ArrowDown><SA-ArrowLeft><SA-ArrowRight><SA-ArrowLeft><SA-ArrowRight>ba open https://www.youtube.com/watch?v=M3iOROuTuMA
 
