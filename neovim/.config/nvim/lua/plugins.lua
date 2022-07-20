@@ -179,6 +179,13 @@ plugins.packer_table = {function(use)
     use { 'folke/which-key.nvim'
         , config = function() require('which-key').setup {} end
         }
+    use { 'karb94/neoscroll.nvim'
+        , config = function() require('neoscroll').setup({
+              mappings = {'<C-u>', "<C-d>", "<C-f>", "<C-y>", "<C-e>", "zt", "zz", "zb"}
+            , hide_cursor = false
+            , respect_scrolloff = true
+          }) end
+        }
     use {'camspiers/lens.vim', requires = {'camspiers/animate.vim'}}
     use {'j-hui/fidget.nvim', configure = FidgetSetup()
     }
