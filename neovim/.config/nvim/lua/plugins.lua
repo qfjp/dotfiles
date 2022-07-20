@@ -162,7 +162,9 @@ plugins.packer_table = {function(use)
 
     -- Git
     use 'lewis6991/gitsigns.nvim'
-    use 'tpope/vim-fugitive'
+    use { 'TimUntersberger/neogit'
+        , config = function() require('neogit').setup() end
+        }
 
     -- Motions
     use 'ggandor/lightspeed.nvim'
