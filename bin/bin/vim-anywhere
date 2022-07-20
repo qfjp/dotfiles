@@ -5,6 +5,6 @@ chmod o-r "$TEMP_FILE"
 
 kitty --class=UniversalEditor -o remember_window_size=no zsh -c "nvim $TEMP_FILE"
 sleep 0.5
-xdotool type "$(cat $TEMP_FILE)"
+ydotool type "$(cat "$TEMP_FILE")"
 
-rm $TEMP_FILE
+rm "$TEMP_FILE"
