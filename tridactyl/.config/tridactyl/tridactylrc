@@ -35,6 +35,10 @@ set storageloc sync
 set editorcmd kitty nvim %f '+normal%lGzv%c|'
 
 " Binds
+unbind --mode=insert <c-i>
+unbind --mode=input <c-i>
+bind --mode=insert <C-e> editor
+bind --mode=input <C-e> editor
 bind ;c hint -c [class*="expand"],[class="togg"]
 bind <C-j> tabnext
 bind <C-k> tabprev
