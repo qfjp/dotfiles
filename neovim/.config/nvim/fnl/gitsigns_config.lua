@@ -46,11 +46,4 @@
           enable = false
         },
       }
-      local function map(mode, l, r, opts)
-        opts = opts or {}
-        opts.buffer = bufnr
-        vim.keymap.set(mode, l, r, opts)
-      end
-      -- Text object
-      map('n', 'ih', ':<C-U>Gitsigns select_hunk<CR>')
 -- }}}
