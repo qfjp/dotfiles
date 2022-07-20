@@ -273,37 +273,127 @@
 
 ;; {{{ Keymaps
 ;; -----------
+
+;; Which-key nowait is broken?
+(vim.api.nvim_set_keymap :c :<C-a> :<Home> {:nowait true})
+(vim.api.nvim_set_keymap :c :<C-e> :<End> {:nowait true})
+(vim.api.nvim_set_keymap :c :<C-f> :<Right> {:nowait true})
+(vim.api.nvim_set_keymap :c :<C-b> :<Left> {:nowait true})
+(vim.api.nvim_set_keymap :c :<ESC>b :<Home> {:nowait true})
+(vim.api.nvim_set_keymap :c :<ESC>f :<End> {:nowait true})
+(vim.api.nvim_set_keymap :c "w;" :w<CR> {:nowait true})
+
 (when (pcall require :which-key)
-  (let [wk (require :which-key)]
-    (wk.register {:<C-a> [:<Home> :Home]
-                  :<C-e> [:<End> :End]
-                  :<C-f> [:<Right> "Char Forward"]
-                  :<C-b> [:<Left> "Char Back"]
-                  :<Esc> {:b [:<Home> :Home] :f [:<End> :End]}
-                  :w {:name :write ";" [":w<CR>" "Quick Write"]}}
-                 {:nowait true :mode :c})
+  (let [wk package.loaded.which-key
+        t (fn [str]
+            (vim.api.nvim_replace_termcodes str true true true))]
     (wk.register {:s {:name :Sayonara
                       ";" [:Sayonara!<CR> "Forget File Buffer"]
-                      "a;" [:Sayonara!<CR> "Forget File Buffer And Layout"]}}
+                      "a;" [:Sayonara<CR> "Forget File Buffer And Layout"]}}
                  {:mode :c :silent false})
     (wk.register {:g {:k [:k "Move up one actual line"]
                       :j [:j "Move down one actual line"]
                       :0 [:0
                           "Move to the beginning of the current (actual) line"]
                       :$ ["$" "Move to the end of the current (actual) line"]
-                      :f [":e <cfile><CR>" "Open file (always)"]}
+                      :f [":e <cfile><CR>" "Open file (always)"]
+                      :d {:name "Vim Diagnostic"
+                          :f [(fn []
+                                (vim.diagnostic.open.float))
+                              "Open diagnostic options"]
+                          :n [(fn []
+                                (vim.diagnostic.goto_next))
+                              "Goto next error/warning"]
+                          :p [(fn []
+                                (vim.diagnostic.goto_prev))
+                              "Goto prev error/warning"]
+                          :h [(fn []
+                                (vim.diagnostic.hide))
+                              "Hide diagnostics"]
+                          :s [(fn []
+                                (vim.diagnostic.show))
+                              "Show diagostics"]}
+                      :l {:name "Vim LSP"
+                          :d [(fn []
+                                vim.lsp.buf.definition)
+                              "Show definition"]
+                          :D [(fn []
+                                (vim.lsp.buf.declaration))
+                              "Show declaration"]
+                          :f [(fn []
+                                (vim.lsp.buf.formatting))
+                              "LSP Format"]
+                          :h [(fn []
+                                (vim.lsp.buf.hover))
+                              "LSP Hover"]
+                          :i [(fn []
+                                vim.lsp.buf.implementation)
+                              "Show implementation"]
+                          :l [(fn []
+                                vim.lsp.util.show_line_diagnostics)
+                              "Show line diagnostics"]
+                          :s [(fn []
+                                vim.lsp.buf.signature_help)
+                              "Show signature"]
+                          :t [(fn []
+                                vim.lsp.buf.type_definition)
+                              "Show type definition"]}}
+                  :K [(fn []
+                        vim.lsp.buf.hover)
+                      "LSP Hover"]
                   :<leader> {:name :leader
                              :c [":set spell!<CR>" "Spell Checker"]
                              :n [":tabnext<CR>" "Next Tab"]
                              :b [":tabprev<CR>" "Prev Tab"]
-                             :l {:name :LustyJuggler}}
+                             :l {:name :LustyJuggler}
+                             :g (let [gs package.loaded.gitsigns]
+                                  {:name :GitSigns
+                                   :n [(fn []
+                                         (gs.next_hunk))
+                                       "Next hunk"]
+                                   :p [(fn []
+                                         (gs.prev_hunk))
+                                       "Previous hunk"]
+                                   :P [(fn []
+                                         (gs.preview_hunk))
+                                       "Preview hunk"]
+                                   :l [(fn []
+                                         (gs.blame_line {:full true}))
+                                       "Full Blame"]
+                                   :t [(fn []
+                                         (gs.toggle_current_line_blame))
+                                       "Toggle line blame"]
+                                   :d [(fn []
+                                         (gs.diffthis))
+                                       "Split Diff"]
+                                   :D [(fn []
+                                         (gs.toggle_deleted))
+                                       "Show deleted lines"]})}
                   :z {:name :folds
                       "[" [":set foldlevel=99<CR>" "Open all folds"]
                       "]" [":set foldlevel=0<CR>" "Close all folds"]}
                   :<C-w> {:name :+window
                           :c [":tabnew<CR>" "Create New Tab"]
                           :n [":tabnext<CR>" "Next Tab"]
-                          :b [":tabprev<CR>" "Prev Tab"]}
+                          :b [":tabprev<CR>" "Prev Tab"]
+                          :+ [":vertical resize +10<CR>" "Increase height"]
+                          :- [":vertical resize -10<CR>" "Decrease height"]
+                          :> [":vertical resize +10<CR>" "Increase width"]
+                          :< [":vertical resize -10<CR>" "Decrease width"]
+                          :d [":qall<CR>" "Quit immediately"]}
+                  :<C-Space> {:name :+window
+                              :c [":tabnew<CR>" "Create New Tab"]
+                              :n [":tabnext<CR>" "Next Tab"]
+                              :b [":tabprev<CR>" "Prev Tab"]
+                              :s [":split<CR>" "Split Window (H)"]
+                              :v [":vertical split<CR>" "Split Window (V)"]
+                              := [:<C-w>= "Equally high and wide"]
+                              :+ [":vertical resize +10<CR>" "Increase height"]
+                              :- [":vertical resize -10<CR>" "Decrease height"]
+                              :> [":vertical resize +10<CR>" "Increase width"]
+                              :< [":vertical resize -10<CR>" "Decrease width"]
+                              :l [":vertical resize +10<CR>" "Grow Window (V)"]
+                              :d [":qall<CR>" "Quit immediately"]}
                   :<C-f> [":TSHighlightCapturesUnderCursor<CR>"
                           "Show Highlight Group"]
                   :<F10> [":TSHighlightCapturesUnderCursor<CR>"
@@ -329,7 +419,17 @@
     (wk.register {:J [":m '>+1<CR>gv=gv" "Move Line Up"]
                   :K [":m '<-2<CR>gv=gv" "Move Line Down"]}
                  {:mode :v})
-    (map! [t] :<C-w> "<c-\\><c-n>")))
+    (wk.register {:<C-w> [(t "<C-\\><C-n>") "Escape terminal"]
+                  :<C-Space> {:name "Tmux Prefix-alike"
+                              :v [(t "<C-\\><C-n><C-w>v") "Split vertically"]
+                              :h [(t "<C-\\><C-n><C-w>v") "Split horizontally"]}
+                  :<C-v> [(t "<C-\\><C-n><C-w>v") "Split vertically"]
+                  :<C-s> [(t "<C-\\><C-n><C-w>v") "Split horizontally"]
+                  :<C-k> [(t "<C-\\><C-n><C-w>k") "Move to window above"]
+                  :<C-j> [(t "<C-\\><C-n><C-w>j") "Move to window below"]
+                  :<C-h> [(t "<C-\\><C-n><C-w>h") "Move to window left"]
+                  :<C-l> [(t "<C-\\><C-n><C-w>l") "Move to window right"]}
+                 {:mode :t})))
 
 ;; }}}
 

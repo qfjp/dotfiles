@@ -176,7 +176,9 @@ plugins.packer_table = {function(use)
         ,run = ":TSInstall query"
         }
     use 'rinx/nvim-minimap'
-    use 'urbainvaes/vim-remembrall'
+    use { 'folke/which-key.nvim'
+        , config = function() require('which-key').setup {} end
+        }
     use {'camspiers/lens.vim', requires = {'camspiers/animate.vim'}}
     use {'j-hui/fidget.nvim', configure = FidgetSetup()
     }
