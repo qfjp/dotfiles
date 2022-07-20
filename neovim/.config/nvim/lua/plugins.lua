@@ -32,6 +32,65 @@ function SayoConfig()
   vim.g.sayonara_confirm_quit = true
   return nil
 end
+
+function LuaLineConfig()
+    local theme_name = "jellybeans"
+    local mod_color = "#aa3355"
+    if pcall(require, "lualine") then
+      local theme = require("lualine.themes." .. theme_name)
+      package.loaded.lualine.setup(
+          { options =
+              { icons_enabled = true
+              , theme = theme_name
+              , section_separators = { left = "", right = "" }
+              , component_separators = { left = "", right = "" }
+              , always_divide_middle = true
+              , globalstatus = false
+              }
+          , sections =
+              { lualine_a = {"mode"}
+              , lualine_b = {"branch", "diff", "diagnostics"}
+              , lualine_c = {{ "filename"
+                             , symbols = {modified =" ●", readonly=" "}
+                             , color = function(_)
+                                 return {fg = vim.bo.modified and mod_color}
+                               end
+                             }}
+              , lualine_x = {"encoding", "fileformat", "filetype"}
+              , lualine_y = {"progress"}
+              , lualine_z = {"location"}
+              }
+          , tabline =
+              { lualine_a = {
+                      { "buffers"
+                      , buffers_color =
+                          { active = function(_)
+                              return
+                                { fg = vim.bo.modified and mod_color
+                                , bg = theme.normal.a.bg
+                                }
+                            end
+                          }
+                      }
+                }
+              , lualine_b = {}
+              , lualine_c = {}
+              , lualine_x = {}
+              , lualine_y = {}
+              , lualine_z = {"tabs"}
+              }
+          , inactive_sections =
+              { lualine_a = {}
+              , lualine_b = {}
+              , lualine_c = {"filename"}
+              , lualine_x = {"location"}
+              , lualine_y = {}
+              , lualine_z = {}
+              }
+          , extensions = {}
+          }
+      )
+    end
 end
 
 function DictSetup()
@@ -76,11 +135,13 @@ plugins.packer_table = {function(use)
 
     -- Vim Essentials
     use {'mbbill/undotree', cmd = 'UndotreeToggle'}
-    use {'mengelbrecht/lightline-bufferline'
-        ,requires = {{'itchyny/lightline.vim'}, {'ryanoasis/vim-devicons'}}
-        }
     use 'mhinz/vim-startify'
     use {'mhinz/vim-sayonara', cmd = {'Sayonara', 'Sayonara!', 'S', 'Sa'}
+    use { 'nvim-lualine/lualine.nvim'
+        , requires = {'kyazdani42/nvim-web-devicons', opt=true}
+        , configure = LuaLineConfig()
+    }
+    use {'mhinz/vim-startify', requires = 'ryanoasis/vim-devicons'}
         ,config = SayoConfig
         }
     use 'tpope/vim-repeat'
