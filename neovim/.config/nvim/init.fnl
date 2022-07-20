@@ -99,6 +99,7 @@
 (set! undofile)
 (set! undodir (.. (os.getenv :HOME) :/.local/share/vim-backup))
 (set! scrolloff 5)
+(set! autochdir)
 
 (set! history 1000)
 (set! undolevels 1000)
