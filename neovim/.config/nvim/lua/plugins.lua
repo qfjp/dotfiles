@@ -226,10 +226,7 @@ plugins.packer_table = {function(use)
     --use 'vimpostor/vim-tpipeline'
 
     -- Categories?
-    --use {'rliang/termedit.nvim', cmd = 'terminal'}
-    --use 'Shougo/deol.nvim'
     use {'vimwiki/vimwiki', ft = 'vimwiki'}
-
   end,
   config = {
     display = {
