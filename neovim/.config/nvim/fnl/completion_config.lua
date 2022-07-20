@@ -17,20 +17,6 @@
        vim.cmd[[highlight DiagnosticSignError guifg=red guibg=none ctermfg=red ctermbg=none]]
        vim.cmd[[highlight DiagnosticSignHint  guifg=lightgreen guibg=none ctermfg=green ctermbg=none]]
     end})
-    vim.keymap.set("n", "gdf", function() vim.diagnostic.open_float() end, {silent = true})
-    vim.keymap.set("n", "gdn", function() vim.diagnostic.goto_next() end, {silent = true})
-    vim.keymap.set("n", "gdp", function() vim.diagnostic.goto_prev() end, {silent = true})
-    vim.keymap.set("n", "gdh", function() vim.diagnostic.hide() end, {silent = true})
-    vim.keymap.set("n", "gds", function() vim.diagnostic.show() end, {silent = true})
-
-    vim.keymap.set("n", "gs",  function() vim.lsp.buf.declaration() end, {silent = true})
-    vim.keymap.set("n", "gd",  function() vim.lsp.buf.definition() end, {silent = true})
-    vim.keymap.set("n", "K",   function() vim.lsp.buf.hover() end, {silent = true})
-    vim.keymap.set("n", "gD",  function() vim.lsp.buf.implementation() end, {silent = true})
-    vim.keymap.set("n", "gK",  function() vim.lsp.buf.signature_help() end, {silent = true})
-    vim.keymap.set("n", "1gD", function() vim.lsp.buf.type_defintion() end, {silent = true})
-    vim.keymap.set("n", "gk",  function() vim.lsp.util.show_line_diagnostics() end, {silent = true})
-    vim.keymap.set("n", "gn",  function() vim.lsp.buf.formatting() end, {silent = true})
 
     vim.opt.shortmess:remove({"F"})
 
