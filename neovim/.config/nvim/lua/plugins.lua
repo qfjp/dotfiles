@@ -1,18 +1,54 @@
 local fn = vim.fn
 local conf = fn.stdpath('config') .. '/bundle/'
 
--- bootstrap fnl
-local hotpot_path = fn.stdpath('data') .. '/site/pack/packer/start/hotpot.nvim'
-if fn.empty(fn.glob(hotpot_path)) > 0 then
-    fn.system({'git', 'clone', 'https://github.com/rktjmp/hotpot.nvim', hotpot_path})
-    vim.cmd('helptags ' .. hotpot_path .. '/doc')
-end
-require('hotpot')
 
--- bootstrap packer
-local packer_install_path = fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
-if fn.empty(fn.glob(packer_install_path)) > 0 then
-    PACKER_BOOTSTRAP = fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', packer_install_path})
+function TmuxNavConfig()
+  vim.keymap.set({"n", "v", "o"}, "<C-h>", ":TmuxNavigateLeft<CR>", {silent = true})
+  vim.keymap.set({"n", "v", "o"}, "<C-l>", ":TmuxNavigateRight<CR>", {silent = true})
+  vim.keymap.set({"n", "v", "o"}, "<C-k>", ":TmuxNavigateUp<CR>", {silent = true})
+  vim.keymap.set({"n", "v", "o"}, "<C-j>", ":TmuxNavigateDown<CR>", {silent = true})
+end
+
+function JavaSetup()
+  local JavaGroup = vim.api.nvim_create_augroup('JavaGroup', {clear = true})
+  vim.api.nvim_create_autocmd('FileType', {pattern = {'java'}, group = JavaGroup,
+    desc = "Attach an instance of jdtls",
+    callback = function() require('java_jdtls') end
+  })
+end
+
+function ScalaSetup()
+  local ScalaGroup = vim.api.nvim_create_augroup('ScalaGroup', {clear = true})
+  vim.api.nvim_create_autocmd('FileType', {pattern = {'scala', 'sbt'}, group = ScalaGroup,
+    desc = "Attach an instance of metals (lsp)",
+    callback = function() require("metals").initialize_or_attach({}) end
+  })
+end
+
+function SayoConfig()
+  vim.api.nvim_create_user_command("S", "Sayonara!", {force = true})
+  vim.api.nvim_create_user_command("Sa", "Sayonara", {force = true})
+  vim.g.sayonara_confirm_quit = true
+  return nil
+end
+end
+
+function DictSetup()
+    require('cmp_dictionary').setup({
+        dic = {
+            ["*"] = { '/usr/share/hunspell/en_US.dic' },
+            spellang = {
+                en = '/usr/share/hunspell/en_US.dic'
+            }
+        },
+        exact = 2,
+        first_case_insensitive = false,
+        document = false,
+        document_command = 'wn %s -over',
+        async = true,
+        capacity = 5,
+        debug = false,
+    })
 end
 
 return require('packer').startup({function(use)

@@ -81,23 +81,6 @@
           vim.cmd[[highlight! CmpItemKindUnit guibg=NONE guifg=#D4D4D4]]
         end
     })
-    function DictSetup()
-        require('cmp_dictionary').setup({
-            dic = {
-                ["*"] = { '/usr/share/hunspell/en_US.dic' },
-                spellang = {
-                    en = '/usr/share/hunspell/en_US.dic'
-                }
-            },
-            exact = 2,
-            first_case_insensitive = false,
-            document = false,
-            document_command = 'wn %s -over',
-            async = true,
-            capacity = 5,
-            debug = false,
-        })
-    end
     local cmp_autopairs = require('nvim-autopairs.completion.cmp')
     local cmp = require('cmp')
     cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
