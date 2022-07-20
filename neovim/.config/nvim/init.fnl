@@ -23,7 +23,6 @@
                   (fn []
                     "Settings for Neovide and Gonvim"
                     (set! guifont "FiraCode Nerd Font:h10")
-                    (set! laststatus 2)
                     (set! showtabline 2)
                     (g! neovide_no_idle true)
                     (g! neovide_cursor_vfx_mode :wireframe)
