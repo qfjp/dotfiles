@@ -27,6 +27,7 @@ js tri.config.set("searchurls", {"osm": "https://www.openstreetmap.org/search?qu
 js tri.config.set("searchurls", {"mdn": "https://developer.mozilla.org/en-US/search?q="})
 js tri.config.set("searchurls", {"gentoo_wiki": "https://wiki.gentoo.org/index.php?title=Special%3ASearch&profile=default&fulltext=Search&search="})
 js tri.config.set("searchurls", {"qwant": "https://www.qwant.com/?q="})
+set smoothcroll true
 set hintfiltermode vimperator-reflow
 set hintchars asdfghjkl
 set updatenaglastversion 1.17.0
