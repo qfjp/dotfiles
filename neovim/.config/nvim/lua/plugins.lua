@@ -119,7 +119,6 @@ end
 
 plugins.packer_table = {function(use)
     -- Startup
-    use 'famiu/nvim-reload'
     use 'lewis6991/impatient.nvim'
     use 'wbthomason/packer.nvim'
     use 'nvim-lua/plenary.nvim'
