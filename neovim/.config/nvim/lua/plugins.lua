@@ -152,9 +152,6 @@ plugins.packer_table = {function(use)
     use 'tpope/vim-repeat'
     use 'tpope/vim-surround'
     use 'tpope/vim-speeddating'
-    use {'tpope/vim-obsession'
-        ,cmd = {'Obsess', 'SSave', 'SLoad', 'SClose', 'SDelete', 'mksession'}
-        }
     use 'wellle/targets.vim'
     use { 'windwp/nvim-autopairs'
         , config = function() require('nvim-autopairs').setup {} end
