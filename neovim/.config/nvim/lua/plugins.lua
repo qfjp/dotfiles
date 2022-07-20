@@ -141,7 +141,6 @@ plugins.packer_table = {function(use)
 
     -- Vim Essentials
     use {'mbbill/undotree', cmd = 'UndotreeToggle'}
-    use 'mhinz/vim-startify'
     use {'mhinz/vim-sayonara', cmd = {'Sayonara', 'Sayonara!', 'S', 'Sa'}
     use { 'nvim-lualine/lualine.nvim'
         , requires = {'kyazdani42/nvim-web-devicons', opt=true}
