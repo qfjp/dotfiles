@@ -3,7 +3,6 @@ configuration {
     combi-modi:                     "window,run";
     display-combi:                  "run";
     display-drun:                   "desktop";
-    display-filebrowser:            true;
     dpi:                            0;
     drun-display-format:            "[<span weight="600" size='large'>{name}</span>] [<span weight='300' size='x-small'><i>({comment})</i></span>]";
     matching:                       "fuzzy";
@@ -34,6 +33,5 @@ configuration {
     kb-row-up:                      "Up,Super+k,Control+k";
     kb-row-down:                    "Down,Super+j,Control+j";
     kb-secondary-paste:             "Control+V,Shift+Insert";
-
-    theme: "/usr/share/rofi/themes/arthur.rasi";
 }
+@theme "/usr/share/rofi/themes/arthur.rasi"
