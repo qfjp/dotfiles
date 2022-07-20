@@ -38,7 +38,7 @@ zoom_default d
 zoom_fit s
 
 # I only hit these accidentaly
-save_image
+save_image S
 save_filelist
 
 # This leaves some conflicts with existing default bindings, but you should
