@@ -129,10 +129,10 @@ plugins.packer_table = {function(use)
     use (conf .. 'vim-haskellConcealPlus')
 
     -- Fennel
-    use {'eraserhd/parinfer-rust'
-        ,ft = {'clojure', 'fennel', 'lisp', 'scheme'}
-        ,run = 'cargo build --release'
-        }
+    use { 'eraserhd/parinfer-rust'
+        , ft = {'clojure', 'fennel', 'lisp', 'scheme'}
+        , run = 'cargo build --release'
+    }
     use {'p00f/nvim-ts-rainbow'}
     use {'mnacamura/vim-fennel-syntax', ft='fennel'}
     use {'Olical/conjure'}
@@ -141,13 +141,13 @@ plugins.packer_table = {function(use)
 
     -- Vim Essentials
     use {'mbbill/undotree', cmd = 'UndotreeToggle'}
-    use {'mhinz/vim-sayonara', cmd = {'Sayonara', 'Sayonara!', 'S', 'Sa'}
     use { 'nvim-lualine/lualine.nvim'
         , requires = {'kyazdani42/nvim-web-devicons', opt=true}
         , configure = LuaLineConfig()
     }
     use {'mhinz/vim-startify', requires = 'ryanoasis/vim-devicons'}
-        ,config = SayoConfig
+    use { 'mhinz/vim-sayonara'
+        , config = SayoConfig
         }
     use 'tpope/vim-repeat'
     use 'tpope/vim-surround'
@@ -156,7 +156,9 @@ plugins.packer_table = {function(use)
         ,cmd = {'Obsess', 'SSave', 'SLoad', 'SClose', 'SDelete', 'mksession'}
         }
     use 'wellle/targets.vim'
-    use {'windwp/nvim-autopairs', config = function() require('nvim-autopairs').setup {} end}
+    use { 'windwp/nvim-autopairs'
+        , config = function() require('nvim-autopairs').setup {} end
+    }
 
     -- Git
     use 'lewis6991/gitsigns.nvim'
@@ -169,10 +171,10 @@ plugins.packer_table = {function(use)
     -- Highfalutin n' Fancy
     use {'folke/twilight.nvim', cmd = {'Twilight', 'TwilightEnable', 'TwilightDisable'}}
     use {'junegunn/goyo.vim', cmd = {'Goyo', 'GoyoEnter', 'GoyoLeave'}}
-    use {'nvim-treesitter/playground'
-        ,requires = {'nvim-treesitter/nvim-treesitter', opt = true}
-        ,cmd = {'TSHighlightCapturesUnderCursor', 'TSPlaygroundToggle'}
-        ,run = ":TSInstall query"
+    use { 'nvim-treesitter/playground'
+        , requires = {'nvim-treesitter/nvim-treesitter'}
+        , cmd = {'TSHighlightCapturesUnderCursor', 'TSPlaygroundToggle'}
+        , run = ":TSInstall query"
         }
     use 'rinx/nvim-minimap'
     use { 'folke/which-key.nvim'
