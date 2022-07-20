@@ -30,6 +30,7 @@ require('tangerine').setup {
         "plugin"
     },
     compiler = {
+        verbose = true,
         hooks = {"onsave", "oninit"}
     }
 }
