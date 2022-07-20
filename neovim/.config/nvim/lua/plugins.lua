@@ -1,5 +1,6 @@
 local fn = vim.fn
 local conf = fn.stdpath('config') .. '/bundle/'
+local plugins = {}
 
 
 function TmuxNavConfig()
@@ -51,7 +52,7 @@ function DictSetup()
     })
 end
 
-return require('packer').startup({function(use)
+plugins.packer_table = {function(use)
     -- Startup
     use 'famiu/nvim-reload'
     use 'lewis6991/impatient.nvim'
@@ -158,9 +159,6 @@ return require('packer').startup({function(use)
     --use 'Shougo/deol.nvim'
     use {'vimwiki/vimwiki', ft = 'vimwiki'}
 
-    if PACKER_BOOTSTRAP then
-        require('packer').sync()
-    end
   end,
   config = {
     display = {
@@ -171,4 +169,5 @@ return require('packer').startup({function(use)
       threshold = 0.1,
     },
   }
-})
+}
+return plugins
