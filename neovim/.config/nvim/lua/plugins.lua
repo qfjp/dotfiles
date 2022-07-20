@@ -111,6 +111,12 @@ function DictSetup()
     })
 end
 
+function FidgetSetup()
+    if pcall(require, "fidget") then
+        package.loaded.fidget.setup({})
+    end
+end
+
 plugins.packer_table = {function(use)
     -- Startup
     use 'famiu/nvim-reload'
@@ -172,6 +178,8 @@ plugins.packer_table = {function(use)
         }
     use 'rinx/nvim-minimap'
     use 'urbainvaes/vim-remembrall'
+    use {'j-hui/fidget.nvim', configure = FidgetSetup()
+    }
 
     -- Formatting
     use 'junegunn/vim-easy-align'
