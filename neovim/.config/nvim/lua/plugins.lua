@@ -223,7 +223,6 @@ plugins.packer_table = {function(use)
 
     -- Tmux
     use {'christoomey/vim-tmux-navigator', config = TmuxNavConfig}
-    --use 'vimpostor/vim-tpipeline'
 
     -- Categories?
     use {'vimwiki/vimwiki', ft = 'vimwiki'}
