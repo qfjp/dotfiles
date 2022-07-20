@@ -135,8 +135,8 @@ plugins.packer_table = {function(use)
         }
     use {'mnacamura/vim-fennel-syntax', ft='fennel'}
     use {'Olical/conjure'}
-    use {'rktjmp/hotpot.nvim'}
-    use {'tsbohc/zest.nvim', config = function() require('zest').setup() end}
+    use {'udayvir-singh/hibiscus.nvim'}
+    use {'udayvir-singh/tangerine.nvim'}
 
     -- Vim Essentials
     use {'mbbill/undotree', cmd = 'UndotreeToggle'}
