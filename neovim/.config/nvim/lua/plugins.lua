@@ -170,7 +170,6 @@ plugins.packer_table = {function(use)
     -- Highfalutin n' Fancy
     use {'folke/twilight.nvim', cmd = {'Twilight', 'TwilightEnable', 'TwilightDisable'}}
     use {'junegunn/goyo.vim', cmd = {'Goyo', 'GoyoEnter', 'GoyoLeave'}}
-    use 'kovetskiy/vim-autoresize'
     use {'nvim-treesitter/playground'
         ,requires = {'nvim-treesitter/nvim-treesitter', opt = true}
         ,cmd = {'TSHighlightCapturesUnderCursor', 'TSPlaygroundToggle'}
@@ -178,6 +177,7 @@ plugins.packer_table = {function(use)
         }
     use 'rinx/nvim-minimap'
     use 'urbainvaes/vim-remembrall'
+    use {'camspiers/lens.vim', requires = {'camspiers/animate.vim'}}
     use {'j-hui/fidget.nvim', configure = FidgetSetup()
     }
 
