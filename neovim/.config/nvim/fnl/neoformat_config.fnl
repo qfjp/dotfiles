@@ -49,5 +49,5 @@
 
 ;trim whitespace
 (g! neoformat_run_all_formatters 1)
-(augroup! :Fmt [[BufWritePre] "*" :Neoformat])
+(augroup! :Fmt [[BufWritePre] "*" "undojoin | Neoformat"])
 
