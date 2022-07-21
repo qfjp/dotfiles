@@ -299,7 +299,7 @@
                       :f [":e <cfile><CR>" "Open file (always)"]
                       :d {:name "Vim Diagnostic"
                           :f [(fn []
-                                (vim.diagnostic.open.float))
+                                (vim.diagnostic.open_float))
                               "Open diagnostic options"]
                           :n [(fn []
                                 (vim.diagnostic.goto_next))
