@@ -1,7 +1,8 @@
 ;; {{{ Startify
 ;; -------------
 (require-macros :hibiscus.vim)
-(local home (or (os.getenv :HOME) ""))
+(local HOME (or (os.getenv :HOME) ""))
+(local GIT_DIR (.. HOME :/projects/github/dotfiles))
 
 (local BOOKMARK_PAIRS [{:neovim (.. (vim.fn.stdpath :config) :/lua/plugins.lua)}
                        {:neovim (.. (vim.fn.stdpath :config) :/init.fnl)}
@@ -17,9 +18,9 @@
 
 ;; populate bookmarks, skip-list from BOOKMARK_PAIRS
 (each [_ pair (pairs BOOKMARK_PAIRS)]
-  (let [git-dir (.. home :/projects/github/dotfiles)]
+  (let [pair (. BOOKMARK_PAIRS ix)]
     (each [dir bmark (pairs pair)]
-      (let [git-path (.. git-dir "/" dir (string.gsub bmark home ""))
+      (let [git-path (.. GIT_DIR "/" dir (string.gsub bmark HOME ""))
             skip-len (table.maxn skiplist)
             mark-len (table.maxn bookmarks)]
         (tset bookmarks (+ mark-len 1) (string.gsub bmark home "~"))
