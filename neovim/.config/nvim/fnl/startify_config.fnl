@@ -48,7 +48,7 @@
             return 'WebDevIconsGetFileTypeSymbol(absolute_path) .\" \". entry_path'
           endfunction")
 
-(g! startify_files_number 15)
+(g! startify_files_number 10)
 (g! startify_list_order [[:MRU]
                          :files
                          [:Bookmarks]
