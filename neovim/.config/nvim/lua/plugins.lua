@@ -124,7 +124,7 @@ plugins.packer_table = {function(use)
     use 'nvim-lua/plenary.nvim'
 
     -- pathogen replacement
-    use (conf .. 'AnsiEsc')
+    use 'qfjp/AnsiEsc'
     use (conf .. 'SyntaxAttr')
     use (conf .. 'vim-haskellConcealPlus')
 
