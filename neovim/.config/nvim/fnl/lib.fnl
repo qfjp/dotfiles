@@ -1,6 +1,14 @@
 (fn g [var_name]
-  "Create a global var"
+  "Retrieve a global var"
   (. vim.g var_name))
+
+(fn b [var_name]
+  "Retrieve a buffer var"
+  (. vim.b var_name))
+
+(fn opt [var_name]
+  "Retrieve a vim option value"
+  (. (. vim.opt var_name) :_value))
 
 (fn vimfn [func_name ...]
   "Use a vim function"
@@ -22,5 +30,5 @@
   ((. (require :plenary.reload) :reload_module) mod)
   (require mod))
 
-{: g : vimfn : RequireAnd : Require}
+{: g : b : opt : vimfn : RequireAnd : Require}
 

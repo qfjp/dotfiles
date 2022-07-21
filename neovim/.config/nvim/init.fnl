@@ -14,6 +14,7 @@
   (require :treesitter_config))
 
 (require :startify_config)
+(require :goyo_config)
 
 ;; }}}
 
@@ -345,6 +346,7 @@
                              :c [":set spell!<CR>" "Spell Checker"]
                              :n [":tabnext<CR>" "Next Tab"]
                              :b [":tabprev<CR>" "Prev Tab"]
+                             :G [":Goyo<CR>" "Focused Editing"]
                              :l {:name :LustyJuggler}
                              :g (let [gs package.loaded.gitsigns]
                                   {:name :GitSigns
