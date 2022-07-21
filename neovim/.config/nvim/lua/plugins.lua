@@ -116,6 +116,11 @@ function FidgetSetup()
         package.loaded.fidget.setup({})
     end
 end
+function SafeRequire(module, opts)
+    if pcall(require, module) then
+        package.loaded[module].setup(opts)
+    end
+end
 
 plugins.packer_table = {function(use)
     -- Startup
@@ -158,7 +163,8 @@ plugins.packer_table = {function(use)
     }
 
     -- Git
-    use 'lewis6991/gitsigns.nvim'
+    use { 'lewis6991/gitsigns.nvim'
+        , config = SafeRequire("gitsigns", require("gitsigns_config"))}
     use { 'TimUntersberger/neogit'
         , config = function() require('neogit').setup() end
         }
