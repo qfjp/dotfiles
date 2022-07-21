@@ -393,7 +393,9 @@
                               :> [":vertical resize +10<CR>" "Increase width"]
                               :< [":vertical resize -10<CR>" "Decrease width"]
                               :l [":vertical resize +10<CR>" "Grow Window (V)"]
-                              :d [":qall<CR>" "Quit immediately"]}
+                              :d [":SSave! default | qall<CR>"
+                                  "Save default session and quit"]
+                              :D [":SLoad default<CR>" "Load default session"]}
                   :<C-f> [":TSHighlightCapturesUnderCursor<CR>"
                           "Show Highlight Group"]
                   :<F10> [":TSHighlightCapturesUnderCursor<CR>"
@@ -422,7 +424,11 @@
     (wk.register {:<C-w> [(t "<C-\\><C-n>") "Escape terminal"]
                   :<C-Space> {:name "Tmux Prefix-alike"
                               :v [(t "<C-\\><C-n><C-w>v") "Split vertically"]
-                              :h [(t "<C-\\><C-n><C-w>v") "Split horizontally"]}
+                              :h [(t "<C-\\><C-n><C-w>v") "Split horizontally"]
+                              :d [(t "<C-\\><C-n>:SSave! default | qall<CR>")
+                                  "Save default sessiono and quit"]
+                              :D [(t "<C-\\><C-n>:SLoad default<CR>")
+                                  "Load default session"]}
                   :<C-v> [(t "<C-\\><C-n><C-w>v") "Split vertically"]
                   :<C-s> [(t "<C-\\><C-n><C-w>v") "Split horizontally"]
                   :<C-k> [(t "<C-\\><C-n><C-w>k") "Move to window above"]
