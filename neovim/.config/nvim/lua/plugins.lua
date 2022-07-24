@@ -111,11 +111,6 @@ function DictSetup()
     })
 end
 
-function FidgetSetup()
-    if pcall(require, "fidget") then
-        package.loaded.fidget.setup({})
-    end
-end
 function SafeRequire(module, opts)
     if pcall(require, module) then
         package.loaded[module].setup(opts)
@@ -193,9 +188,8 @@ plugins.packer_table = {function(use)
           }) end
         }
     use {'camspiers/lens.vim', requires = {'camspiers/animate.vim'}}
-    use {'j-hui/fidget.nvim', configure = FidgetSetup()
-    }
     use {'norcalli/nvim-colorizer.lua', config = function() require('colorizer').setup() end}
+    use {'j-hui/fidget.nvim', configure = SafeRequire("fidget", {})}
 
     -- Formatting
     use 'junegunn/vim-easy-align'
