@@ -1,6 +1,9 @@
 local fn = vim.fn
 local conf = fn.stdpath('config') .. '/bundle/'
 local plugins = {}
+local float_conf = nil
+if pcall(require, "packer.util") then
+    float_conf = package.loaded["packer.util"].float
 end
 function SayoConfig()
   vim.api.nvim_create_user_command("S", "Sayonara!", {force = true})
@@ -112,14 +115,14 @@ plugins.packer_table = {function(use)
     use 'tpope/vim-speeddating'
     use 'wellle/targets.vim'
     use { 'windwp/nvim-autopairs'
-        , config = function() require('nvim-autopairs').setup {} end
-    }
+        , config = SafeRequire("nvim-autopairs", {})
+        }
 
     -- Git
     use { 'lewis6991/gitsigns.nvim'
         , config = SafeRequire("gitsigns", require("gitsigns_config"))}
     use { 'TimUntersberger/neogit'
-        , config = function() require('neogit').setup() end
+        , config = SafeRequire("neogit", {})
         }
 
     -- Motions
@@ -136,18 +139,21 @@ plugins.packer_table = {function(use)
         }
     use 'rinx/nvim-minimap'
     use { 'folke/which-key.nvim'
-        , config = function() require('which-key').setup {} end
+        , config = SafeRequire("which-key", {})
         }
     use { 'karb94/neoscroll.nvim'
-        , config = function() require('neoscroll').setup({
-              mappings = {'<C-u>', "<C-d>", "<C-f>", "<C-y>", "<C-e>", "zt", "zz", "zb"}
-            , hide_cursor = false
-            , respect_scrolloff = true
-          }) end
+        , config
+            = SafeRequire("neoscroll",
+                { mappings = {'<C-u>', "<C-d>", "<C-f>", "<C-y>", "<C-e>", "zt", "zz", "zb"}
+                , hide_cursor = false
+                , respect_scrolloff = true
+                })
         }
     use {'camspiers/lens.vim', requires = {'camspiers/animate.vim'}}
-    use {'norcalli/nvim-colorizer.lua', config = function() require('colorizer').setup() end}
     use {'j-hui/fidget.nvim', configure = SafeRequire("fidget", {})}
+    use { 'norcalli/nvim-colorizer.lua'
+        , config = SafeRequire("colorizer")
+        }
 
     -- Formatting
     use 'junegunn/vim-easy-align'
@@ -211,7 +217,7 @@ plugins.packer_table = {function(use)
   end,
   config = {
     display = {
-      open_fn = require('packer.util').float,
+      open_fn = float_conf,
     },
     profile = {
       enable = true,
