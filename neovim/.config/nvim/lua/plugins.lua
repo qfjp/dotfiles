@@ -82,7 +82,6 @@ plugins.packer_table = {function(use)
     -- Startup
     use 'lewis6991/impatient.nvim'
     use 'wbthomason/packer.nvim'
-    use 'nvim-lua/plenary.nvim'
 
     -- pathogen replacement
     use 'qfjp/AnsiEsc'
@@ -123,6 +122,7 @@ plugins.packer_table = {function(use)
         , config = SafeRequire("gitsigns", require("gitsigns_config"))}
     use { 'TimUntersberger/neogit'
         , config = SafeRequire("neogit", {})
+        , requires = "nvim-lua/plenary.nvim"
         }
 
     -- Motions
