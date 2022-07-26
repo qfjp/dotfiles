@@ -61,7 +61,7 @@ function LuaLineConfig()
           , inactive_sections =
               { lualine_a = {}
               , lualine_b = {}
-              , lualine_c = {"filename"}
+              , lualine_c = {"branch", {"filename", symbols = {modified =" ●", readonly=" "}}}
               , lualine_x = {"location"}
               , lualine_y = {}
               , lualine_z = {}
@@ -105,7 +105,7 @@ plugins.packer_table = {function(use)
     use { 'nvim-lualine/lualine.nvim'
         , requires = {'kyazdani42/nvim-web-devicons', opt=true}
         , configure = LuaLineConfig()
-    }
+        }
     use {'mhinz/vim-startify', requires = 'ryanoasis/vim-devicons'}
     use { 'mhinz/vim-sayonara'
         , config = SayoConfig
