@@ -61,7 +61,7 @@
 (g! startify_skiplist skiplist)
 (g! startify_bookmarks bookmarks)
 
-(fn cmd [str]
+(fn shell [str]
   (let [lines {}]
     (each [line (: (io.popen str) :lines)]
       (when (not= line "")
@@ -87,8 +87,9 @@
 (g! startify_session_sort 1)
 (g! startify_change_to_dir 0)
 
-(g! startify_custom_header (center (cmd "~/bin/random_description.sh | cowthink -W 40 -f tux -n")
-                                   80))
+(local cmd "~/bin/random_description.sh | cowthink -W 40 -f tux -n")
+
+(g! startify_custom_header (center (shell (.. :MANWIDTH= 72 " " cmd)) 80))
 
 ;; }}}
 
