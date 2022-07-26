@@ -37,5 +37,39 @@
 (mod-fn vimfn [name ...] "Use a vim function"
         `((. vim.fn ,(tostring name)) ,...))
 
+(mod-fn packer! [packer-tab packer-opts]
+        (let [result {}
+              opt-keys [:disable
+                        :as
+                        :installer
+                        :updater
+                        :after
+                        :rtp
+                        :opt
+                        :branch
+                        :tag
+                        :commit
+                        :lock
+                        :run
+                        :requires
+                        :rocks
+                        :config
+                        :setup
+                        :cmd
+                        :ft
+                        :keys
+                        :event
+                        :fn
+                        :cond
+                        :module
+                        :module_pattern]]
+          (each [plug opts (pairs packer-tab)]
+            (let [this-result {1 plug}]
+              (each [_ opt-key (ipairs opt-keys)]
+                (tset this-result opt-key (. opts opt-key)))
+              (tset result (+ 1 (length result)) `(use ,this-result))))
+          `(fn [,(sym :use)]
+             ,result)))
+
 M
 
