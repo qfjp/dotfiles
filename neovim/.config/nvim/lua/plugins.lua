@@ -1,31 +1,7 @@
 local fn = vim.fn
 local conf = fn.stdpath('config') .. '/bundle/'
 local plugins = {}
-
-
-function TmuxNavConfig()
-  vim.keymap.set({"n", "v", "o"}, "<C-h>", ":TmuxNavigateLeft<CR>", {silent = true})
-  vim.keymap.set({"n", "v", "o"}, "<C-l>", ":TmuxNavigateRight<CR>", {silent = true})
-  vim.keymap.set({"n", "v", "o"}, "<C-k>", ":TmuxNavigateUp<CR>", {silent = true})
-  vim.keymap.set({"n", "v", "o"}, "<C-j>", ":TmuxNavigateDown<CR>", {silent = true})
 end
-
-function JavaSetup()
-  local JavaGroup = vim.api.nvim_create_augroup('JavaGroup', {clear = true})
-  vim.api.nvim_create_autocmd('FileType', {pattern = {'java'}, group = JavaGroup,
-    desc = "Attach an instance of jdtls",
-    callback = function() require('java_jdtls') end
-  })
-end
-
-function ScalaSetup()
-  local ScalaGroup = vim.api.nvim_create_augroup('ScalaGroup', {clear = true})
-  vim.api.nvim_create_autocmd('FileType', {pattern = {'scala', 'sbt'}, group = ScalaGroup,
-    desc = "Attach an instance of metals (lsp)",
-    callback = function() require("metals").initialize_or_attach({}) end
-  })
-end
-
 function SayoConfig()
   vim.api.nvim_create_user_command("S", "Sayonara!", {force = true})
   vim.api.nvim_create_user_command("Sa", "Sayonara", {force = true})
@@ -91,24 +67,6 @@ function LuaLineConfig()
           }
       )
     end
-end
-
-function DictSetup()
-    require('cmp_dictionary').setup({
-        dic = {
-            ["*"] = { '/usr/share/hunspell/en_US.dic' },
-            spellang = {
-                en = '/usr/share/hunspell/en_US.dic'
-            }
-        },
-        exact = 2,
-        first_case_insensitive = false,
-        document = false,
-        document_command = 'wn %s -over',
-        async = true,
-        capacity = 5,
-        debug = false,
-    })
 end
 
 function SafeRequire(module, opts)
@@ -197,8 +155,8 @@ plugins.packer_table = {function(use)
 
     -- LSP Configuration
     use 'neovim/nvim-lspconfig'
-    use {'scalameta/nvim-metals',ft = {'scala', 'sbt'},config = ScalaSetup}
-    use {'mfussenegger/nvim-jdtls', ft = 'java', config = JavaSetup}
+    use {'scalameta/nvim-metals',ft = {'scala', 'sbt'}}
+    use {'mfussenegger/nvim-jdtls', ft = 'java'}
     use {'williamboman/nvim-lsp-installer', requires = {'neovim/nvim-lspconfig'},}
 
     -- Completion/Snippets
@@ -214,7 +172,23 @@ plugins.packer_table = {function(use)
     use 'hrsh7th/nvim-cmp'
     use 'hrsh7th/cmp-vsnip'
     use {'f3fora/cmp-spell', ft = 'tex'}
-    use {'uga-rosa/cmp-dictionary', ft = 'tex', config = DictSetup}
+    use { 'uga-rosa/cmp-dictionary'
+        , ft = 'tex'
+        , config
+            = SafeRequire( "cmp_dictionary"
+                         , { dic = { ["*"] = { '/usr/share/hunspell/en_US.dic' }
+                                   , spellang = { en = '/usr/share/hunspell/en_US.dic' }
+                                   }
+                           , exact = 2
+                           , first_case_insensitive = false
+                           , document = false
+                           , document_command = 'wn %s -over'
+                           , async = true
+                           , capacity = 5
+                           , debug = false
+                           }
+                         )
+        }
     use {'kdheepak/cmp-latex-symbols', ft = 'tex'}
     use 'max397574/cmp-greek'
 
@@ -230,7 +204,7 @@ plugins.packer_table = {function(use)
     use 'mhinz/vim-janah'
 
     -- Tmux
-    use {'christoomey/vim-tmux-navigator', config = TmuxNavConfig}
+    use {'christoomey/vim-tmux-navigator'}
 
     -- Categories?
     use {'vimwiki/vimwiki', ft = 'vimwiki'}
