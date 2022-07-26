@@ -32,6 +32,5 @@
 (def-augroup :Goyo (def-autocmd-fn [:User] [:GoyoEnter] goyo-enter)
              (def-autocmd-fn [:User] [:GoyoLeave] goyo-leave))
 
-
 ;; }}}
 
