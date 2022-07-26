@@ -1,3 +1,4 @@
+vim.opt.termguicolors = true
 local packer_path = vim.fn.stdpath('data') .. '/site/pack/packer/start'
 function Bootstrap(user, repo, setupfns)
     local package = string.gsub(repo, "%.nvim", "")
