@@ -339,6 +339,10 @@
                              :b [":tabprev<CR>" "Prev Tab"]
                              :G [":Goyo<CR>" "Focused Editing"]
                              :l {:name :LustyJuggler}
+                             :d [(t "<C-\\><C-n>:SSave! default | qall<CR>")
+                                 "Save default session and quit"]
+                             :D [(t "<C-\\><C-n>:SLoad default<CR>")
+                                 "Load default session"]
                              :g (let [gs package.loaded.gitsigns]
                                   {:name :GitSigns
                                    :n [(fn []
@@ -371,8 +375,8 @@
                           :b [":tabprev<CR>" "Prev Tab"]
                           :+ [":vertical resize +10<CR>" "Increase height"]
                           :- [":vertical resize -10<CR>" "Decrease height"]
-                          :> [":vertical resize +10<CR>" "Increase width"]
-                          :< [":vertical resize -10<CR>" "Decrease width"]
+                          :> [":resize +10<CR>" "Increase width"]
+                          :< [":resize -10<CR>" "Decrease width"]
                           :d [":qall<CR>" "Quit immediately"]}
                   :<C-Space> {:name :+window
                               :c [":tabnew<CR>" "Create New Tab"]
@@ -400,6 +404,10 @@
                   :0 [:g0 "Move to the beginning of the current (visual) line"]
                   :$ [:g$ "Move to the end of the current (visual) line"]
                   :<C-s> [":Scratch<CR>" "Scratch Buffer"]
+                  :<C-h> [":TmuxNavigateLeft<CR>" "Select Window/Pane Left"]
+                  :<C-l> [":TmuxNavigateRight<CR>" "Select Window/Pane Right"]
+                  :<C-k> [":TmuxNavigateUp<CR>" "Select Window/Pane Down"]
+                  :<C-j> [":TmuxNavigateDown<CR>" "Select Window/Pane Up"]
                   :n ["n:lua HlNext(0.4)<CR>" "Glow Next"]
                   :N ["N:lua HlNext(0.4)<CR>" "Glow Prev"]
                   ";" [":" "Quick Command"]} {:mode :n})
@@ -419,7 +427,7 @@
                               :v [(t "<C-\\><C-n><C-w>v") "Split vertically"]
                               :h [(t "<C-\\><C-n><C-w>v") "Split horizontally"]
                               :d [(t "<C-\\><C-n>:SSave! default | qall<CR>")
-                                  "Save default sessiono and quit"]
+                                  "Save default session and quit"]
                               :D [(t "<C-\\><C-n>:SLoad default<CR>")
                                   "Load default session"]}
                   :<C-v> [(t "<C-\\><C-n><C-w>v") "Split vertically"]
