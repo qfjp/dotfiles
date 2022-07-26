@@ -29,7 +29,7 @@ end
 Bootstrap("rktjmp", "hotpot.nvim", {})
 Bootstrap("tsbohc","zest.nvim", {{"setup"}})
 Bootstrap('lewis6991', 'impatient.nvim', {{"enable_profile"}})
-Bootstrap("wbthomason", "packer.nvim", {{startup = require('plugins').packer_table}, {"sync"}})
+Bootstrap("wbthomason", "packer.nvim", {})
 
 if pcall(require, "hotpot") then
   require('hotpot').setup({

@@ -9,7 +9,7 @@
 ;; bookmark will be given in startify. The inner table index is the
 ;; subdirectory where the file was placed for GNU stow.
 (local BOOKMARK_PAIRS {:a {:neovim (.. (vim.fn.stdpath :config)
-                                       :/lua/plugins.lua)}
+                                       :/fnl/plugins.fnl)}
                        :d {:neovim (.. (vim.fn.stdpath :config)
                                        :/fnl/startup.fnl)}
                        :f {:zsh (.. HOME :/.zshrc)}})
