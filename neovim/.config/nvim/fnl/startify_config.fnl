@@ -1,6 +1,6 @@
 ;; {{{ Startify
 ;; -------------
-(require-macros :hibiscus.vim)
+(require-macros :macros)
 (local HOME (or (os.getenv :HOME) ""))
 (local GIT_DIR (.. HOME :/projects/github/dotfiles))
 
@@ -10,7 +10,7 @@
 ;; subdirectory where the file was placed for GNU stow.
 (local BOOKMARK_PAIRS {:a {:neovim (.. (vim.fn.stdpath :config)
                                        :/lua/plugins.lua)}
-                       :d {:neovim (.. (vim.fn.stdpath :config) :/init.fnl)}
+                       :d {:neovim (.. (vim.fn.stdpath :config)
                        :f {:zsh (.. HOME :/.zshrc)}})
 
 (local skiplist

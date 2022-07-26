@@ -1,7 +1,7 @@
 ;; {{{ Goyo
 ;; --------
-(require-macros :hibiscus.vim)
 (require-macros :macros)
+(require-macros :zest.macros)
 
 (g! limelight_priority -1)
 ;; 240 -> #262626
@@ -21,22 +21,17 @@
 
 (fn goyo-leave []
   (vim.cmd "silent !tmux set status on")
-  (opt! signcolumn (b sign_status))
-  (opt! cursorline (b cursor_line))
-  (opt! showcmd (b show_cmd))
-  (exec [[:unlet "b:sign_status"]])
-  (exec [[:unlet "b:cursor_line"]])
-  (exec [[:unlet "b:show_cmd"]])
+  (set! signcolumn (b sign_status))
+  (set! cursorline (b cursor_line))
+  (set! showcmd (b show_cmd))
+  (vim.cmd "unlet \"b:sign_status\"")
+  (vim.cmd "unlet \"b:cursor_line\"")
+  (vim.cmd "unlet \"b:show_cmd\"")
   (vim.cmd :TwilightDisable))
 
-(augroup! :Goyo [[User :nested]
-                 [GoyoEnter]
-                 (fn []
-                   (goyo-enter))]
-          [[User :nested]
-           [GoyoLeave]
-           (fn []
-             (goyo-leave))])
+(def-augroup :Goyo (def-autocmd-fn [:User] [:GoyoEnter] goyo-enter)
+             (def-autocmd-fn [:User] [:GoyoLeave] goyo-leave))
+
 
 ;; }}}
 

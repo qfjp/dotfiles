@@ -1,5 +1,5 @@
-(require-macros :hibiscus.core)
-(require-macros :hibiscus.vim)
+(require-macros :macros)
+(require-macros :zest.macros)
 (g! neoformat_sql_mysqlformat {:args [:-k
                                       :upper
                                       :--reindent
@@ -49,5 +49,5 @@
 
 ;trim whitespace
 (g! neoformat_run_all_formatters 1)
-(augroup! :Fmt [[BufWritePre] "*" "undojoin | Neoformat"])
+(def-augroup :Fmt (def-autocmd [:BufWritePre] ["*"] "undojoin | Neoformat"))
 

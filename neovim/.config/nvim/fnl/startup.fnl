@@ -1,5 +1,5 @@
-(require-macros :hibiscus.core)
-(require-macros :hibiscus.vim)
+((. (require :zest) :setup))
+(require-macros :zest.macros)
 (require-macros :macros)
 
 ;; {{{ Plugin Configs
@@ -17,19 +17,18 @@
 (require :goyo_config)
 
 ;; }}}
-
-(when (or (g :goneovim) (g :neovide))
-  (augroup! :Gui [[UIEnter]
-                  *
-                  (fn []
-                    "Settings for Neovide and Gonvim"
-                    (set! guifont "FiraCode Nerd Font:h10")
-                    (set! showtabline 2)
-                    (g! neovide_no_idle true)
-                    (g! neovide_cursor_vfx_mode :wireframe)
-                    (when (g :goneovim)
-                      (exec [GonvimSmoothCursor])
-                      (exec [GonvimSmoothScroll])))]))
+(when (or (g goneovim) (g neovide))
+  (def-augroup :Gui
+               (def-autocmd-fn [:UIEnter] ["*"]
+                               (do
+                                 "Settings for Neovide ang Gonvim"
+                                 (set! guifont "FiraCode Nerd Font:h10")
+                                 (set! showtabline 2)
+                                 (g! neovide_no_idle true)
+                                 (g! neovide_curosr_vfx_mode :wireframe)
+                                 (when (g :goneovim)
+                                   (vim.cmd :GonvimSmoothCursor)
+                                   (vim.cmd :GonvimSmoothScroll))))))
 
 (g! mapleader " ")
 (g! maplocalleader " ")
@@ -45,7 +44,7 @@
 
 ;; {{{ Greek Char Maps
 ;; -------------------
-(exec [[:source (.. (vimfn stdpath :config) :/greek.vim)]])
+(vim.cmd (.. :source (.. (vimfn stdpath :config) :/greek.vim)))
 
 ;; }}}
 
@@ -59,18 +58,13 @@
 
 (global HlNext
         (fn [blinktime]
-          (exec [[:highlight
-                  :SearchBlink
-                  :guifg=white
-                  :guibg=magenta
-                  :ctermfg=white
-                  :ctermbg=red]])
+          (vim.cmd "highlight SearchBlink guifg=white guibg=magenta ctermfg=white ctermbg=red")
           (let [search_text (vim.api.nvim_eval "@/")
                 target_pat (.. "\\c\\%#" search_text)
                 ring (vimfn matchadd :SearchBlink target_pat 101)
                 sleep_str (string.format "%sm" (* blinktime 200))
                 call_str (string.format "matchdelete(%s)" ring)]
-            (exec [[:redraw "|" :sleep sleep_str "|" :call call_str]]))))
+            (vim.cmd (.. "redraw | sleep " sleep_str " | call " call_str)))))
 
 ;; }}}
 
@@ -119,17 +113,16 @@
 
 (set! pastetoggle :<F1>)
 
-(augroup! :QFixToggle [[BufWinEnter]
-                       [quickfix]
-                       #(do
-                          (g! qfix_win (vimfn bufnr "$"))
-                          (set! nolist)
-                          (set! colorcolumn :0))]
-          [[BufWinLeave]
-           [quickfix]
-           #(when (and (vimfn exists (g :qfix_win))
-                       (= (g :qfix_win) (vimfn expand :<abuf>)))
-              (exec [[:unlet! "g:qfix_win"]]))])
+(def-augroup :QFixToggle
+             (def-autocmd-fn :BufWinEnter :quickfix
+                             (do
+                               (g! qfix_win (vimfn bufnr "$"))
+                               (set! nolist)
+                               (set! colorcolumn :0)))
+             (def-autocmd-fn :BufWinLeave :quickfix
+                             (when (and (vimfn exists (g :qfix_win))
+                                        (= (g :qfix_win) (vimfn expand :<abuf>)))
+                               (vim.cmd "unlet! g:qfix_win"))))
 
 (fn ScratchBuf []
   (var scratchname :scratch)
@@ -143,7 +136,7 @@
   (set vim.opt_local.bufhidden :hide)
   (set vim.opt_local.swapfile false))
 
-(command! [] :Scratch `ScratchBuf)
+(def-command-fn :Scratch [] ScratchBuf)
 ;; }}}
 
 ;; {{{ Visual
@@ -153,13 +146,12 @@
 (set! conceallevel 0)
 (set! termguicolors)
 
-(augroup! :ColorSchemeMods
-          [[ColorScheme]
-           *
-           (.. "highlight SpecialKey ctermfg=red cterm=none"
-               "| highlight Folded guifg=magenta gui=bold ctermbg=none ctermfg=magenta cterm=bold"
-               "| highlight VertSplit guibg=none ctermbg=none guifg=#afafaf ctermfg=237"
-               "| highlight Comment guifg=#df5f5f ctermfg=167 guibg=none ctermbg=none gui=none cterm=none")])
+(def-augroup :ColorSchemeModes
+             (def-autocmd [:ColorScheme] ["*"]
+                          (.. "highlight SpecialKey ctermfg=red cterm=none"
+                              "| highlight Folded guifg=magenta gui=bold ctermbg=none ctermfg=magenta cterm=bold"
+                              "| highlight VertSplit guibg=none ctermbg=none guifg=#afafaf ctermfg=237"
+                              "| highlight Comment guifg=#df5f5f ctermfg=167 guibg=none ctermbg=none gui=none cterm=none")))
 
 (set! listchars "tab:▕░,trail:▒,extends:>,precedes:<")
 
@@ -168,34 +160,34 @@
 ;; {{{ Nvim Terminal mode
 ;; ----------------------
 (set vim.env.NVIM_LISTEN_ADDRESS vim.v.servername)
-(augroup! :Terminal [[TermOpen]
-                     "*"
-                     (fn []
-                       (set! filetype :terminal)
-                       ;; Black
-                       (b! terminal_color_0 "#272822")
-                       (b! terminal_color_8 "#75715e")
-                       ;; Red
-                       (b! terminal_color_1 "#f92672")
-                       (b! terminal_color_9 "#f92672")
-                       ;; Green
-                       (b! terminal_color_2 "#a6e22e")
-                       (b! terminal_color_10 "#a6e22e")
-                       ;; Yellow
-                       (b! terminal_color_3 "#f4bf75")
-                       (b! terminal_color_11 "#f4bf75")
-                       ;; Blue
-                       (b! terminal_color_4 "#66d9ef")
-                       (b! terminal_color_12 "#66d9ef")
-                       ;; Magenta
-                       (b! terminal_color_5 "#ae81ff")
-                       (b! terminal_color_13 "#ae81ff")
-                       ;; Cyan
-                       (b! terminal_color_6 "#a1efe4")
-                       (b! terminal_color_14 "#a1efe4")
-                       ;; White
-                       (b! terminal_color_7 "#989892")
-                       (b! terminal_color_15 "#f9f8f5"))])
+(def-augroup :Terminal
+             (def-autocmd-fn :TermOpen "*"
+                             (do
+                               (set! filetype :terminal)
+                               ;; Black
+                               (b! terminal_color_0 "#272822")
+                               (b! terminal_color_8 "#75715e")
+                               ;; Red
+                               (b! terminal_color_1 "#f92672")
+                               (b! terminal_color_9 "#f92672")
+                               ;; Green
+                               (b! terminal_color_2 "#a6e22e")
+                               (b! terminal_color_10 "#a6e22e")
+                               ;; Yellow
+                               (b! terminal_color_3 "#f4bf75")
+                               (b! terminal_color_11 "#f4bf75")
+                               ;; Blue
+                               (b! terminal_color_4 "#66d9ef")
+                               (b! terminal_color_12 "#66d9ef")
+                               ;; Magenta
+                               (b! terminal_color_5 "#ae81ff")
+                               (b! terminal_color_13 "#ae81ff")
+                               ;; Cyan
+                               (b! terminal_color_6 "#a1efe4")
+                               (b! terminal_color_14 "#a1efe4")
+                               ;; White
+                               (b! terminal_color_7 "#989892")
+                               (b! terminal_color_15 "#f9f8f5"))))
 
 ;; }}}
 
@@ -206,12 +198,12 @@
 
 (rem! viewoptions :options)
 
-(augroup! :Folds
-          [[FileType]
-           [vim zsh lua fennel]
-           (fn []
-             (set vim.opt_local.foldmethod :marker)
-             (set vim.opt_local.foldtext "v:lua.SimpleFoldText()"))])
+(def-augroup :Folds
+             (def-autocmd-fn :FileType [:vim :zsh :lua :fennel]
+                             (do
+                               (set vim.opt_local.foldmethod :marker)
+                               (set vim.opt_local.foldtext
+                                    "v:lua.SimpleFoldText()"))))
 
 (set! foldtext "v:lua.CFoldText()")
 
@@ -443,19 +435,19 @@
 ;; {{{ Auto Commands
 ;; -----------------
 ; Open at last line
-(augroup! :Utilities
-          [[BufReadPost]
-           "*"
-           "if line(\"'\\\"\") > 1 && line(\"'\\\"\") <= line(\"$\") | exe \"normal! g`\\\"\" | endif"])
+(def-augroup :Utilities
+             (def-autocmd [:BufReadPost] ["*"]
+                          "if line(\"'\\\"\") > 1 && line(\"'\\\"\") <= line(\"$\") | exe \"normal! g`\\\"\" | endif"))
 
-(augroup! :LaTeX [[FileType] [tex] "set fenc=ascii"])
+(def-augroup :LaTeX (def-autocmd [:FileType] [:tex] "set fenc=ascii"))
 
-(augroup! :HelpFiles
-          [[FileType]
-           [help]
-           (.. "source " (vimfn stdpath :config) :/ftplugin/help.vim)])
+(def-augroup :HelpFiles
+             (def-autocmd [:FileType] [:help]
+                          (.. "source " (vimfn stdpath :config)
+                              :/ftplugin/help.vim)))
 
-(augroup! :Scala [[BufNewFile BufRead] :*.sc "set ft=scala"])
+(def-augroup :Scala (def-autocmd [:BufNewFile :BufRead] [:*.sc] "set ft=scala"))
+
 ;; }}}
 
 ;; {{{ netrw
@@ -470,8 +462,10 @@
   (let [pat (.. :colors/ name :.vim)]
     (= 0 (vimfn empty (vimfn globpath (. vim.opt.rtp :_value) pat)))))
 
+(vim.cmd "colorscheme janah")
+
 (when (hasColorScheme :janah)
-  (exec [[:colorscheme :janah]]))
+  (vim.cmd "colorscheme janah"))
 
 (require :neoformat_config)
 
