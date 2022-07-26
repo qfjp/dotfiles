@@ -11,6 +11,7 @@
 (local BOOKMARK_PAIRS {:a {:neovim (.. (vim.fn.stdpath :config)
                                        :/lua/plugins.lua)}
                        :d {:neovim (.. (vim.fn.stdpath :config)
+                                       :/fnl/startup.fnl)}
                        :f {:zsh (.. HOME :/.zshrc)}})
 
 (local skiplist
