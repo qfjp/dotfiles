@@ -89,10 +89,9 @@ plugins.packer_table = {function(use)
     use (conf .. 'vim-haskellConcealPlus')
 
     -- Fennel
-    use { 'eraserhd/parinfer-rust'
-        , ft = {'clojure', 'fennel', 'lisp', 'scheme'}
-        , run = 'cargo build --release'
-    }
+    use { 'gpanders/nvim-parinfer'
+        , ft = {"clojure", "fennel", "lisp", "scheme"}
+        }
     use {'p00f/nvim-ts-rainbow'}
     use {'mnacamura/vim-fennel-syntax', ft='fennel'}
     use {'Olical/conjure'}
