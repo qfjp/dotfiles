@@ -38,8 +38,8 @@
                                  (g! neovide_no_idle true)
                                  (g! neovide_curosr_vfx_mode :wireframe)
                                  (when (g :goneovim)
-                                   (vim.cmd :GonvimSmoothCursor)
-                                   (vim.cmd :GonvimSmoothScroll))))))
+                                   (exec [[GonvimSmoothCursors]
+                                          [GonvimSmoothScroll]]))))))
 
 (g! mapleader " ")
 (g! maplocalleader " ")
@@ -69,7 +69,12 @@
 
 (global HlNext
         (fn [blinktime]
-          (vim.cmd "highlight SearchBlink guifg=white guibg=magenta ctermfg=white ctermbg=red")
+          (exec [[highlight
+                  SearchBlink
+                  guifg=white
+                  guibg=magenta
+                  ctermfg=white
+                  ctermbg=red]])
           (let [search_text (vim.api.nvim_eval "@/")
                 target_pat (.. "\\c\\%#" search_text)
                 ring (vimfn matchadd :SearchBlink target_pat 101)

@@ -5,6 +5,18 @@
   `(tset M ,(tostring name) (fn ,name
                               ,...)))
 
+(mod-fn exec [cmd-lst]
+        "Execute each list of commands, sequentially. The cmd-lst should be a list of raw symbols"
+        (let [result {}]
+          (each [_ cmd (ipairs cmd-lst)]
+            (table.insert result
+                          `(vim.cmd ,(table.concat (collect [ix word (ipairs cmd)]
+                                                     (values ix (tostring word)))
+                                                   " "))))
+          (table.insert result true)
+          `(do
+             ,(unpack result))))
+
 (mod-fn g [name] "Retrieve a global var" `(. vim.g ,(tostring name)))
 
 (mod-fn g! [name val] "Set a global var" `(tset vim.g ,(tostring name) ,val))

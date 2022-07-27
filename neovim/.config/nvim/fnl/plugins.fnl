@@ -3,8 +3,7 @@
 (local plugins {})
 
 (fn SayoConfig []
-  (vim.cmd "command! S Sayonara!")
-  (vim.cmd "command! Sa Sayonara")
+  (exec [[command! S Sayonara] [command! Sa Sayonara]])
   (g! sayonara_confirm_quit true))
 
 (fn SafeRequire [mod opts]
