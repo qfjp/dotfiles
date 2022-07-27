@@ -157,7 +157,7 @@
 (set! conceallevel 0)
 (set! termguicolors)
 
-(def-augroup :ColorSchemeModes
+(def-augroup :ColorSchemeMods
              (def-autocmd [:ColorScheme] ["*"]
                           (.. "highlight SpecialKey ctermfg=red cterm=none"
                               "| highlight Folded guifg=magenta gui=bold ctermbg=none ctermfg=magenta cterm=bold"
