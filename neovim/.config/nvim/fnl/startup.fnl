@@ -147,7 +147,7 @@
   (set vim.opt_local.bufhidden :hide)
   (set vim.opt_local.swapfile false))
 
-(def-command-fn :Scratch [] ScratchBuf)
+(def-command-fn :Scratch [] (ScratchBuf))
 ;; }}}
 
 ;; {{{ Visual
