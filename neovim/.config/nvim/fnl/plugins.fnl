@@ -36,28 +36,37 @@
                                                         :right ""}
                                  :always_divide_middle true
                                  :globalstatus false}
-                       :sections {:lualine_a [:mode]
-                                  :lualine_b [:branch :diff :diagnostics]
-                                  :lualine_c [{1 :filename
-                                               :symbols {:modified " ●"
-                                                         :readonly " "}
-                                               :color (fn [_]
-                                                        {:fg (and (bo modified)
-                                                                  mod_color)})}]
-                                  :lualine_x [:encoding :fileformat :filetype]
-                                  :lualine_y [:progress]
-                                  :lualine_z [:location]}
-                       :tabline {:lualine_a [{1 :buffers
-                                              :buffers-color {:active (fn []
-                                                                        {:fg (and (bo modified
-                                                                                      mod_color))}
-                                                                        :bg
-                                                                        theme-bg)}}]
+                       :sections {:lualine_a [(fn []
+                                                "Show paste mode"
+                                                (or (and vim.opt_local.paste._value
+                                                         "Þ")
+                                                    ""))
+                                              :mode
+                                              {1 (fn []
+                                                   "Show readonly"
+                                                   (or (and vim.bo.readonly
+                                                            "")
+                                                       ""))
+                                               :color {:fg mod_color}}]
+                                  :lualine_b [{1 :buffers
+                                               :buffers_color {:active (fn []
+                                                                         {:bg (and (bo modified)
+                                                                                   mod_color)})}}]
+                                  :lualine_c []
+                                  :lualine_x [:diagnostics]
+                                  :lualine_y [:encoding :fileformat :filetype]
+                                  :lualine_z [{1 :progress
+                                               :padding {:left 0 :right 1}
+                                               :separator " "}
+                                              {1 :location
+                                               :padding {:left 0 :right 1}
+                                               :color {:gui :none}}]}
+                       :tabline {:lualine_a [:tabs]
                                  :lualine_b []
                                  :lualine_c []
                                  :lualine_x []
-                                 :lualine_y []
-                                 :lualine_z [:tabs]}
+                                 :lualine_y [:diff]
+                                 :lualine_z [:branch]}
                        :inactive_sections {:lualine_a []
                                            :lualine_b []
                                            :lualine_c [:branch
