@@ -9,9 +9,21 @@
 
 (mod-fn g! [name val] "Set a global var" `(tset vim.g ,(tostring name) ,val))
 
-(mod-fn opt! [name val] `(tset (. vim.opt ,(tostring name)) :_value ,val))
+(mod-fn opt [name] "Retrieve a vim option value"
+        `(. (. vim.opt ,(tostring name) :_value)))
 
-(mod-fn set! [name ?val]
+(mod-fn opt! [name val]
+        "Set a vim option, lua style (e.g. vim.opt.wrapscan = false)"
+        `(tset (. vim.opt ,(tostring name)) :_value ,val))
+
+(mod-fn opt-local [name] "Retrieve a vim local option value"
+        `(. (. vim.opt_local ,(tostring name) :_value)))
+
+(mod-fn opt-local! [name val]
+        "Set a vim local option, lua style (e.g. vim.opt_local.wrapscan = false)"
+        `(tset (. vim.opt_local ,(tostring name)) :_value ,val))
+
+(mod-fn set! [name ?val] "Set a vim option, vim style (e.g. `set nowrapscan)"
         (let [name (tostring name)]
           (if (not= nil ?val)
               `(tset vim.opt ,name ,?val)
@@ -19,13 +31,19 @@
                   `(tset vim.opt ,(string.sub name 3) false)
                   `(tset vim.opt ,name true)))))
 
+(mod-fn setlocal! [name ?val]
+        "Set a vim local option, vim style (e.g. `setlocal nowrapscan)"
+        (let [name (tostring name)]
+          (if (not= nil ?val)
+              `(tset vim.opt_local ,name ,?val)
+              (if (= :no (string.sub name 1 2))
+                  `(tset vim.opt_local ,(string.sub name 3) false)
+                  `(tset vim.opt_local ,name true)))))
+
 (mod-fn set+ [name val] "Appends 'val' to <name>'s option-list"
         `(: (. vim.opt ,(tostring name)) :append ,val))
 
 (mod-fn rem! [name val] `(: (. vim.opt ,(tostring name)) :remove ,val))
-
-(mod-fn opt [name] "Retrieve a vim option value"
-        `(. (. vim.opt ,(tostring name) :_value)))
 
 (mod-fn b [name] "Retrieve a buffer var" `(. vim.b ,(tostring name)))
 
