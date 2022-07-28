@@ -325,7 +325,7 @@
                               "Show diagostics"]}
                       :l {:name "Vim LSP"
                           :d [(fn []
-                                vim.lsp.buf.definition)
+                                (vim.lsp.buf.definition))
                               "Show definition"]
                           :D [(fn []
                                 (vim.lsp.buf.declaration))
@@ -337,19 +337,19 @@
                                 (vim.lsp.buf.hover))
                               "LSP Hover"]
                           :i [(fn []
-                                vim.lsp.buf.implementation)
+                                (vim.lsp.buf.implementation))
                               "Show implementation"]
                           :l [(fn []
-                                vim.lsp.util.show_line_diagnostics)
+                                (vim.lsp.util.show_line_diagnostics))
                               "Show line diagnostics"]
                           :s [(fn []
-                                vim.lsp.buf.signature_help)
+                                (vim.lsp.buf.signature_help))
                               "Show signature"]
                           :t [(fn []
-                                vim.lsp.buf.type_definition)
+                                (vim.lsp.buf.type_definition))
                               "Show type definition"]}}
                   :K [(fn []
-                        vim.lsp.buf.hover)
+                        (vim.lsp.buf.hover))
                       "LSP Hover"]
                   :<leader> {:name :leader
                              :c [":set spell!<CR>" "Spell Checker"]
