@@ -152,7 +152,7 @@
                            :sbdchd/neoformat []
                            ;; LSP Configuration
                            :neovim/nvim-lspconfig []
-                           :scalameta/nvim-metals {:ft [:scala :sbt]}
+                           :scalameta/nvim-metals []
                            :mfussenegger/nvim-jdtls {:ft :java}
                            :williamboman/nvim-lsp-installer {:requires [:neovim/nvim-lspconfig]}
                            ;; Completion/Snippets
