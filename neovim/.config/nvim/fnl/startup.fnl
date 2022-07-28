@@ -295,10 +295,12 @@
   (let [wk package.loaded.which-key
         t (fn [str]
             (vim.api.nvim_replace_termcodes str true true true))]
+    ;; Command
     (wk.register {:s {:name :Sayonara
                       ";" [:Sayonara!<CR> "Forget File Buffer"]
                       "a;" [:Sayonara<CR> "Forget File Buffer And Layout"]}}
                  {:mode :c :silent false})
+    ;; Normal
     (wk.register {:g {:k [:k "Move up one actual line"]
                       :j [:j "Move down one actual line"]
                       :0 [:0
@@ -427,17 +429,22 @@
                   :n ["n:lua HlNext(0.4)<CR>" "Glow Next"]
                   :N ["N:lua HlNext(0.4)<CR>" "Glow Prev"]
                   ";" [":" "Quick Command"]} {:mode :n})
-    (wk.register {:jk [:<Esc> "Quick Escape"]
-                  :<C-n> ["pumvisible() ? \"\\<C-n>\" : \"\\<C-x>\\<C-o>\""
+    ;; Insert
+    (wk.register {:jk [:<Esc> "Quick Escape"] :<C-k> [:<C-p> "Prev Item"]}
+                 {:mode :i})
+    ;; Insert (<expr>)
+    (wk.register {:<C-n> ["pumvisible() ? \"\\<C-n>\" : \"\\<C-x>\\<C-o>\""
                           "Next Item"]
                   :<C-j> ["pumvisible() ? \"\\<C-n>\" : \"\\<C-x>\\<C-o>\""
                           "Next Item"]
-                  :<C-k> [:<C-p> "Prev Item"]
                   :<S-Tab> ["pumvisible() ? \"\\<C-p> : \"\\<C-h>\""
-                            "Prev Item"]} {:mode :i})
+                            "Prev Item"]}
+                 {:mode :i :expr true})
+    ;; Visual
     (wk.register {:J [":m '>+1<CR>gv=gv" "Move Line Up"]
                   :K [":m '<-2<CR>gv=gv" "Move Line Down"]}
                  {:mode :v})
+    ;; Terminal
     (wk.register {:<C-w> [(t "<C-\\><C-n>") "Escape terminal"]
                   :<C-Space> {:name "Tmux Prefix-alike"
                               :v [(t "<C-\\><C-n><C-w>v") "Split vertically"]
