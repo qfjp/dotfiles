@@ -5,6 +5,7 @@
 (fn SayoConfig []
   (exec [[command! S Sayonara] [command! Sa Sayonara]])
   (g! sayonara_confirm_quit true))
+(local lualine-conf (. (require :lualine-conf) :lualine-conf))
 (local cmpdict-conf (. (require :completion_config) :cmpdict_conf))
 
 (fn SafeRequire [mod opts]
@@ -21,62 +22,6 @@
                                   :zb]
                        :hide_cursor false
                        :respect_scrolloff true})
-
-(local lualine-conf (let [theme-name :jellybeans
-                          mod_color "#aa3355"
-                          theme (when (pcall require
-                                             (.. :lualine.themes. theme-name))
-                                  (require (.. :lualine.themes. theme-name)))
-                          theme-bg (when (not (= nil theme))
-                                     theme.normal.a.bg)]
-                      {:options {:icons_enabled true
-                                 :theme theme-name
-                                 :section_separators {:left "" :right ""}
-                                 :component_separators {:left ""
-                                                        :right ""}
-                                 :always_divide_middle true
-                                 :globalstatus false}
-                       :sections {:lualine_a [(fn []
-                                                "Show paste mode"
-                                                (or (and vim.opt_local.paste._value
-                                                         "Þ")
-                                                    ""))
-                                              :mode
-                                              {1 (fn []
-                                                   "Show readonly"
-                                                   (or (and vim.bo.readonly
-                                                            "")
-                                                       ""))
-                                               :color {:fg mod_color}}]
-                                  :lualine_b [{1 :buffers
-                                               :buffers_color {:active (fn []
-                                                                         {:bg (and (bo modified)
-                                                                                   mod_color)})}}]
-                                  :lualine_c []
-                                  :lualine_x [:diagnostics]
-                                  :lualine_y [:encoding :fileformat :filetype]
-                                  :lualine_z [{1 :progress
-                                               :padding {:left 0 :right 1}
-                                               :separator " "}
-                                              {1 :location
-                                               :padding {:left 0 :right 1}
-                                               :color {:gui :none}}]}
-                       :tabline {:lualine_a [:tabs]
-                                 :lualine_b []
-                                 :lualine_c []
-                                 :lualine_x []
-                                 :lualine_y [:diff]
-                                 :lualine_z [:branch]}
-                       :inactive_sections {:lualine_a []
-                                           :lualine_b []
-                                           :lualine_c [:branch
-                                                       {1 :filename
-                                                        :symbols {:modified " ●"
-                                                                  :readonly " "}}]
-                                           :lualine_x [:location]
-                                           :lualine_y []
-                                           :lualine_z []}
-                       :extensions []}))
 
 (local packer-opts {:config {:display {:open_fn (. (require :packer.util)
                                                    :float)}}
