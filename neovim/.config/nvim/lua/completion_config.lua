@@ -238,5 +238,19 @@
           capabilities = capabilities
       };
     end
+
+    local cmpdict_conf = {
+        dic = { ["*"] = {"/usr/share/hunspell/en_US.dic"}
+              , spellang = {en = "/usr/share/hunspell/en_US.dic"}
+              }
+      , exact = 2
+      , first_case_insensitive = false
+      , document = false
+      , document_command = "wn %s -over"
+      , async = true
+      , capacity = 5
+      , debug = false
     }
+
+return { cmpdict_conf = cmpdict_conf }
 -- }}}

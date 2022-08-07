@@ -5,6 +5,7 @@
 (fn SayoConfig []
   (exec [[command! S Sayonara] [command! Sa Sayonara]])
   (g! sayonara_confirm_quit true))
+(local cmpdict-conf (. (require :completion_config) :cmpdict_conf))
 
 (fn SafeRequire [mod opts]
   (when (pcall require mod)
@@ -76,16 +77,6 @@
                                            :lualine_y []
                                            :lualine_z []}
                        :extensions []}))
-
-(local cmpdict_conf {:dic {:* [:/usr/share/hunspell/en_US.dic]
-                           :spellang {:en :/usr/share/hunspell/en_US.dic}}
-                     :exact 2
-                     :first_case_insensitive false
-                     :document false
-                     :document_command "wn %s -over"
-                     :async true
-                     :capacity 5
-                     :debug false})
 
 (local packer-opts {:config {:display {:open_fn (. (require :packer.util)
                                                    :float)}}
@@ -171,7 +162,7 @@
                            :uga-rosa/cmp-dictionary {:ft [:tex
                                                           :config
                                                           (SafeRequire :cmp_dictionary
-                                                                       cmpdict_conf)]}
+                                                                       cmpdict-conf)]}
                            :kdheepak/cmp-latex-symbols {:ft [:tex]}
                            :max397574/cmp-greek []
                            ;; Filetypes
