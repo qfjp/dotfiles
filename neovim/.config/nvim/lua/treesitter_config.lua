@@ -16,6 +16,7 @@
           , "lua"
           , "make"
           , "python"
+          , "query"
           , "scala"
           , "scheme"
           , "vim"
