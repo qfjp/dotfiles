@@ -87,6 +87,7 @@
                            :wbthomason/packer.nvim []
                            ;; personal
                            :qfjp/AnsiEsc []
+                           :qfjp/silverscreen.nvim {:requires [:rktjmp/lush.nvim]}
                            (.. conf :SyntaxAttr) []
                            (.. conf :vim-haskellConcealPlus) []
                            ;; Fennel

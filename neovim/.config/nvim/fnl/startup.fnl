@@ -69,12 +69,7 @@
 
 (global HlNext
         (fn [blinktime]
-          (exec [[highlight
-                  SearchBlink
-                  guifg=white
-                  guibg=magenta
-                  ctermfg=white
-                  ctermbg=red]])
+          (exec [[highlight! link SearchBlink IncSearch]])
           (let [search_text (vim.api.nvim_eval "@/")
                 target_pat (.. "\\c\\%#" search_text)
                 ring (vimfn matchadd :SearchBlink target_pat 101)
@@ -162,13 +157,6 @@
 (set! conceallevel 0)
 (set! termguicolors)
 
-(def-augroup :ColorSchemeMods
-             (def-autocmd [:ColorScheme] ["*"]
-                          (.. "highlight SpecialKey ctermfg=red cterm=none"
-                              "| highlight Folded guifg=magenta gui=bold ctermbg=none ctermfg=magenta cterm=bold"
-                              "| highlight VertSplit guibg=none ctermbg=none guifg=#afafaf ctermfg=237"
-                              "| highlight Comment guifg=#df5f5f ctermfg=167 guibg=none ctermbg=none gui=none cterm=none")))
-
 (set! listchars "tab:▕░,trail:▒,extends:>,precedes:<")
 
 ;; }}}
@@ -181,7 +169,7 @@
                              (do
                                (set! filetype :terminal)
                                ;; Black
-                               (b! terminal_color_0 "#272822")
+                               (b! terminal_color_0 "#1A1919")
                                (b! terminal_color_8 "#75715e")
                                ;; Red
                                (b! terminal_color_1 "#f92672")
@@ -489,14 +477,7 @@
 (g! netrw_hide 1)
 ;; }}}
 
-(fn hasColorScheme [name]
-  (let [pat (.. :colors/ name :.vim)]
-    (= 0 (vimfn empty (vimfn globpath (. vim.opt.rtp :_value) pat)))))
-
-(vim.cmd "colorscheme janah")
-
-(when (hasColorScheme :janah)
-  (vim.cmd "colorscheme janah"))
+(vim.cmd "colorscheme silverscreen")
 
 (require :neoformat_config)
 

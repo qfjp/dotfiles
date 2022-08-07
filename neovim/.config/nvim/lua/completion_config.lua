@@ -12,10 +12,25 @@
 
     local colorSchemeLsp = vim.api.nvim_create_augroup("ColorSchemeLspMod", {clear = true})
     vim.api.nvim_create_autocmd("ColorScheme", {group = colorSchemeLsp, nested = false, once = false, pattern = "*", callback = function()
-      vim.cmd[[highlight DiagnosticSignInfo  guifg=skyblue guibg=none ctermfg=blue ctermbg=none]]
-       vim.cmd[[highlight DiagnosticSignWarn  guifg=yellow guibg=none ctermfg=yellow ctermbg=none]]
-       vim.cmd[[highlight DiagnosticSignError guifg=red guibg=none ctermfg=red ctermbg=none]]
-       vim.cmd[[highlight DiagnosticSignHint  guifg=lightgreen guibg=none ctermfg=green ctermbg=none]]
+      vim.cmd[[highlight! link DiagnosticInfo ModeMsg]]
+      vim.cmd[[highlight! link DiagnosticWarn WarningMsg]]
+      vim.cmd[[highlight! link DiagnosticError DiffDelete]]
+      vim.cmd[[highlight! link DiagnosticHint DiffAdd]]
+      vim.cmd[[highlight! link DiagnosticSignInfo ModeMsg]]
+      vim.cmd[[highlight! link DiagnosticSignWarn WarningMsg]]
+      vim.cmd[[highlight! link DiagnosticSignError DiffDelete]]
+      vim.cmd[[highlight! link DiagnosticSignHint DiffAdd]]
+      vim.cmd[[highlight! link DiagnosticVirtualTextInfo DiagnosticSignInfo]]
+      vim.cmd[[highlight! link DiagnosticVirtualTextWarn DiagnosticSignWarn]]
+      vim.cmd[[highlight! link DiagnosticVirtualTextError DiagnosticSignError]]
+      vim.cmd[[highlight! link DiagnosticVirtualTextHint DiagnosticSignHint]]
+      vim.cmd[[highlight! lualine_x_diagnostics_error_terminal guifg=#B66A5f guibg=#868383]]
+      vim.cmd[[highlight! lualine_x_diagnostics_error_inactive guifg=#B66A5f guibg=#868383]]
+      vim.cmd[[highlight! lualine_x_diagnostics_error_replace guifg=#B66A5f guibg=#868383]]
+      vim.cmd[[highlight! lualine_x_diagnostics_error_command guifg=#B66A5f guibg=#868383]]
+      vim.cmd[[highlight! lualine_x_diagnostics_error_visual guifg=#B66A5f guibg=#868383]]
+      vim.cmd[[highlight! lualine_x_diagnostics_error_insert guifg=#B66A5f guibg=#868383]]
+      vim.cmd[[highlight! lualine_x_diagnostics_error_normal guifg=#B66A5F guibg=#868383]]
     end})
 
     vim.opt.shortmess:remove({"F"})
@@ -27,22 +42,23 @@
     vim.api.nvim_create_autocmd("ColorScheme", {
         pattern = "*", group = cmp_group
       , callback = function()
-          -- gray
+          -- ?
           vim.cmd[[highlight! CmpItemAbbrDeprecated guibg=NONE gui=strikethrough guifg=#808080]]
-          -- blue
-          vim.cmd[[highlight! CmpItemAbbrMatch guibg=NONE guifg=#569CD6]]
-          vim.cmd[[highlight! CmpItemAbbrMatchFuzzy guibg=NONE guifg=#569CD6]]
-          -- light blue
-          vim.cmd[[highlight! CmpItemKindVariable guibg=NONE guifg=#9CDCFE]]
-          vim.cmd[[highlight! CmpItemKindInterface guibg=NONE guifg=#9CDCFE]]
-          vim.cmd[[highlight! CmpItemKindText guibg=NONE guifg=#9CDCFE]]
-          -- pink
-          vim.cmd[[highlight! CmpItemKindFunction guibg=NONE guifg=#C586C0]]
-          vim.cmd[[highlight! CmpItemKindMethod guibg=NONE guifg=#C586C0]]
-          -- front
-          vim.cmd[[highlight! CmpItemKindKeyword guibg=NONE guifg=#D4D4D4]]
-          vim.cmd[[highlight! CmpItemKindProperty guibg=NONE guifg=#D4D4D4]]
-          vim.cmd[[highlight! CmpItemKindUnit guibg=NONE guifg=#D4D4D4]]
+          ---- Selection
+          vim.cmd[[highlight! CmpItemAbbrMatch      guibg=NONE, guifg=#1A1919]]
+          vim.cmd[[highlight! CmpItemAbbrMatchFuzzy guibg=NONE, guifg=#1A1919]]
+          -- Snippet
+          vim.cmd[[highlight! CmpItemKindSnippet    guibg=NONE]]
+          -- LSP things
+          vim.cmd[[highlight! CmpItemKindVariable   guibg=NONE gui=bold]]
+          vim.cmd[[highlight! CmpItemKindInterface  guibg=NONE gui=bold]]
+          vim.cmd[[highlight! CmpItemKindField      guibg=NONE gui=bold]]
+          vim.cmd[[highlight! CmpItemKindEnum       guibg=NONE gui=bold]]
+          vim.cmd[[highlight! CmpItemKindFunction   guibg=NONE gui=bold]]
+          vim.cmd[[highlight! CmpItemKindMethod     guibg=NONE gui=bold]]
+          vim.cmd[[highlight! CmpItemKindKeyword    guibg=NONE gui=bold]]
+          vim.cmd[[highlight! CmpItemKindProperty   guibg=NONE gui=bold]]
+          vim.cmd[[highlight! CmpItemKindUnit       guibg=NONE gui=bold]]
         end
     })
     local cmp_autopairs = nil
