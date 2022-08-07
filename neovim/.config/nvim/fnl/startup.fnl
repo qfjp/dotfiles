@@ -383,7 +383,9 @@
                           :- [":vertical resize -10<CR>" "Decrease height"]
                           :> [":resize +10<CR>" "Increase width"]
                           :< [":resize -10<CR>" "Decrease width"]
-                          :d [":qall<CR>" "Quit immediately"]}
+                          :d [":SSave! default | qall<CR>"
+                              "Save default session and quit"]
+                          :D [":SLoad default<CR>" "Load default session"]}
                   :<C-Space> {:name :+window
                               :c [":tabnew<CR>" "Create New Tab"]
                               :n [":tabnext<CR>" "Next Tab"]
