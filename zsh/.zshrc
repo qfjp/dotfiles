@@ -318,6 +318,7 @@ econs()
     alias         mpv='mpv --no-osc'
     alias       notes='vim -c "VimwikiIndex"'
     alias          rm='nocorrect rm'
+    alias          rg='rg --color always --heading --line-number'
     alias     yaourtc='yaourt --color'
 
     alias       magit='vim -c MagitOnly'
