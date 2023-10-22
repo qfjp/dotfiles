@@ -1,7 +1,6 @@
 #!/bin/sh
 if [ -z "$1" ]; then
-    nvim -R -S $HOME/.config/nvim/vimpagerrc -
+    nvim -R -u $HOME/.config/nvim/vimpagerrc -
 else
-    nvim -R -S $HOME/.config/nvim/vimpagerrc $1
+    nvim -R -u $HOME/.config/nvim/vimpagerrc $1
 fi
-
