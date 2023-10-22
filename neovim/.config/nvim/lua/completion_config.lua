@@ -45,8 +45,8 @@
           -- ?
           vim.cmd[[highlight! CmpItemAbbrDeprecated guibg=NONE gui=strikethrough guifg=#808080]]
           ---- Selection
-          vim.cmd[[highlight! CmpItemAbbrMatch      guibg=NONE, guifg=#1A1919]]
-          vim.cmd[[highlight! CmpItemAbbrMatchFuzzy guibg=NONE, guifg=#1A1919]]
+          vim.cmd[[highlight! CmpItemAbbrMatch      guibg=NONE guifg=#1A1919]]
+          vim.cmd[[highlight! CmpItemAbbrMatchFuzzy guibg=NONE guifg=#1A1919]]
           -- Snippet
           vim.cmd[[highlight! CmpItemKindSnippet    guibg=NONE]]
           -- LSP things
