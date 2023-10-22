@@ -150,7 +150,18 @@
 (set! showmatch)
 (set! list)
 (set! conceallevel 0)
+
+(fn MatchHighIp [str]
+  "True if an IP address is above '3' on the local network"
+  (let [subnet :192.168.1.]
+    (or (string.match str (.. subnet "[4-9]"))
+        (string.match str (.. subnet "[1-9][0-9]"))
+        (string.match str (.. subnet "[1-2][0-9][0-9]")))))
+
 (set! termguicolors)
+(when (and (not (= vim.env.SSH_CONNECTION nil))
+           (MatchHighIp vim.env.SSH_CONNECTION))
+  (set! notermguicolors))
 
 (set! listchars "tab:▕░,trail:▒,extends:>,precedes:<")
 
@@ -159,6 +170,7 @@
 ;; {{{ Nvim Terminal mode
 ;; ----------------------
 (set vim.env.NVIM_LISTEN_ADDRESS vim.v.servername)
+
 (global TermOptions (fn []
                       (do
                         (set! filetype :terminal)
