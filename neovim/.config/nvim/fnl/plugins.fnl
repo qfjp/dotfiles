@@ -5,6 +5,7 @@
 (fn SayoConfig []
   (exec [[command! S Sayonara] [command! Sa Sayonara]])
   (g! sayonara_confirm_quit true))
+
 (local lualine-conf (. (require :lualine-conf) :lualine-conf))
 (local cmpdict-conf (. (require :completion_config) :cmpdict_conf))
 
@@ -42,10 +43,7 @@
                                                          :lisp]}
                            :p00f/nvim-ts-rainbow []
                            :mnacamura/vim-fennel-syntax {:ft :fennel}
-                           :Olical/conjure []
                            :rktjmp/hotpot.nvim []
-                           :tsbohc/zest.nvim [:config
-                                              ((. (require :zest) :setup))]
                            ;; Vim Essentials
                            :mbbill/undotree {:cmd :UndoTreeToggle}
                            :nvim-lualine/lualine.nvim {:requires {1 :kyazdani42/nvim-web-devicons
@@ -83,7 +81,8 @@
                            :karb94/neoscroll.nvim {:config (SafeRequire :neoscroll
                                                                         neoscroll_conf)}
                            :camspiers/lens.vim {:requires [:camspiers/animate.vim]}
-                           :j-hui/fidget.nvim {:config (SafeRequire :fidget {})}
+                           :j-hui/fidget.nvim {:config (SafeRequire :fidget {})
+                                               :tag :legacy}
                            ;; Formatting
                            :junegunn/vim-easy-align []
                            :sbdchd/neoformat []

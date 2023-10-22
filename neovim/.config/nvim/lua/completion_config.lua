@@ -161,7 +161,7 @@
     local capabilities = nil
     -- Setup lspconfig.
     if pcall(require, "cmp_nvim_lsp") then
-      capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+      capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
     end
 
     if pcall(require, "nvim-lsp-installer") then
@@ -179,7 +179,7 @@
           cmd = {"vscode-css-languageserver", "--stdio"};
           filetypes = {"css", "scss", "less"};
       }
-      lspconfig.sumneko_lua.setup {
+      lspconfig.lua_ls.setup {
           settings = {
               Lua = {
                   runtime = {

@@ -1,7 +1,6 @@
 ;; {{{ Goyo
 ;; --------
 (require-macros :macros)
-(require-macros :zest.macros)
 
 (g! limelight_priority -1)
 ;; 240 -> #262626
@@ -29,8 +28,8 @@
   (vim.cmd "unlet \"b:show_cmd\"")
   (vim.cmd :TwilightDisable))
 
-(def-augroup :Goyo (def-autocmd-fn [:User] [:GoyoEnter] goyo-enter)
-             (def-autocmd-fn [:User] [:GoyoLeave] goyo-leave))
+(augroup :Goyo [(autocmd :User :GoyoEnter "v:lua.goyo-enter()")
+                (autocmd :User :GoyoLeave "v:lua.goyo-leave()")])
 
 ;; }}}
 

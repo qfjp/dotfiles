@@ -1,4 +1,23 @@
-(local M {})
+(local M
+       ;; Macros shamelessly stolen from https://github.com/mwebb387/nvim-config-bistro/blob/main/src/macros.fnl
+       {:augroup (fn [name ...]
+                   (let [cmds (if ...
+                                  `[(do
+                                      ,...)]
+                                  `[])]
+                     `(do
+                        (vim.cmd (.. "augroup " ,(tostring name)))
+                        (vim.cmd :autocmd!)
+                        ,(unpack cmds)
+                        (vim.cmd "augroup END"))))
+        :autocmd (fn [event pattern cmd]
+                   (let [cmd (.. "autocmd " (tostring event) " "
+                                 (tostring pattern) " " (tostring cmd))]
+                     `(vim.cmd ,cmd)))
+        :defcommand (fn [name command options]
+                      (let [opts- (or options {})]
+                        `(vim.api.nvim_create_user_command ,(tostring name)
+                                                           ,command ,opts-)))})
 
 (macro mod-fn [name ...]
   "Defines a function <name> and inserts it into the module table."

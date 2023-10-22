@@ -27,7 +27,6 @@ function Bootstrap(user, repo, setupfns)
 end
 
 Bootstrap("rktjmp", "hotpot.nvim", {})
-Bootstrap("tsbohc","zest.nvim", {{"setup"}})
 Bootstrap('lewis6991', 'impatient.nvim', {{"enable_profile"}})
 Bootstrap("wbthomason", "packer.nvim", {})
 
