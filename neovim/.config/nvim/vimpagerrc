@@ -19,7 +19,6 @@ set foldcolumn=0
 "set nowrap
 set linebreak
 
-call AnsiEsc#AnsiEsc(0)
 
 set nonumber
 set norelativenumber
