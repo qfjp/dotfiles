@@ -26,17 +26,20 @@
 (require :goyo_config)
 
 ;; }}}
+
+(global GuiSetup
+        (fn []
+          "Settings for Neovide and Gonvim"
+          (do
+            (set! guifont "FiraCode Nerd Font:h10")
+            (set! showtabline 2)
+            (g! neovide_no_idle true)
+            (g! neovide_curosr_vfx_mode :wireframe)
+            (when (g :goneovim)
+              (exec [[GonvimSmoothCursors] [GonvimSmoothScroll]])))))
+
 (when (or (g goneovim) (g neovide))
-  (augroup :Gui
-           (autocmd :UIEnter "*"
-                    (do
-                      "Settings for Neovide and Gonvim"
-                      (set! guifont "FiraCode Nerd Font:h10")
-                      (set! showtabline 2)
-                      (g! neovide_no_idle true)
-                      (g! neovide_curosr_vfx_mode :wireframe)
-                      (when (g :goneovim)
-                        (exec [[GonvimSmoothCursors] [GonvimSmoothScroll]]))))))
+  (augroup :Gui (autocmd :UIEnter "*" "call v:lua.GuiSetup()")))
 
 (g! mapleader " ")
 (g! maplocalleader " ")
@@ -184,7 +187,7 @@
                         (b! terminal_color_7 "#989892")
                         (b! terminal_color_15 "#f9f8f5"))))
 
-(augroup :Terminal (autocmd :TermOpen "*" "v:lua.TermOptions()"))
+(augroup :Terminal (autocmd :TermOpen "*" "call v:lua.TermOptions()"))
 
 ;; }}}
 
@@ -452,9 +455,12 @@
 
 (augroup :LatexHelp (autocmd :FileType :tex "set fileencoding=ascii"))
 
-(augroup :HelpFiles (autocmd :FileType :help
-                             (.. "source " (vimfn stdpath :config)
-                                 :/ftplugin/help.vim)))
+(global SourceHelp (fn []
+                     "Source custom ftplugin"
+                     (vim.cmd (.. "source " (vimfn stdpath :config)
+                                  :/ftplugin/help.vim))))
+
+(augroup :HelpFiles (autocmd :FileType "call v:lua.SourceHelp()"))
 
 (augroup :Scala (autocmd "BufNewFile,BufRead" :*.sc "set ft=scala"))
 
