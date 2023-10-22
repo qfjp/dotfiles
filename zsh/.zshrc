@@ -281,8 +281,8 @@ econs()
     # {{{ Default programs
 
         export PAGER="vimpager"
-        export MANPAGER="nvim -S $HOME/.config/nvim/vimpagerrc -c 'set ft=man | +Man!' -"
-        [ -z "$EDITOR" ] && export EDITOR='nvr'
+        export MANPAGER="nvim -u $HOME/.config/nvim/vimpagerrc -c ':Man!' -"
+        [ -z "$EDITOR" ] && export EDITOR='nvim'
 
     # }}}
 
@@ -309,7 +309,7 @@ econs()
     alias moviebot='filebot -rename . -non-strict --format "{n} ({y})"'
     alias showbot='filebot -rename . -non-strict --format "{n} - {s00e00} - {t}"'
 
-    alias         vim='$EDITOR -s'
+    alias         vim='$EDITOR'
     alias   fbmplayer='mplayer -fs -vo fbdev -ao alsa'
     alias        gksu='gksudo'
     alias          ls='ls --group-directories-first --color=auto'
