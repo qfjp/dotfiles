@@ -141,7 +141,7 @@ econs()
     LS_COLORS+="*pdf=00;32:*.ps=00;32:*.txt=00;32:*.patch=00;32:"
     LS_COLORS+="*.diff=00;32:*.log=00;32:*.tex=00;32:*.doc=00;32:"
 
-    export GREP_COLOR="0;31"
+    export GREP_COLORS="mt=0;31"
 
 # }}}
 
