@@ -1,12 +1,6 @@
-jupyter/.jupyter/*
-!jupyter/.jupyter/jupyter_notebook_config.py
-
 fonts/.local/share/fonts/*
 !fonts/.local/share/fonts/PragmataPro
 
 xmonad/.xmonad/*
 !xmonad/.xmonad/**/*.hs
 
-.netrwhist
-
-plugged
