@@ -75,6 +75,7 @@
                            :junegunn/goyo.vim {:cmd :Goyo
                                                :GoyoEnter :GoyoLeave}
                            :nvim-treesitter/playground {:requires :nvim-treesitter/nvim-treesitter}
+                           :Olical/conjure []
                            :rinx/nvim-minimap []
                            :folke/which-key.nvim {:config (SafeRequire :which-key
                                                                        {})}
@@ -103,6 +104,7 @@
                            :hrsh7th/cmp-cmdline []
                            :hrsh7th/nvim-cmp []
                            :hrsh7th/cmp-vsnip []
+                           :PaterJason/cmp-conjure []
                            :f3fora/cmp-spell {:ft [:tex]}
                            :uga-rosa/cmp-dictionary {:ft [:tex
                                                           :config

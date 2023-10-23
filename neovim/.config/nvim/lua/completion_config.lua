@@ -127,6 +127,7 @@ if pcall(require, "cmp") then
             { name = 'buffer' },
             { name = 'path' },
             { name = 'greek' },
+            { name = 'conjure' },
         })
     })
 
