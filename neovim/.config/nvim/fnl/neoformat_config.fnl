@@ -48,4 +48,6 @@
 
 ;trim whitespace
 (g! neoformat_run_all_formatters 1)
-(augroup :Fmt (autocmd :BufWritePre "*" "undojoin | Neoformat"))
+
+(augroup :Fmt (autocmd :BufWritePre "*" "undojoin | lua vim.lsp.buf.format()")
+         (autocmd :BufWritePre :*fnl "undojoin | Neoformat"))

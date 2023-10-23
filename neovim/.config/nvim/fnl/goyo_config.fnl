@@ -8,15 +8,13 @@
 (g! limelight_conceal_guifg 240)
 (g! limelight_paragraph_span 0)
 
-(global GoyoEnterFn (fn []
-                     (vim.cmd "silent !tmux set status off")
-                     (b! sign_status (opt signcolumn))
-                     (b! cursor_line (opt cursorline))
-                     (b! show_cmd (opt showcmd))
-                     (set! signcolumn :no)
-                     (set! nocursorline)
-                     (set! noshowcmd)
-                     (vim.cmd :Twilight)))
+(global GoyoEnterFn
+        (fn []
+          (vim.cmd "silent !tmux set status off"
+                   (b! sign_status (opt signcolumn)
+                       (b! cursor_line (opt cursorline))
+                       (b! show_cmd (opt showcmd)) (set! signcolumn :no)
+                       (set! nocursorline) (set! noshowcmd) (vim.cmd :Twilight)))))
 
 (global GoyoLeaveFn (fn []
                       (vim.cmd "silent !tmux set status on")
@@ -28,8 +26,9 @@
                       (vim.cmd "unlet b:show_cmd")
                       (vim.cmd :TwilightDisable)))
 
-(augroup :Goyo [(autocmd :User :GoyoEnter "call v:lua.GoyoEnterFn()")
-                (autocmd :User :GoyoLeave "call v:lua.GoyoLeaveFn()")])
+(augroup :Goyo
+         [(autocmd :User :GoyoEnter "call v:lua.GoyoEnterFn()")
+          (autocmd :User :GoyoLeave "call v:lua.GoyoLeaveFn()")])
 
 ;; }}}
 
