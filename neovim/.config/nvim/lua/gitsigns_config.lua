@@ -42,5 +42,5 @@ local git_sign_table =
           enable = false
         },
       }
-return git_sign_table
+return { git_sign_table = git_sign_table }
 -- }}}

@@ -62,7 +62,8 @@
                                                                         [])}
                            ;; Git
                            :lewis6991/gitsigns.nvim {:config (SafeRequire :gitsigns
-                                                                          (require :gitsigns_config))}
+                                                                          (. (require :gitsigns_config)
+                                                                             :git_sign_table))}
                            :TimUntersberger/neogit {:config (SafeRequire :neogit
                                                                          [])
                                                     :requires :nvim-lua/plenary.nvim}
