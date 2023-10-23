@@ -1,3 +1,4 @@
+;; fennel-ls: macro-file
 (local M
        ;; Macros shamelessly stolen from https://github.com/mwebb387/nvim-config-bistro/blob/main/src/macros.fnl
        {:augroup (fn [name ...]

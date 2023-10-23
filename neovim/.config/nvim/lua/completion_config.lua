@@ -185,6 +185,19 @@ if pcall(require, "nvim-lsp-installer") then
 end
 if pcall(require, "lspconfig") then
     local lspconfig = require 'lspconfig'
+    lspconfig.fennel_ls.setup {
+        settings = {
+            ["fennel-ls"] = {
+                ["fennel-path"] = "./?.fnl;./?/init.fnl;src/?.fnl;src/?/init.fnl;" .. os.getenv("HOME") .. "/.config/nvim/fnl/?.fnl",
+                ["macro-path"] = "./?.fnl;./?/init-macros.fnl;./?/init.fnl;src/?.fnl;src/init-macros.fnl;src/?/init-macros.fnl;src/?/init.fnl;" .. os.getenv("HOME") .. "/.config/nvim/fnl/?.fnl",
+                checks = {
+                    ["unused-definition"] = true,
+                    ["unknown-module-field"] = true,
+                },
+            },
+        },
+        capabilities = capabilities
+    };
     lspconfig.bashls.setup {
         cmd = { "bash-language-server", "start" },
         filetypes = { "sh", "bash", "zsh" },
