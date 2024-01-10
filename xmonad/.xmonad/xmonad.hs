@@ -113,7 +113,9 @@ import           XMonad.Layout.Spacing          ( Border(Border)
 import           XMonad.Layout.ThreeColumns     ( ThreeCol(ThreeColMid) )
 import           XMonad.Layout.TwoPane          ( TwoPane(TwoPane) )
 import qualified XMonad.StackSet               as W
-import           XMonad.Util.EZConfig           ( checkKeymap )
+import           XMonad.Util.EZConfig           ( checkKeymap
+                                                , mkKeymap
+                                                )
 import qualified XMonad.Util.ExtensibleState   as XS
 import           XMonad.Util.Font               ( Align(AlignRight) )
 import           XMonad.Util.Loggers            ( Logger
@@ -186,10 +188,12 @@ prefix (x : xs) []       = False
 prefix (x : xs) (y : ys) = (x == y) && prefix xs ys
 
 modm = super
-modmEmacsKey | modm == super       = "s"
-             | modm == altMask     = "M"
-             | modm == controlMask = "C"
-             | modm == shiftMask   = "S"
+
+modmEmacsKey :: String
+modmEmacsKey | modm == super       = "M4-"
+             | modm == altMask     = "M1-"
+             | modm == controlMask = "C-"
+             | modm == shiftMask   = "S-"
              | otherwise           = ""
 
 main :: IO ()
@@ -198,24 +202,25 @@ main = do
     dzenProcess   <- spawnPipe dzenCommand
     staloneString <- staloneCmd
     _             <- spawnPipe staloneString
-    xmonad $ myConfig dzenProcess
+    xmonad $ myConfig { logHook = myLogHook dzenProcess }
 
-myConfig dzenProcess =
-    ewmh . withNavigation2DConfig myNavigation2DConfig . docks $ def
-        { focusFollowsMouse  = False
-        , workspaces         = myWorkspaces
-        , focusedBorderColor = "#ff950e"
-        , normalBorderColor  = "#ffffff"
-        , terminal           = "kitty"
-        , borderWidth        = 2
-        , keys               = myKeys
-        , mouseBindings      = myMouseBindings
-        , layoutHook         = myLayout
-        , logHook            = myLogHook dzenProcess
-        , manageHook         = manageDocks <+> myManageHook
-        , startupHook        = myStartupHook
-        , modMask            = modm
-        }
+myConfig = ewmh . withNavigation2DConfig myNavigation2DConfig . docks $ def
+    { focusFollowsMouse  = False
+    , workspaces         = myWorkspaces
+    , focusedBorderColor = "#ff950e"
+    , normalBorderColor  = "#ffffff"
+    , terminal           = myTerminal
+    , borderWidth        = 2
+    , keys               = (`mkKeymap` myKeys)
+    , mouseBindings      = myMouseBindings
+    , layoutHook         = myLayout
+    , manageHook         = manageDocks <+> myManageHook
+    , startupHook        = myStartupHook >> checkKeymap myConfig myKeys
+    , modMask            = modm
+    }
+
+myTerminal :: String
+myTerminal = "kitty"
 
 -- mod1Mask is left alt
 -- mod3Mask is right alt
@@ -400,95 +405,91 @@ real1Monitor = do
 
 ----------------------------------------------------------------------
 -- Key bindings. Add, modify or remove key bindings here.
---
-myKeys :: XConfig Layout -> M.Map (KeyMask, KeySym) (X ())
-myKeys conf@XConfig { XMonad.modMask = modm } =
-    M.fromList
-        $  [ ((modm, xK_Return)    , spawn $ XMonad.terminal conf)
-           , ((modm, xK_apostrophe), spawn $ XMonad.terminal conf)
-             --  Reset the layouts on the current workspace to default
-           , ( (modm .|. controlMask, xK_space)
-             , setLayout $ XMonad.layoutHook conf
-             )
-           ]
-        ++ [ ((m .|. modm, k), windows $ f i)
-           | (i, k) <- zip (XMonad.workspaces conf) $ [xK_1 .. xK_9] ++ [xK_0]
-           , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]
-           ] -- Switch workspaces
-        ++ simpleKeys modm
 
-simpleKeys modm =
-    [ ((modm .|. shiftMask, xK_Return)    , spawn "GDK_SCALE=2 nvim-gtk")
-        , ((modm .|. shiftMask, xK_apostrophe), spawn "GDK_SCALE=2 nvim-gtk")
-        , ((modm, xK_i)                       , spawn "/usr/bin/env rofi-pass")
-        , ((modm, xK_p), spawn "/usr/bin/env rofi -show combi")
-        , ((modm .|. shiftMask, xK_i), spawn "/usr/bin/env rofi-pass --insert")
-        , ((modm, xK_e)                       , spawn "$HOME/bin/vim-anywhere")
-        , ((modm, xK_n)                       , spawn "ibus engine shin")
-        , ((modm .|. shiftMask, xK_c)         , kill)
-        , ((modm, xK_semicolon)               , warpToWindow 1 1)
-        , ((modm .|. shiftMask, xK_semicolon) , warpToWindow (1 % 2) (1 % 2))
-        , ((modm, xK_space)                   , sendMessage NextLayout)
-        , ((modm, xK_f), sendMessage ToggleStruts >> sendMessage (Toggle NBFULL))
-    -- Resize viewed windows to the correct size
-        , ((modm, xK_w)                       , fake2Monitors)
-        , ((modm .|. controlMask, xK_w)       , real1Monitor)
-        , ((modm, xK_o)                       , windows W.focusDown)
-        , ((modm .|. shiftMask, xK_o)         , windows W.focusUp)
-        , ((modm, xK_l)                       , windowGo R False)
-        , ((modm, xK_h)                       , windowGo L False)
-        , ((modm, xK_k)                       , windowGo U False)
-        , ((modm, xK_j)                       , windowGo D False)
-        , ((modm .|. shiftMask, xK_l)         , windowSwap R False)
-        , ((modm .|. shiftMask, xK_h)         , windowSwap L False)
-        , ((modm .|. shiftMask, xK_k)         , windowSwap U False)
-        , ((modm .|. shiftMask, xK_j)         , windowSwap D False)
-        , ((modm .|. controlMask, xK_l)       , sendMessage Expand)
-        , ((modm .|. controlMask, xK_h)       , sendMessage Shrink)
-        , ((modm .|. controlMask, xK_k)       , sendMessage (IncMasterN 1))
-        , ((modm .|. controlMask, xK_j)       , sendMessage (IncMasterN (-1)))
-        , ((modm .|. controlMask, xK_m)       , windows W.focusMaster)
-           -- BinarySpacePartition
-        , ((modm .|. altMask, xK_l)           , sendMessage $ ExpandTowards R)
-        , ((modm .|. altMask, xK_h)           , sendMessage $ ExpandTowards L)
-        , ((modm .|. altMask, xK_k)           , sendMessage $ ExpandTowards U)
-        , ((modm .|. altMask, xK_j)           , sendMessage $ ExpandTowards D)
-        , ((modm, xK_r)                       , sendMessage (SplitShift Prev))
-        , ((modm .|. controlMask, xK_r)       , sendMessage (SplitShift Next))
-        , ((modm, xK_m)                       , sendMessage (Toggle MIRROR))
-        , ((modm, xK_t)                       , toggleFloat)
-        , ((modm, xK_comma)                   , rotAllUp)
-        , ((modm, xK_period)                  , rotAllDown)
-        , ((modm, xK_b)                       , sendMessage ToggleStruts)
-        , ((modm, xK_g)                       , sendMessage ToggleGaps)
-        , ((modm .|. shiftMask, xK_q)         , io exitSuccess)
-        , ((modm, xK_q), killSpawns >> spawn "xmonad --recompile; xmonad --restart")
-    -- ##   Macros # --
+myKeys :: [(String, X ())]
+myKeys =
+    [ (modmEmacsKey ++ "<Return>"  , spawn myTerminal)
+      --  Reset the layouts on the current workspace to default
+        --, (modmEmacsKey ++ "C-<Space>" , setLayout $ XMonad.layoutHook conf)
+        , (modmEmacsKey ++ "'"         , spawn myTerminal)
+        , (modmEmacsKey ++ "S-<Return>", spawn "GDK_SCALE=2 nvim-gtk")
+        , (modmEmacsKey ++ "S-'"       , spawn "GDK_SCALE=2 nvim-gtk")
+        , (modmEmacsKey ++ "S-'"       , spawn "GDK_SCALE=2 nvim-gtk")
+        , (modmEmacsKey ++ "i"         , spawn "/usr/bin/env rofi-pass")
+        , (modmEmacsKey ++ "p", spawn "/usr/bin/env rofi -show combi")
+        , (modmEmacsKey ++ "S-i", spawn "/usr/bin/env rofi-pass --insert")
+        , (modmEmacsKey ++ "e"         , spawn "$HOME/bin/vim-anywhere")
+        , (modmEmacsKey ++ "n"         , spawn "ibus engine shin")
+        , (modmEmacsKey ++ "S-c"       , kill)
+        , (modmEmacsKey ++ ";"         , warpToWindow 1 1)
+        , (modmEmacsKey ++ "S-;"       , warpToWindow (1 % 2) (1 % 2))
+        , (modmEmacsKey ++ "<Space>"   , sendMessage NextLayout)
+        , ( modmEmacsKey ++ "f"
+          , sendMessage ToggleStruts >> sendMessage (Toggle NBFULL)
+          )
+            -- Resize viewed windows to the correct size
+        , (modmEmacsKey ++ "w"   , fake2Monitors)
+        , (modmEmacsKey ++ "C-w" , real1Monitor)
+        , (modmEmacsKey ++ "o"   , windows W.focusDown)
+        , (modmEmacsKey ++ "S-o" , windows W.focusUp)
+        , (modmEmacsKey ++ "l"   , windowGo R False)
+        , (modmEmacsKey ++ "h"   , windowGo L False)
+        , (modmEmacsKey ++ "k"   , windowGo U False)
+        , (modmEmacsKey ++ "j"   , windowGo D False)
+        , (modmEmacsKey ++ "S-l" , windowSwap R False)
+        , (modmEmacsKey ++ "S-h" , windowSwap L False)
+        , (modmEmacsKey ++ "S-k" , windowSwap U False)
+        , (modmEmacsKey ++ "S-j" , windowSwap D False)
+        , (modmEmacsKey ++ "C-l" , sendMessage Expand)
+        , (modmEmacsKey ++ "C-h" , sendMessage Shrink)
+        , (modmEmacsKey ++ "C-k" , sendMessage (IncMasterN 1))
+        , (modmEmacsKey ++ "C-j" , sendMessage (IncMasterN (-1)))
+        , (modmEmacsKey ++ "C-m" , windows W.focusMaster)
+        , (modmEmacsKey ++ "M1-l", sendMessage $ ExpandTowards R)
+        , (modmEmacsKey ++ "M1-h", sendMessage $ ExpandTowards L)
+        , (modmEmacsKey ++ "M1-k", sendMessage $ ExpandTowards U)
+        , (modmEmacsKey ++ "M1-j", sendMessage $ ExpandTowards D)
+        , (modmEmacsKey ++ "r"   , sendMessage (SplitShift Prev))
+        , (modmEmacsKey ++ "C-r" , sendMessage (SplitShift Next))
+        , (modmEmacsKey ++ "m"   , sendMessage (Toggle MIRROR))
+        , (modmEmacsKey ++ "t"   , toggleFloat)
+        , (modmEmacsKey ++ ","   , rotAllUp)
+        , (modmEmacsKey ++ "."   , rotAllDown)
+        , (modmEmacsKey ++ "b"   , sendMessage ToggleStruts)
+        , (modmEmacsKey ++ "g"   , sendMessage ToggleGaps)
+        , (modmEmacsKey ++ "S-q" , io exitSuccess)
+        , ( modmEmacsKey ++ "q"
+          , killSpawns >> spawn "xmonad --recompile; xmonad --restart"
+          )
     -- find multimedia key codes at  /usr/include/X11/XF86keysym.h
-        , ((0, 0x1008FF11), spawn "$HOME/bin/macros/vol-control 1.50dB-")
-        , ((0, 0x1008FF12), spawn "$HOME/bin/macros/vol-control m")
-        , ((0, 0x1008FF13), spawn "$HOME/bin/macros/vol-control 1.50dB+")
-        , ((0, 0x1008FF14), spawn "$HOME/bin/macros/toggle-mic-mute") -- XF86AudioPlay
-        , ((0, 0x1008FF31), spawn "$HOME/bin/macros/toggle-mic-mute") -- XF86AudioPause
-        , ( (0, 0x1008FF02)
+        , ("<XF86AudioLowerVolume>", spawn "$HOME/bin/macros/vol-control 1.50dB-")
+        , ("<XF86AudioMute>"       , spawn "$HOME/bin/macros/vol-control m")
+        , ("<XF86AudioRaiseVolume>", spawn "$HOME/bin/macros/vol-control 1.50dB+")
+        , ("<XF86AudioMicMute>"    , spawn "$HOME/bin/macros/toggle-mic-mute")
+        , ( "<XF86MonBrightnessUp>"
           , spawn "$HOME/bin/bright $(expr $($HOME/bin/bright) + 100)"
           )
-        , ( (0, 0x1008FF03)
+        , ( "<XF86MonBrightnessDown>"
           , spawn "$HOME/bin/bright $(expr $($HOME/bin/bright) - 100)"
           )
-        , ((0, 0x1008FFB0), spawn "$HOME/bin/macros/touchpad_notify.py on")
-        , ((0, 0x1008FFB1), spawn "$HOME/bin/macros/touchpad_notify.py off")
+        , ("<XF86TouchpadOn>" , spawn "$HOME/bin/macros/touchpad_notify.py on")
+        , ("<XF86TouchpadOff>", spawn "$HOME/bin/macros/touchpad_notify.py off")
         ]
-        ++ [ ( (m .|. modm, key)
+        ++ [ (modmEmacsKey ++ m ++ k, windows $ f i)
+           | (i, k) <- zip myWorkspaces $ show <$> ([1 .. 9] ++ [0])
+           , (f, m) <- [(W.greedyView, ""), (W.shift, "S-")]
+           ]
+        ++ [ ( modmEmacsKey ++ m ++ key
              , screenWorkspace sc >>= flip whenJust (windows . f)
              )
-           | (key, sc) <- zip [xK_a, xK_s, xK_d] [0 ..]
-           , (f  , m ) <- [(W.view, 0), (W.shift, shiftMask)]
-           ] -- Switch physical screens
+           | (key, sc) <- zip ["a", "s", "d"] [0 ..]
+           , (f  , m ) <- [(W.view, ""), (W.shift, "S-")]
+           ]
+
+
 
 --------------------------------------------------------------------------------
 -- Mouse bindings: default actions bound to mouse events
---
 myMouseBindings :: XConfig t -> M.Map (KeyMask, Button) (Window -> X ())
 myMouseBindings XConfig { XMonad.modMask = modm } = M.fromList
     [ ( (modm, button1)
@@ -559,7 +560,6 @@ placeHook' = placeHook $ withGaps (16, 0, 16, 0) (smart (0.5, 0.5))
 
 --------------------------------------------------------------------------------
 layoutModifiers =
-    -- avoidStrutsOn [U]
     mkToggle (NBFULL ?? NOBORDERS ?? MIRROR ?? SMARTBORDERS ?? EOT)
         . renamed [CutLeft (length "Spacing ")]
         . gaps [(U, 20)]
