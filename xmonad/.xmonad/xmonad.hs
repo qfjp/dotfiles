@@ -13,9 +13,9 @@ import           Bar.Colors                     ( brighten
                                                 , orange
                                                 , textGrey
                                                 )
-
 import qualified Data.Map                      as M
 import           Data.Maybe                     ( fromMaybe )
+import           Data.Monoid                    ( All(All) )
 import           Data.Ratio                     ( (%) )
 
 import           XMonad                  hiding ( Color )
@@ -95,6 +95,7 @@ import           System.Exit                    ( exitSuccess )
 import           System.IO                      ( Handle
                                                 , hPutStrLn
                                                 )
+import           XMonad.Util.Timer
 
 
 import           Startup.Apps                   ( comptonCmd
@@ -114,6 +115,24 @@ laptopHost = "krang"
 
 maxTitleLen :: Int
 maxTitleLen = 100
+
+newtype TidState = TID TimerId
+    deriving Typeable
+
+instance ExtensionClass TidState where
+    initialValue = TID 0
+
+clockStartupHook = startTimer 1 >>= XS.put . TID
+
+clockEventHook e = do
+    (TID t) <- XS.get
+    handleTimer t e $ do
+        tid <- startTimer 1
+        XS.put . TID $ tid
+        state <- ask
+        logHook . config $ state
+        return Nothing
+    return $ All True
 
 substring :: String -> String -> Bool
 substring (x : xs) [] = False
