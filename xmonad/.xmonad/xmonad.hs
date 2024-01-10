@@ -393,7 +393,7 @@ myStartupHook :: X ()
 myStartupHook = do
     setWMName "LG3D"
     fake2Monitors
-  --clockStartupHook
+    clockStartupHook
 
 fake2Monitors :: X ()
 fake2Monitors = do
