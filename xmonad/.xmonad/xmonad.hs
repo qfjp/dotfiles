@@ -72,19 +72,48 @@ import           XMonad.Hooks.Place             ( placeHook
                                                 , withGaps
                                                 )
 import           XMonad.Hooks.SetWMName         ( setWMName )
-import           XMonad.Layout.NoBorders        ( noBorders
-                                                , smartBorders
+import           XMonad.Layout.Accordion
+import           XMonad.Layout.BinarySpacePartition
+                                                ( ResizeDirectional
+                                                    ( ExpandTowards
+                                                    )
+                                                , SplitShiftDirectional
+                                                    ( SplitShift
+                                                    )
+                                                , emptyBSP
+                                                )
+import           XMonad.Layout.Gaps             ( GapMessage(ToggleGaps)
+                                                , gaps
+                                                )
+import           XMonad.Layout.LayoutScreens    ( layoutScreens )
+import           XMonad.Layout.MultiColumns     ( multiCol )
+import           XMonad.Layout.MultiToggle      ( (??)
+                                                , EOT(EOT)
+                                                , Toggle(Toggle)
+                                                , mkToggle
+                                                )
+import           XMonad.Layout.MultiToggle.Instances
+                                                ( StdTransformers
+                                                    ( FULL
+                                                    , MIRROR
+                                                    , NBFULL
+                                                    , NOBORDERS
+                                                    , SMARTBORDERS
+                                                    )
                                                 )
 import           XMonad.Layout.Reflect          ( reflectHoriz
                                                 , reflectVert
                                                 )
+import           XMonad.Layout.Renamed          ( Rename(CutLeft, Replace)
+                                                , renamed
+                                                )
 import           XMonad.Layout.Spacing          ( Border(Border)
                                                 , spacingRaw
                                                 )
-import           XMonad.Layout.ToggleLayouts    ( ToggleLayout(Toggle)
-                                                , toggleLayouts
-                                                )
+import           XMonad.Layout.ThreeColumns     ( ThreeCol(ThreeColMid) )
+import           XMonad.Layout.TwoPane          ( TwoPane(TwoPane) )
 import qualified XMonad.StackSet               as W
+import           XMonad.Util.EZConfig           ( checkKeymap )
 import qualified XMonad.Util.ExtensibleState   as XS
 import           XMonad.Util.Font               ( Align(AlignRight) )
 import           XMonad.Util.Loggers            ( Logger
@@ -99,6 +128,7 @@ import           XMonad.Util.Timer              ( TimerId
                                                 , handleTimer
                                                 , startTimer
                                                 )
+import           XMonad.Util.Types              ( Direction1D(Next, Prev) )
 
 
 import           Startup.Apps                   ( comptonCmd
@@ -481,62 +511,77 @@ myManageHook = myWindowManage
 
 myWindowManage :: ManageHook
 myWindowManage =
-  composeAll
-    . concat
-    $ [ [ resource =? r --> doIgnore | r <- myIgnores ]
-      , [ className =? c --> placeHook' <+> doFloat | c <- myClassFloats ]
-      , [ className =? c --> doShift (myWorkspaces !! 0) | c <- myFirefox ]
-      , [ className =? c --> doShift (myWorkspaces !! 2) | c <- myTorrents ]
-      , [ className =? c --> doShift (myWorkspaces !! 3) | c <- myChrome ]
-      , [ className =? c --> doShift (myWorkspaces !! 4) | c <- myGames ]
-      , [ className =? c --> doShift (myWorkspaces !! 5) | c <- myChats ]
-      , [ className =? t --> doShift (myWorkspaces !! 6)
-        | t <- ["VirtualBox Machine"]
+    composeAll
+        . concat
+        $ [ [ resource =? r --> doIgnore | r <- myIgnores ]
+          , [ className =? c --> placeHook' <+> doFloat | c <- myClassFloats ]
+          , [ className =? c --> doShift (head myWorkspaces) | c <- myBrowsers ]
+          , [ className =? c --> doShift (myWorkspaces !! 1) | c <- myChats ]
+          , [ className =? c --> doShift (myWorkspaces !! 2) | c <- myTorrents ]
+          , [ className =? c --> doShift (myWorkspaces !! 3) | c <- myOpSec ]
+          , [ className =? c --> doShift (myWorkspaces !! 4)
+            | c <- myVirtualMachines
+            ]
+          , [ className =? c --> doShift (myWorkspaces !! 5) | c <- myGames ]
+          , [ title =? t --> doFloat | t <- myTitleFloats ]
+          , [isFullscreen --> doFullFloat]
+          ]
+  where
+    myIgnores = ["desktop_window", "kdesktop"]
+    myFirefox = ["firefox", "Iceweasel", "qutebrowser", "Navigator", "floorp"]
+    myChrome =
+        [ "Chromium"
+        , "Chromium-browser"
+        , "Google-chrome"
+        , "Google-chrome-stable"
+        , "Google-chrome-unstable"
+        , "google-chrome"
         ]
-      , [ className =? c --> doShift (myWorkspaces !! 8)
-        | c <- ["VirtualBox Manager"]
+    myBrowsers = myFirefox ++ myChrome
+    myTorrents = ["deluge", "Deluge-gtk", "Deluge"]
+    myChats =
+        ["Microsoft Teams - Preview", "Slack", "Signal", "TelegramDesktop"]
+    myGames = ["dosbox", "Steam", "steam", "pcsx2", "zenity"]
+    myOpSec = ["Claws-mail", "Balsa", "Tor Browser"]
+    myClassFloats =
+        [ "feh"
+        , "gnuplot"
+        , "mpv"
+        , "UniversalEditor"
+        , "sxiv"
+        , "Sxiv"
+        , "virt-manager"
         ]
-      , [ title =? t --> doFloat | t <- myTitleFloats ]
-      , [isFullscreen --> doFullFloat]
-      ]
- where
-  myIgnores = ["desktop_window", "kdesktop"]
-  myFirefox = ["firefox", "Iceweasel", "qutebrowser", "Navigator"]
-  myChrome =
-    [ "Chromium"
-    , "Chromium-browser"
-    , "Google-chrome"
-    , "Google-chrome-stable"
-    , "Google-chrome-unstable"
-    , "google-chrome"
-    ]
-  myTorrents    = ["Deluge"]
-  myChats = ["Microsoft Teams - Preview", "Slack", "Signal", "TelegramDesktop"]
-  myGames       = ["dosbox", "Steam", "pcsx2", "zenity"]
-  myClassFloats = ["feh", "gnuplot", "mpv", "UniversalEditor"]
-  myTitleFloats = ["Microsoft Teams Notification"]
+    myTitleFloats     = ["Microsoft Teams Notification"]
+    myVirtualMachines = ["VirtualBox Machine", "VirtualBox Manager"]
 
 placeHook' = placeHook $ withGaps (16, 0, 16, 0) (smart (0.5, 0.5))
 
 --------------------------------------------------------------------------------
 layoutModifiers =
-  avoidStrutsOn [U]
-    . smartBorders
-    . toggleLayouts (noBorders Full)
-    . spacingRaw False
-                 (Border gapSize gapSize gapSize gapSize)
-                 True
-                 (Border gapSize gapSize gapSize gapSize)
-                 True
+    -- avoidStrutsOn [U]
+    mkToggle (NBFULL ?? NOBORDERS ?? MIRROR ?? SMARTBORDERS ?? EOT)
+        . renamed [CutLeft (length "Spacing ")]
+        . gaps [(U, 20)]
+        . spacingRaw False
+                     (Border gapSize gapSize gapSize gapSize)
+                     True
+                     (Border gapSize gapSize gapSize gapSize)
+                     True
 
 -- Layouts:
-myLayout =
-  layoutModifiers
-    $ (tiled ||| reflectHoriz tiled ||| Mirror tiled ||| reflectVert
-        (Mirror tiled)
-      )
- where
-  tiled   = Tall nmaster delta ratio
-  nmaster = 1 -- The default number of windows in the master pane
-  ratio   = 1 / 2 -- Default proportion of screen occupied by master pane
-  delta   = 3 / 100 -- Percent of screen to increment by when resizing panes
+myLayout = layoutModifiers
+    (   reflectHoriz tiled
+    ||| tiled
+    ||| emptyBSP
+    ||| mid3
+    ||| equicol
+    ||| Mirror Accordion
+    )
+  where
+    equicol = renamed [Replace "Equipartition"] $ multiCol [1] 1 delta (-ratio)
+    tiled   = renamed [Replace "tiled"] $ Tall nmaster delta ratio
+    mid3    = renamed [Replace "3Col"] (ThreeColMid 1 delta ratio)
+    nmaster = 1 -- The default number of windows in the master pane
+    ratio   = 1 / 2 -- Default proportion of screen occupied by master pane
+    delta   = 3 / 100 -- Percent of screen to increment by when resizing panes
