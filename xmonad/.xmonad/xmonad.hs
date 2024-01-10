@@ -17,6 +17,13 @@ import qualified Data.Map                      as M
 import           Data.Maybe                     ( fromMaybe )
 import           Data.Monoid                    ( All(All) )
 import           Data.Ratio                     ( (%) )
+import           Data.Time                      ( LocalTime
+                                                , defaultTimeLocale
+                                                , formatTime
+                                                , getCurrentTime
+                                                , getCurrentTimeZone
+                                                , utcToLocalTime
+                                                )
 
 import           System.Exit                    ( exitSuccess )
 import           System.IO                      ( Handle
@@ -79,14 +86,8 @@ import           XMonad.Layout.ToggleLayouts    ( ToggleLayout(Toggle)
                                                 )
 import qualified XMonad.StackSet               as W
 import qualified XMonad.Util.ExtensibleState   as XS
-import           XMonad.Util.Font               ( Align
-                                                  ( AlignCenter
-                                                  , AlignLeft
-                                                  , AlignRight
-                                                  )
-                                                )
+import           XMonad.Util.Font               ( Align(AlignRight) )
 import           XMonad.Util.Loggers            ( Logger
-                                                , date
                                                 , fixedWidthL
                                                 , logCmd
                                                 , logLayout
@@ -117,6 +118,13 @@ laptopHost = "krang"
 
 maxTitleLen :: Int
 maxTitleLen = 100
+
+getCurrentTime' :: IO LocalTime
+getCurrentTime' = getCurrentTimeZone
+    >>= \tz -> getCurrentTime >>= \t -> return $ utcToLocalTime tz t
+
+date' :: String -> Logger
+date' fmt = io $ Just . formatTime defaultTimeLocale fmt <$> getCurrentTime'
 
 newtype TidState = TID TimerId
     deriving Typeable
