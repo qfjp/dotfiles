@@ -472,7 +472,6 @@ myKeys =
         , (modmEmacsKey ++ "t"   , toggleFloat)
         , (modmEmacsKey ++ ","   , rotAllUp)
         , (modmEmacsKey ++ "."   , rotAllDown)
-        , (modmEmacsKey ++ "b"   , sendMessage ToggleStruts)
         , (modmEmacsKey ++ "g"   , sendMessage ToggleGaps)
         , (modmEmacsKey ++ "S-q" , io exitSuccess)
         , ( modmEmacsKey ++ "q"
