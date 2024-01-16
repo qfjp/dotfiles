@@ -46,7 +46,8 @@ import           XMonad.Actions.RotSlaves       ( rotAllDown
 import           XMonad.Actions.Warp            ( warpToWindow )
 import           XMonad.Hooks.EwmhDesktops      ( ewmh )
 import           XMonad.Hooks.FadeInactive      ( fadeInactiveLogHook )
-import           XMonad.Hooks.ManageDocks       ( ToggleStruts(ToggleStruts)
+import           XMonad.Hooks.ManageDocks       ( SetStruts(SetStruts)
+                                                , ToggleStruts(ToggleStruts)
                                                 , avoidStrutsOn
                                                 , docks
                                                 , manageDocks
@@ -88,7 +89,9 @@ import           XMonad.Layout.BinarySpacePartition
                                                 , emptyBSP
                                                 )
 import           XMonad.Layout.Gaps             ( GapMessage(ToggleGaps)
+                                                , GapSpec
                                                 , gaps
+                                                , setGaps
                                                 )
 import           XMonad.Layout.LayoutScreens    ( layoutScreens )
 import           XMonad.Layout.MultiColumns     ( multiCol )
@@ -260,6 +263,12 @@ myNavigation2DConfig = def { defaultTiledNavigation = centerNavigation
                            , floatNavigation        = centerNavigation
                            }
 
+showStrutGapSpec :: GapSpec
+showStrutGapSpec = []
+
+hideStrutGapSpec :: GapSpec
+hideStrutGapSpec = [(U, 20)]
+
 gapSize :: Integral a => a
 gapSize = 5
 
@@ -399,10 +408,16 @@ myStartupHook = do
 
 fake2Monitors :: X ()
 fake2Monitors = do
+    -- hide all strut-gaps
+    sendMessage (SetStruts [] [minBound .. maxBound])
+    sendMessage (setGaps hideStrutGapSpec)
     layoutScreens 2 (TwoPane 0.5 0.5)
 
 real1Monitor :: X ()
 real1Monitor = do
+    -- show all strut-gaps
+    sendMessage (SetStruts [minBound .. maxBound] [])
+    sendMessage (setGaps showStrutGapSpec)
     rescreen
 
 ----------------------------------------------------------------------
@@ -562,9 +577,10 @@ placeHook' = placeHook $ withGaps (16, 0, 16, 0) (smart (0.5, 0.5))
 
 --------------------------------------------------------------------------------
 layoutModifiers =
-    mkToggle (NBFULL ?? NOBORDERS ?? MIRROR ?? SMARTBORDERS ?? EOT)
+    avoidStrutsOn [U]
+        . mkToggle (NBFULL ?? NOBORDERS ?? MIRROR ?? SMARTBORDERS ?? EOT)
         . renamed [CutLeft (length "Spacing ")]
-        . gaps [(U, 20)]
+        . gaps hideStrutGapSpec
         . spacingRaw False
                      (Border gapSize gapSize gapSize gapSize)
                      True
