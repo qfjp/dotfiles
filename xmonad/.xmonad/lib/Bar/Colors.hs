@@ -7,30 +7,30 @@ import           Numeric                        ( readHex
 data Triple a = Triple (a, a, a)
 
 instance Functor Triple where
-  fmap f (Triple (x, y, z)) = Triple (f x, f y, f z)
+    fmap f (Triple (x, y, z)) = Triple (f x, f y, f z)
 
 instance Applicative Triple where
-  pure x = Triple (x, x, x)
-  (Triple (f1, f2, f3)) <*> (Triple (x1, x2, x3)) =
-    (Triple (f1 x1, f2 x2, f3 x3))
+    pure x = Triple (x, x, x)
+    (Triple (f1, f2, f3)) <*> (Triple (x1, x2, x3)) =
+        (Triple (f1 x1, f2 x2, f3 x3))
 
 type Color = Triple Int
 
 string2col :: String -> Color
 string2col s = Triple (r, g, b)
- where
-  s'       = drop 1 s
-  readHex' = fst . head . readHex
-  r        = readHex' . take 2 $ s'
-  g        = readHex' . take 2 . drop 2 $ s'
-  b        = readHex' . take 2 . drop 4 $ s'
+  where
+    s'       = drop 1 s
+    readHex' = fst . head . readHex
+    r        = readHex' . take 2 $ s'
+    g        = readHex' . take 2 . drop 2 $ s'
+    b        = readHex' . take 2 . drop 4 $ s'
 
 col2string :: Color -> String
 col2string (Triple (r, g, b)) = "#" ++ showHex' r ++ showHex' g ++ showHex' b
- where
-  showHex' n =
-    let result = showHex n ""
-    in  if length result == 1 then "0" ++ result else result
+  where
+    showHex' n =
+        let result = showHex n ""
+        in  if length result == 1 then "0" ++ result else result
 
 darken :: Color -> Color
 darken = shift (-50)
@@ -40,17 +40,18 @@ brighten = shift 50
 
 shift :: Int -> Color -> Color
 shift amt = fmap colshift
- where
-  colshift x =
-    if x + amt > 255 then 255 else if x + amt < 0 then 0 else x + amt
+  where
+    colshift x | x + amt > 255 = 255
+               | x + amt < 0   = 0
+               | otherwise     = x + amt
 
 gradientStr :: Color -> Color -> String
 gradientStr c1 c2 =
-  " " ++ bg left ++ " " ++ bg mid ++ " " ++ bg right ++ " " ++ bg c2 ++ " "
- where
-  mid   = avgColor c1 c2
-  left  = avgColor c1 mid
-  right = avgColor c2 mid
+    " " ++ bg left ++ " " ++ bg mid ++ " " ++ bg right ++ " " ++ bg c2 ++ " "
+  where
+    mid   = avgColor c1 c2
+    left  = avgColor c1 mid
+    right = avgColor c2 mid
 
 avgColor :: Color -> Color -> Color
 avgColor c1 c2 = fmap (`div` 2) $ (+) <$> c1 <*> c2

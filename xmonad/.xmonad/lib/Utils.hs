@@ -35,65 +35,73 @@ execute exe arg = getProcHandle exe arg >>= hGetContents
 
 getProcHandle :: FilePath -> [String] -> IO Handle
 getProcHandle exe arg = do
-  (_, Just hout, _, _) <- createProcess (proc exe arg) { cwd     = Just "."
-                                                       , std_out = CreatePipe
-                                                       , std_err = CreatePipe
-                                                       }
-  return hout
+    (_, Just hout, _, _) <- createProcess (proc exe arg) { cwd     = Just "."
+                                                         , std_out = CreatePipe
+                                                         , std_err = CreatePipe
+                                                         }
+    return hout
 
 getDpi :: IO String
 getDpi = do
-  xdpyOut <- execute "xdpyinfo" []
-  let xdpyLines = lines xdpyOut
-      dpiLine   = (head . filter ("dot" `isInfixOf`)) xdpyLines
-      dpis      = words dpiLine !! 1
-  return dpis
+    xdpyOut <- execute "xdpyinfo" []
+    let xdpyLines = lines xdpyOut
+        dpiLine   = (head . filter ("dot" `isInfixOf`)) xdpyLines
+        dpis      = words dpiLine !! 1
+    return dpis
 
 yDpi :: (Integral a, Read a) => IO a
 yDpi = do
-  dpis <- getDpi
-  let splt = splitOn "x" dpis
-      yStr = (head . tail) splt
-      yInt = read yStr :: (Integral a, Read a) => a
-  return yInt
+    dpis <- getDpi
+    let splt = splitOn "x" dpis
+        yStr = (head . tail) splt
+        yInt = read yStr :: (Integral a, Read a) => a
+    return yInt
 
 ioLineHeight :: Integral a => IO a
 ioLineHeight = do
-  ydpi <- yDpi
-  return $ floor $ (0.1875 :: Double) * fromIntegral ydpi
+    ydpi <- yDpi
+    return $ floor $ (0.1875 :: Double) * fromIntegral ydpi
 
 ioIconHeight :: Integral a => IO a
 ioIconHeight = do
-  ydpi <- yDpi
-  return $ floor $ (0.1667 :: Double) * fromIntegral ydpi
+    ydpi <- yDpi
+    return $ floor $ (0.1667 :: Double) * fromIntegral ydpi
 
 xrandr :: IO String
 xrandr = execute "xrandr" []
 
 containsAllOf :: Eq a => [a] -> [a] -> Bool
 containsAllOf x y =
-  let x' = nub x
-      y' = nub y
-  in  length (x' `intersect` y') == (length . nub) y'
+    let x' = nub x
+        y' = nub y
+    in  length (x' `intersect` y') == (length . nub) y'
 
 getGeo :: IO (String, String)
 getGeo = getGeoFromDisplay "primary"
 
 getGeoFromDisplay :: String -> IO (String, String)
 getGeoFromDisplay disp = do
-  xrandrLines <- lines <$> xrandr
-  let primary      = (!! 0) $ filter (disp `isInfixOf`) xrandrLines
-      primGeo      = (!! 0) . filter (`containsAllOf` "x+") . words $ primary
-      primGeoSplit = splitOneOf "+x" primGeo
-  return
-    ( (primGeoSplit !! 0) ++ "x" ++ (primGeoSplit !! 1)
-    , (primGeoSplit !! 2) ++ "+" ++ (primGeoSplit !! 3)
-    )
+    xrandrLines <- lines <$> xrandr
+    let primary      = (!! 0) $ filter (disp `isInfixOf`) xrandrLines
+        primGeo      = (!! 0) . filter (`containsAllOf` "x+") . words $ primary
+        primGeoSplit = splitOneOf "+x" primGeo
+    return
+        ( head primGeoSplit ++ "x" ++ (primGeoSplit !! 1)
+        , (primGeoSplit !! 2) ++ "+" ++ (primGeoSplit !! 3)
+        )
 
 getResolution :: (Integral a, Read a) => IO (a, a)
-getResolution = (convertTup . list2Tup . splitOn "x" . fst)
-  <$> getGeoFromDisplay displayForBar
+getResolution =
+    convertTup
+        .   list2Tup
+        .   splitOn "x"
+        .   fst
+        <$> getGeoFromDisplay displayForBar
 
 getOffset :: (Integral a, Read a) => IO (a, a)
-getOffset = (convertTup . list2Tup . splitOn "+" . snd)
-  <$> getGeoFromDisplay displayForBar
+getOffset =
+    convertTup
+        .   list2Tup
+        .   splitOn "+"
+        .   snd
+        <$> getGeoFromDisplay displayForBar
