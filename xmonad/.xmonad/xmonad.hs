@@ -44,19 +44,6 @@ import           XMonad.Actions.RotSlaves       ( rotAllDown
                                                 , rotAllUp
                                                 )
 import           XMonad.Actions.Warp            ( warpToWindow )
-import           XMonad.Hooks.DynamicLog        ( dynamicLogWithPP
-                                                , dzenPP
-                                                , ppCurrent
-                                                , ppExtras
-                                                , ppHidden
-                                                , ppHiddenNoWindows
-                                                , ppLayout
-                                                , ppOutput
-                                                , ppTitle
-                                                , ppVisible
-                                                , shorten
-                                                , wrap
-                                                )
 import           XMonad.Hooks.EwmhDesktops      ( ewmh )
 import           XMonad.Hooks.FadeInactive      ( fadeInactiveLogHook )
 import           XMonad.Hooks.ManageDocks       ( ToggleStruts(ToggleStruts)
@@ -72,6 +59,24 @@ import           XMonad.Hooks.Place             ( placeHook
                                                 , withGaps
                                                 )
 import           XMonad.Hooks.SetWMName         ( setWMName )
+import           XMonad.Hooks.StatusBar         ( defToggleStrutsKey
+                                                , statusBarPipe
+                                                , withEasySB
+                                                )
+import           XMonad.Hooks.StatusBar.PP      ( PP(PP)
+                                                , dynamicLogWithPP
+                                                , dzenPP
+                                                , ppCurrent
+                                                , ppExtras
+                                                , ppHidden
+                                                , ppHiddenNoWindows
+                                                , ppLayout
+                                                , ppOutput
+                                                , ppTitle
+                                                , ppVisible
+                                                , shorten
+                                                , wrap
+                                                )
 import           XMonad.Layout.Accordion
 import           XMonad.Layout.BinarySpacePartition
                                                 ( ResizeDirectional
@@ -199,10 +204,10 @@ modmEmacsKey | modm == super       = "M4-"
 main :: IO ()
 main = do
     dzenCommand   <- myWorkspaceBar
-    dzenProcess   <- spawnPipe dzenCommand
+    mySB          <- statusBarPipe dzenCommand myPP
     staloneString <- staloneCmd
     _             <- spawnPipe staloneString
-    xmonad $ myConfig { logHook = myLogHook dzenProcess }
+    xmonad $ withEasySB mySB defToggleStrutsKey myConfig
 
 myConfig = ewmh . withNavigation2DConfig myNavigation2DConfig . docks $ def
     { focusFollowsMouse  = False
@@ -230,8 +235,6 @@ altMask = mod1Mask
 rAlt = mod3Mask
 super = mod4Mask
 
---comptonString <- comptonCmd
---_ <- spawnPipe comptonString
 -- key bindings
 -- hooks, layouts
 staloneCmd :: IO String
@@ -341,8 +344,8 @@ length' (x : xs) | x == '—'  = 2 + length' xs
                  | otherwise = 1 + length' xs
 
 -- ●◉○
-myLogHook :: Handle -> X ()
-myLogHook h = do
+myPP :: X PP
+myPP = do
     fadeInactiveLogHook 1.00
     title    <- fmap (fromMaybe "") logTitle
     layout   <- fmap (fromMaybe "") logLayout
@@ -352,7 +355,7 @@ myLogHook h = do
         layoutLen = length layout
         batLen    = length battery
         buffer    = replicate (maxChars - titleLen - layoutLen - batLen) ' '
-    dynamicLogWithPP $ dzenPP
+    return $ dzenPP
         { ppCurrent = const $ wrap (fgbg lterGrey ltstGrey ++ " ") "" "●"
         , ppVisible = const $ wrap
                           (fgbg (brighten lterGrey) ltstGrey ++ " ")
@@ -364,7 +367,6 @@ myLogHook h = do
         , ppLayout = wrap (gradientStr ltstGrey lterGrey ++ fg textGrey)
                           (gradientStr lterGrey dkstGrey)
         , ppTitle = wrap (fg textGrey) "" . shorten maxTitleLen
-        , ppOutput = hPutStrLn h
         , ppExtras =
             [ return . Just $ buffer
             , wrapL " " " "
