@@ -16,8 +16,6 @@
 (when (pcall require :cmp)
   (require :completion_config))
 
-(when (pcall require :gitsigns)
-  (require :gitsigns_config))
 
 (when (pcall require :nvim-treesitter)
   (require :treesitter_config))
