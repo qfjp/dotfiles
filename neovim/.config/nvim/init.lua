@@ -6,12 +6,12 @@ function Bootstrap(user, repo, setupfns)
     local first_run = false
     if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
         vim.fn.system(
-          { 'git'
-          , 'clone'
-          , "--depth=1"
-          , string.format("https://github.com/%s/%s", user, repo)
-          , install_path
-          })
+            { 'git'
+            , 'clone'
+            , "--depth=1"
+            , string.format("https://github.com/%s/%s", user, repo)
+            , install_path
+            })
         vim.api.nvim_command(string.format("packadd %s", repo))
         first_run = true
     end
@@ -27,21 +27,21 @@ function Bootstrap(user, repo, setupfns)
 end
 
 Bootstrap("rktjmp", "hotpot.nvim", {})
-Bootstrap('lewis6991', 'impatient.nvim', {{"enable_profile"}})
+Bootstrap('lewis6991', 'impatient.nvim', { { "enable_profile" } })
 Bootstrap("wbthomason", "packer.nvim", {})
 
 if pcall(require, "hotpot") then
-  require('hotpot').setup({
-      provide_require_fennel = false,
-      enable_hotpot_diagnostics = true,
-      compiler = {
-          modules = {
-              correlate = true
-          },
-      },
-      macros = {
-          env = "_COMPILER"
-      }
-  })
-  pcall(require, "startup")
+    require('hotpot').setup({
+        provide_require_fennel = false,
+        enable_hotpot_diagnostics = true,
+        compiler = {
+            modules = {
+                correlate = true
+            },
+        },
+        macros = {
+            env = "_COMPILER"
+        }
+    })
+    pcall(require, "startup")
 end
