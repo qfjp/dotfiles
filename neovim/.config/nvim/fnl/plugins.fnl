@@ -92,7 +92,8 @@
                            :neovim/nvim-lspconfig []
                            :scalameta/nvim-metals []
                            :mfussenegger/nvim-jdtls {:ft :java}
-                           :williamboman/nvim-lsp-installer {:requires [:neovim/nvim-lspconfig]}
+                           :williamboman/mason.nvim {:config (SafeRequire :mason
+                                                                          [])}
                            ;; Completion/Snippets
                            :hrsh7th/vim-vsnip []
                            :rafamadriz/friendly-snippets []
