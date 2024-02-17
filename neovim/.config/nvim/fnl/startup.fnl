@@ -293,6 +293,17 @@
                       ";" [:Sayonara!<CR> "Forget File Buffer"]
                       "a;" [:Sayonara<CR> "Forget File Buffer And Layout"]}}
                  {:mode :c :silent false})
+    ;; Visual
+    (wk.register {:g {:k [:k "Move up one actual line"]
+                      :j [:j "Move down one actual line"]
+                      :0 [:0
+                          "Move to the beginning of the current (actual) line"]
+                      :$ ["$" "Move to the end of the current (actual) line"]}
+                  :k [:gk "Move up one visual line"]
+                  :j [:gj "Move down one visual line"]
+                  :0 [:g0 "Move to the beginning of the current (visual) line"]
+                  :$ [:g$ "Move to the end of the current (visual) line"]}
+                 {:mode :v})
     ;; Normal
     (wk.register {:g {:k [:k "Move up one actual line"]
                       :j [:j "Move down one actual line"]
