@@ -115,6 +115,7 @@
                            :kdheepak/cmp-latex-symbols {:ft [:tex]}
                            :max397574/cmp-greek []
                            ;; Filetypes
+                           :tridactyl/vim-tridactyl [:ft tridactyl]
                            :lervag/vimtex {:ft :tex}
                            :rbonvall/vim-textobj-latex {:ft :tex
                                                         :requires :kana/vim-textobj-user}
