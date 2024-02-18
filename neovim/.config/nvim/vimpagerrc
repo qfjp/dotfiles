@@ -10,6 +10,8 @@ set noexpandtab
 set nosmarttab
 set tabstop=4
 set shiftwidth=4
+set nowrapscan
+set smartcase
 if exists('+colorcolumn')
   set cc=0
 endif
