@@ -156,9 +156,6 @@
         (string.match str (.. subnet "[1-2][0-9][0-9]")))))
 
 (set! termguicolors)
-(when (and (not (= vim.env.SSH_CONNECTION nil))
-           (MatchHighIp vim.env.SSH_CONNECTION))
-  (set! notermguicolors))
 
 (set! listchars "tab:▕░,trail:▒,extends:>,precedes:<")
 
