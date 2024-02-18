@@ -1,190 +1,226 @@
 " General Settings
-js tri.config.set("update", {"lastchecktime": 1578443159264})
-js tri.config.set("update", {"lastnaggedversion": "1.16.2"})
-js tri.config.set("update", {"nag": true})
-js tri.config.set("update", {"nagwait": 7})
-js tri.config.set("update", {"checkintervalsecs": 86400})
-set configversion 1.8
-set searchengine duckduckgo
-js tri.config.set("searchurls", {"awiki": "https://wiki.archlinux.org/index.php?search=%s"})
-js tri.config.set("searchurls", {"google": "https://www.google.com/search?q="})
-js tri.config.set("searchurls", {"googlelucky": "https://www.google.com/search?btnI=I'm+Feeling+Lucky&q="})
-js tri.config.set("searchurls", {"scholar": "https://scholar.google.com/scholar?q="})
-js tri.config.set("searchurls", {"googleuk": "https://www.google.co.uk/search?q="})
-js tri.config.set("searchurls", {"bing": "https://www.bing.com/search?q="})
-js tri.config.set("searchurls", {"duckduckgo": "https://duckduckgo.com/?q="})
-js tri.config.set("searchurls", {"yahoo": "https://search.yahoo.com/search?p="})
-js tri.config.set("searchurls", {"twitter": "https://twitter.com/search?q="})
-js tri.config.set("searchurls", {"wikipedia": "https://en.wikipedia.org/wiki/Special:Search/"})
-js tri.config.set("searchurls", {"youtube": "https://www.youtube.com/results?search_query="})
-js tri.config.set("searchurls", {"amazon": "https://www.amazon.com/s/ref=nb_sb_noss?url=search-alias%3Daps&field-keywords="})
-js tri.config.set("searchurls", {"amazonuk": "https://www.amazon.co.uk/s/ref=nb_sb_noss?url=search-alias%3Daps&field-keywords="})
-js tri.config.set("searchurls", {"startpage": "https://startpage.com/do/search?language=english&cat=web&query="})
-js tri.config.set("searchurls", {"github": "https://github.com/search?utf8=✓&q="})
-js tri.config.set("searchurls", {"searx": "https://searx.me/?category_general=on&q="})
-js tri.config.set("searchurls", {"cnrtl": "http://www.cnrtl.fr/lexicographie/"})
-js tri.config.set("searchurls", {"osm": "https://www.openstreetmap.org/search?query="})
-js tri.config.set("searchurls", {"mdn": "https://developer.mozilla.org/en-US/search?q="})
-js tri.config.set("searchurls", {"gentoo_wiki": "https://wiki.gentoo.org/index.php?title=Special%3ASearch&profile=default&fulltext=Search&search="})
-js tri.config.set("searchurls", {"qwant": "https://www.qwant.com/?q="})
-set smoothcroll true
+set configversion 1.9
+set update.checkintervalsecs 86400
+set update.lastchecktime 1698014920251
+set update.lastnaggedversion 1.20.3
+set update.nag true
+set update.nagwait 7
+set searchurls.qwant https://www.qwant.com/?q=
+set searchurls.ggl https://www.google.com/search?q=
+set searchurls.gglky https://www.google.com/search?btnI=I'm+Feeling+Lucky&q=
+set searchurls.schlr https://scholar.google.com/scholar?q=
+set searchurls.ggleuk https://www.google.co.uk/search?q=
+set searchurls.bng https://www.bing.com/search?q=
+set searchurls.ddg https://duckduckgo.com/?q=
+set searchurls.yho https://search.yahoo.com/search?p=
+set searchurls.twtr https://twitter.com/search?q=
+set searchurls.wkpd https://en.wikipedia.org/wiki/Special:Search/
+set searchurls.yt https://www.youtube.com/results?search_query=
+set searchurls.amzn https://www.amazon.com/s/ref=nb_sb_noss?url=search-alias%3Daps&field-keywords=
+set searchurls.amznuk https://www.amazon.co.uk/s/ref=nb_sb_noss?url=search-alias%3Daps&field-keywords=
+set searchurls.stp https://startpage.com/do/search?language=english&cat=web&query=
+set searchurls.gtb https://github.com/search?utf8=✓&q=
+set searchurls.sx https://searx.thegpm.org/search?q=
+set searchurls.cnrtl http://www.cnrtl.fr/lexicographie/
+set searchurls.osm https://www.openstreetmap.org/search?query=
+set searchurls.mdn https://developer.mozilla.org/en-US/search?q=
+set searchurls.gtwiki https://wiki.gentoo.org/index.php?title=Special%3ASearch&profile=default&fulltext=Search&search=
+set searchurls.awiki https://wiki.archlinux.org/index.php?search=
 set hintfiltermode vimperator-reflow
+set searchengine ddg
 set hintchars asdfghjkl
 set updatenaglastversion 1.17.0
 set storageloc sync
-set editorcmd wezterm start -- zsh -c "nvim %f '+normal%lGzv%c'"
+set smoothcroll true
+set editorcmd kitty -- zsh -c "nvim %f '+normal%lGzv%c'"
 
 " Binds
-unbind --mode=insert <c-i>
-unbind --mode=input <c-i>
-bind --mode=insert <C-e> editor
-bind --mode=input <C-e> editor
-bind ;c hint -c [class*="expand"],[class="togg"]
-bind <C-j> tabnext
-bind <C-k> tabprev
-bind K tabmove -1
-bind J tabmove +1
-bind <C-h> back
-bind <C-l> forward
-bind / fillcmdline find
-bind ? fillcmdline find -?
-bind n findnext 1
-bind N findnext -1
-bind ,<Space> nohlsearch
-unbind <C-f>
-bind <A-p> pin
-bind <A-m> mute toggle
-bind <F1> help
-bind o fillcmdline open
-bind O current_url open
-bind w fillcmdline winopen
-bind W current_url winopen
-bind t fillcmdline tabopen
-bind ]] followpage next
-bind [[ followpage prev
-bind [c urlincrement -1
-bind ]c urlincrement 1
-bind <C-x> urlincrement -1
-bind <C-a> urlincrement 1
-bind T current_url tabopen
-bind yy clipboard yank
-bind ys clipboard yankshort
-bind yc clipboard yankcanon
-bind ym clipboard yankmd
-bind yt clipboard yanktitle
-bind gh home
-bind gH home true
-bind p clipboard open
-bind P clipboard tabopen
-bind j scrollline 10
-bind <C-e> scrollline 10
-bind k scrollline -10
-bind <C-y> scrollline -10
-bind h scrollpx -50
-bind l scrollpx 50
-bind G scrollto 100
-bind gg scrollto 0
-bind <C-u> scrollpage -0.5
-bind <C-d> scrollpage 0.5
-bind <C-b> scrollpage -1
 bind $ scrollto 100 x
-bind ^ scrollto 0 x
-bind <C-6> tab #
-bind <C-^> tab #
-bind H back
-bind L forward
-bind <C-o> jumpprev
-bind <C-i> jumpnext
-bind d tabclose
-bind D composite tabprev; tabclose #
-bind gx0 tabclosealltoleft
-bind gx$ tabclosealltoright
-bind << tabmove -1
-bind >> tabmove +1
-bind u undo
-bind U undo window
-bind r reload
-bind R reloadhard
-bind x stop
-bind gi focusinput -l
-bind g? rot13
-bind g; changelistjump -1
-bind gt tabnext_gt
-bind gT tabprev
-bind g^ tabfirst
-bind g0 tabfirst
-bind g$ tablast
-bind gr reader
-bind gu urlparent
-bind gU urlroot
-bind gf viewsource
+bind ,<Space> nohlsearch
+bind . repeat
 bind : fillcmdline_notrail
-bind s fillcmdline open search
-bind S fillcmdline tabopen search
-bind M gobble 1 quickmark
-bind B fillcmdline taball
-bind b fillcmdline tab
-bind ZZ qall
-bind f hint
-bind F hint -b
-bind gF hint -br
-bind ;i hint -i
-bind ;b hint -b
-bind ;o hint
-bind ;I hint -I
-bind ;k hint -k
-bind ;y hint -y
-bind ;p hint -p
-bind ;P hint -P
-bind ;r hint -r
-bind ;s hint -s
-bind ;S hint -S
-bind ;a hint -a
-bind ;A hint -A
-bind ;; hint -;
 bind ;# hint -#
-bind ;v hint -W mpvsafe
-bind ;w hint -w
-bind ;t hint -W tabopen
-bind ;O hint -W fillcmdline_notrail open
-bind ;W hint -W fillcmdline_notrail winopen
-bind ;T hint -W fillcmdline_notrail tabopen
-bind ;z hint -z
-bind ;m composite hint -pipe img src | js -p tri.excmds.open('images.google.com/searchbyimage?image_url=' + JS_ARG)
+bind ;; hint -;
+bind ;A hint -A
+bind ;I hint -I
 bind ;M composite hint -pipe img src | jsb -p tri.excmds.tabopen('images.google.com/searchbyimage?image_url=' + JS_ARG)
-bind ;gi hint -qi
+bind ;O hint -W fillcmdline_notrail open
+bind ;P hint -P
+bind ;T hint -W fillcmdline_notrail tabopen
+bind ;W hint -W fillcmdline_notrail winopen
+bind ;a hint -a
+bind ;b hint -b
+bind ;c hint -c [class*="expand"],[class="togg"]
+bind ;f hint -;
+bind ;g# hint -q#
+bind ;gA hint -qA
 bind ;gI hint -qI
-bind ;gk hint -qk
-bind ;gy hint -qy
-bind ;gp hint -qp
 bind ;gP hint -qP
-bind ;gr hint -qr
-bind ;gs hint -qs
 bind ;gS hint -qS
 bind ;ga hint -qa
-bind ;gA hint -qA
-bind ;g; hint -q;
-bind ;g# hint -q#
+bind ;gb hint -qb
+bind ;gi hint -qi
+bind ;gk hint -qk
+bind ;gp hint -qp
+bind ;gr hint -qr
+bind ;gs hint -qs
 bind ;gv hint -qW mpvsafe
 bind ;gw hint -qw
-bind ;gb hint -qb
-bind <S-Insert> mode ignore
-bind <CA-Escape> mode ignore
-bind <CA-`> mode ignore
-bind <S-Escape> mode ignore
-bind <Escape> composite mode normal ; hidecmdline
+bind ;gy hint -qy
+bind ;i hint -i
+bind ;k hint -k
+bind ;m composite hint -pipe img src | js -p tri.excmds.open('images.google.com/searchbyimage?image_url=' + JS_ARG)
+bind ;o hint
+bind ;p hint -p
+bind ;r hint -r
+bind ;s hint -s
+bind ;t hint -W tabopen
+bind ;v hint -W mpvsafe
+bind ;w hint -w
+bind ;y hint -y
+bind ;z hint -z
+bind << tabmove -1
+bind <A-m> mute toggle
+bind <A-p> pin
+bind <AC-Escape> mode ignore
+bind <AC-`> mode ignore
+bind <AS-ArrowUp><AS-ArrowUp><AS-ArrowDown><AS-ArrowDown><AS-ArrowLeft><AS-ArrowRight><AS-ArrowLeft><AS-ArrowRight>ba open https://www.youtube.com/watch?v=M3iOROuTuMA
+bind <C-6> tab #
 bind <C-[> composite mode normal ; hidecmdline
-bind a current_url bmark
+bind <C-^> tab #
+bind <C-a> urlincrement 1
+bind <C-b> scrollpage -1
+bind <C-d> scrollpage 0.5
+bind <C-e> scrollline 10
+unbind <C-f>
+bind <C-h> back
+bind <C-i> jumpnext
+bind <C-j> tabnext
+bind <C-k> tabprev
+bind <C-n> tabnext
+bind <C-p> tabprev
+bind <C-l> forward
+bind <C-o> jumpprev
+bind <C-u> scrollpage -0.5
+bind <C-x> urlincrement -1
+bind <C-y> scrollline -10
+bind <Escape> composite mode normal ; hidecmdline
+bind <F1> help
+bind <S-Escape> mode ignore
+bind <S-Insert> mode ignore
+bind >> tabmove +1
+bind ? fillcmdline find -?
 bind A bmark
-bind zi zoom 0.1 true
-bind zo zoom -0.1 true
-bind zz zoom 1
+bind B fillcmdline taball
+bind D composite tabprev; tabclose #
+bind F hint -b
+bind G scrollto 100
+bind H back
+bind J tabmove +1
+bind K tabmove -1
+bind L forward
+bind M gobble 1 quickmark
+bind O current_url open
+bind P clipboard tabopen
+bind R reloadhard
+bind S fillcmdline tabopen search
+bind T current_url tabopen
+bind U undo window
+bind W current_url winopen
+bind ZZ composite sanitise tridactyllocal; qall
+bind [[ followpage prev
+bind [c urlincrement -1
+bind ]] followpage next
+bind ]c urlincrement 1
+bind ^ scrollto 0 x
+bind a current_url bmark
+bind b fillcmdline tab
+bind d tabclose
+bind f hint
+bind g$ tablast
+bind g0 tabfirst
+bind g; changelistjump -1
+bind g? rot13
+bind gF hint -br
+bind gH home true
+bind gT tabprev
+bind gU urlroot
+bind g^ tabfirst
+bind gf viewsource
+bind gg scrollto 0
+bind gh home
+bind gi focusinput -l
+bind gr reader
+bind gt tabnext_gt
+bind gu urlparent
+bind gx$ tabclosealltoright
+bind gx0 tabclosealltoleft
+bind h scrollpx -50
+bind j scrollline 10
+bind k scrollline -10
+bind l scrollpx 50
+bind o fillcmdline open
+bind p clipboard open
+bind r reload
+bind s fillcmdline open search
+bind t fillcmdline tabopen
+bind u undo
+bind w fillcmdline winopen
+bind x stop
+bind yc clipboard yankcanon
+bind ym clipboard yankmd
+bind ys clipboard yankshort
+bind yt clipboard yanktitle
+bind yy clipboard yank
 bind zI zoom 0.5 true
+bind zM zoom 0.5 true
 bind zO zoom -0.5 true
-bind . repeat
-bind <SA-ArrowUp><SA-ArrowUp><SA-ArrowDown><SA-ArrowDown><SA-ArrowLeft><SA-ArrowRight><SA-ArrowLeft><SA-ArrowRight>ba open https://www.youtube.com/watch?v=M3iOROuTuMA
+bind zR zoom -0.5 true
+bind zi zoom 0.1 true
+bind zm zoom 0.5 true
+bind zo zoom -0.1 true
+bind zr zoom -0.5 true
+bind zz zoom 1
+bind ;S hint -S
+bind ;x hint -F e => { const pos = tri.dom.getAbsoluteCentre(e); tri.excmds.exclaim_quiet("xdotool mousemove --sync " + window.devicePixelRatio * pos.x + " " + window.devicePixelRatio * pos.y + "; xdotool click 1")}
+bind ;X hint -F e => { const pos = tri.dom.getAbsoluteCentre(e); tri.excmds.exclaim_quiet("xdotool mousemove --sync " + window.devicePixelRatio * pos.x + " " + window.devicePixelRatio * pos.y + "; xdotool keydown ctrl+shift; xdotool click 1; xdotool keyup ctrl+shift")}
+bind yq text2qr --timeout 5
+bind yo clipboard yankorg
+bind <C-v> nmode ignore 1 mode normal
+bind g! jumble
+bind ga tabaudio
+bind ;K hint -K
+bind ;Y hint -cF img i => tri.excmds.yankimage(tri.urlutils.getAbsoluteURL(i.src))
+bind ;h hint -h
+bind v hint -h
+bind ;V hint -V
+bind ;d hint -W tabopen --discard
+bind ;gd hint -qW tabopen --discard
+bind ;gF hint -qb
+bind ;gf hint -q
+bind m gobble 1 markadd
+bind ` gobble 1 markjump
+bind ' gobble 1 markjump
+unbind --mode=insert <C-i>
+bind --mode=insert <C-e> editor
+bind --mode=insert <Escape> composite unfocus | mode normal
+bind --mode=insert <C-[> composite unfocus | mode normal
+bind --mode=insert <AC-Escape> mode normal
+bind --mode=insert <AC-`> mode normal
+bind --mode=insert <S-Escape> mode ignore
+unbind --mode=input <C-i>
+bind --mode=input <C-e> editor
+bind --mode=input <Tab> focusinput -n
+bind --mode=input <S-Tab> focusinput -N
+bind --mode=input 🕷🕷INHERITS🕷🕷 imaps
 
+" Autocmds
 autocmd TabEnter .* unfocus
+autocmd DocLoad ^https://github.com/tridactyl/tridactyl/issues/new$ issue
+autocmd TriStart .* source_quiet
 
 " For syntax highlighting see https://github.com/tridactyl/vim-tridactyl
-" vim: set filetype=tridactyl
+" vim: set filetype=tridactyl:
+
+" I like wikiwand but I don't like the way it changes URLs
+bindurl wikiwand.com yy composite js document.location.href.replace("wikiwand.com/en","wikipedia.org/wiki") | clipboard yank
