@@ -16,7 +16,6 @@
 (when (pcall require :cmp)
   (require :completion_config))
 
-
 (when (pcall require :nvim-treesitter)
   (require :treesitter_config))
 
@@ -326,15 +325,21 @@
                                 (vim.diagnostic.show))
                               "Show diagostics"]}
                       :l {:name "Vim LSP"
+                          :a [(fn []
+                                (vim.lsp.buf.code_action))
+                              "Code actions"]
                           :d [(fn []
                                 (vim.lsp.buf.definition))
                               "Show definition"]
                           :D [(fn []
                                 (vim.lsp.buf.declaration))
                               "Show declaration"]
+                          :e [(fn []
+                                (vim.diagnostic.open_float))
+                              "Show error messages"]
                           :f [(fn []
-                                (vim.lsp.buf.formatting))
-                              "LSP Format"]
+                                (vim.diagnostic.open_float))
+                              "Open diagnostic options"]
                           :h [(fn []
                                 (vim.lsp.buf.hover))
                               "LSP Hover"]
@@ -344,12 +349,40 @@
                           :l [(fn []
                                 (vim.lsp.util.show_line_diagnostics))
                               "Show line diagnostics"]
+                          :n [(fn []
+                                (vim.diagnostic.goto_next))
+                              "Goto next error/warning"]
+                          :p [(fn []
+                                (vim.diagnostic.goto_prev))
+                              "Goto prev error/warning"]
                           :s [(fn []
                                 (vim.lsp.buf.signature_help))
                               "Show signature"]
                           :t [(fn []
                                 (vim.lsp.buf.type_definition))
-                              "Show type definition"]}}
+                              "Show type definition"]}
+                      :o {:name :GitSigns
+                          :n [(fn []
+                                (package.loaded.gitsigns.next_hunk))
+                              "Next hunk"]
+                          :p [(fn []
+                                (package.loaded.gitsigns.prev_hunk))
+                              "Previous hunk"]
+                          :P [(fn []
+                                (package.loaded.gitsigns.preview_hunk))
+                              "Preview hunk"]
+                          :l [(fn []
+                                (package.loaded.gitsigns.blame_line {:full true}))
+                              "Full Blame"]
+                          :t [(fn []
+                                (package.loaded.gitsigns.toggle_current_line_blame))
+                              "Toggle line blame"]
+                          :d [(fn []
+                                (package.loaded.gitsigns.diffthis))
+                              "Split Diff"]
+                          :D [(fn []
+                                (package.loaded.gitsigns.toggle_deleted))
+                              "Show deleted lines"]}}
                   :K [(fn []
                         (vim.lsp.buf.hover))
                       "LSP Hover"]
@@ -362,30 +395,7 @@
                              :d [(t "<C-\\><C-n>:SSave! default | qall<CR>")
                                  "Save default session and quit"]
                              :D [(t "<C-\\><C-n>:SLoad default<CR>")
-                                 "Load default session"]
-                             :g (let [gs package.loaded.gitsigns]
-                                  {:name :GitSigns
-                                   :n [(fn []
-                                         (gs.next_hunk))
-                                       "Next hunk"]
-                                   :p [(fn []
-                                         (gs.prev_hunk))
-                                       "Previous hunk"]
-                                   :P [(fn []
-                                         (gs.preview_hunk))
-                                       "Preview hunk"]
-                                   :l [(fn []
-                                         (gs.blame_line {:full true}))
-                                       "Full Blame"]
-                                   :t [(fn []
-                                         (gs.toggle_current_line_blame))
-                                       "Toggle line blame"]
-                                   :d [(fn []
-                                         (gs.diffthis))
-                                       "Split Diff"]
-                                   :D [(fn []
-                                         (gs.toggle_deleted))
-                                       "Show deleted lines"]})}
+                                 "Load default session"]}
                   :z {:name :folds
                       "[" [":set foldlevel=99<CR>" "Open all folds"]
                       "]" [":set foldlevel=0<CR>" "Close all folds"]}
