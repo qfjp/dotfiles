@@ -1,0 +1,8 @@
+#!/bin/sh
+if [ "$WAYLAND_DISPLAY" ]; then
+    tmux set-buffer -- "$(wl-paste)"
+    tmux paste-buffer
+else
+    tmux set-buffer -- "$(xsel -o)"
+    tmux paste-buffer
+fi

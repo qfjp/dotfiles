@@ -1,0 +1,26 @@
+#!/bin/bash
+
+check_var() {
+    var_name="$1"
+    func_if_null="$2"
+    if [ -z "${!var_name}" ]; then
+        $func_if_null
+    fi
+}
+
+get_cur_pane() {
+    tmux list-panes | grep -E '\(active\)$' | cut -d: -f1
+}
+
+help () {
+    echo "usage $(basename "$0") [direction]"
+    exit 1
+}
+
+direction="$1"
+check_var direction help
+
+orig_pane=$(get_cur_pane)
+tmux select-pane -"${direction}" -t "${orig_pane}"
+targ_pane=$(get_cur_pane)
+tmux swap-pane -Z -d -s "$orig_pane" -t "$targ_pane"
