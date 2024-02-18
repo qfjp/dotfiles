@@ -26,7 +26,7 @@ volnoti &
 numlockx &
 nm-applet &
 dunst &
-udiskie -s &
+udiskie -t &
 xmodmap "$HOME/.Xmodmap" &
 xrdb ~/.Xdefaults &
 eval "$(cat ~/.fehbg)" &
