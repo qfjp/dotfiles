@@ -223,6 +223,13 @@ if pcall(require, "lspconfig") then
                     black = {
                         enabled = true,
                     },
+                    isort = {
+                        enabled = true,
+                    },
+                    ruff = {
+                        enabled = true,
+                        extendSelect = { "I" },
+                    },
                     mypy = {
                         enabled = true,
                         live_mode = true,
