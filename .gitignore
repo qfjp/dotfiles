@@ -5,3 +5,5 @@ xmonad/.xmonad/*
 !xmonad/.xmonad/**/*.hs
 
 packer_compiled.lua
+redshift
+mpd
