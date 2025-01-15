@@ -26,9 +26,11 @@ export OS_PREFIX
     fi
 
     setopt nosharehistory
-    setopt histignorealldups
-    setopt extendedglob
-    setopt complete_aliases
+    setopt histignorealldups # If a new hist item is a duplicate, delete the old one
+    setopt extendedglob      # Treat '#', '~', and '^' as part of glob patterns
+    setopt complete_aliases  # Prevents alias substituting before completion
+    setopt nullglob          # A glob that doesn't match becomes the empty string
+    setopt notify            # Report %bg status immediately (not on next '<CR>')
 
 # }}}
 
@@ -244,7 +246,10 @@ econs()
         PROMPT+=" \${\${\${\${(%):-"'$(felix_pwd_abbr)'"}#/}//\// %{$bg[black]%\}%{$bg[$bcfg]%\} }:-"/"} "
         PROMPT+="%{$reset_color$fg[$bcbg]%} "
 
-        function zle-line-init zle-keymap-select {
+        function zle-line-init() {
+          zle reset-prompt
+        }
+        function zle-keymap-select() {
           zle reset-prompt
         }
 
