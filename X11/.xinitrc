@@ -12,6 +12,7 @@ if [ -d /etc/X11/xinit/xinitrc.d ]; then
 fi
 export QT_QPA_PLATFORMTHEME=gtk2
 export NVIM_GTK_NO_HEADERBAR=1
+export TERMINAL=kitty
 
 OS_PREFIX='/usr'
 [ -e /etc/nixos/configuration.nix ] && OS_PREFIX=/run/current-system/sw
@@ -30,3 +31,4 @@ udiskie -t &
 xmodmap "$HOME/.Xmodmap" &
 xrdb ~/.Xdefaults &
 eval "$(cat ~/.fehbg)" &
+/usr/bin/kdeconnectd &
