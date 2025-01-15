@@ -237,6 +237,30 @@
          (autocmd :FileType "vim,zsh,lua,fennel"
                   "set foldmethod=marker|set foldtext=v:lua.SimpleFoldText()"))
 
+(global HaskellToolsFn
+        (fn []
+          (let [ht (require :haskell-tools)
+                bufnr (vim.api.nvim_get_current_buf)
+                opts {:noremap true :silent true :buffer bufnr}]
+            ;; haskell-language-server relies heavily on codeLenses,
+            ;; so auto-refresh is enabled by default
+            ;; why not vim.api.nvim_set_keymap?
+            (vim.keymap.set :n :<Space>cl :vim.lsp.codelens.run opts)
+            ;; Hoogle search for the type signature of the definition
+            ;; under the cursor
+            (vim.keymap.set :n :<Space>hs ht.hoogle.hoogle_signature)
+            ;;; Evaluate all code snippets
+            (vim.keymap.set :n :<Space>ea ht.lsp.buf_eval_all opts)
+            ;;; Toggle a GHCi repl for the current package
+            (vim.keymap.set :n :<leader>rr ht.repl.toggle opts)
+            ;;; Toggle a GHCi repl for the current buffer
+            (vim.keymap.set :n :<leader>rf
+                            #(ht.repl.toggle (vim.api.nvim_buf_get_name 0)) opts)
+            (vim.keymap.set :n :<leader>rq ht.repl.quit opts))))
+
+(augroup :HaskellTools
+         (autocmd :FileType "haskell,cabal" "call v:lua.HaskellToolsFn()"))
+
 (set! foldtext "v:lua.CFoldText()")
 
 (fn PadToRight [lstring rstring]
