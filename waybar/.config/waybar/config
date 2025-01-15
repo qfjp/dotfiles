@@ -64,27 +64,30 @@
         "format": "<span style=\"italic\">{}</span>"
     },
     "mpd": {
-        "format": "{stateIcon} {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}{artist} - {album} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S}) ⸨{songPosition}|{queueLength}⸩ {volume}% ",
-        "format-disconnected": "Disconnected ",
-        "format-stopped": "{consumeIcon}{randomIcon}{repeatIcon}{singleIcon}Stopped ",
+        "format": "{stateIcon}{consumeIcon}{randomIcon}{repeatIcon}{singleIcon}{artist} - {album} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S}) ⸨{songPosition}|{queueLength}⸩ {volume}% <span color=\"#ff00ff\">♫</span>",
+        "format-disconnected": "Disconnected <span color=\"#0ac3c3\">♫</span>",
+        "format-stopped": "■ {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}Stopped <span color=\"#ff00ff\">♫</span>",
         "unknown-tag": "N/A",
         "interval": 2,
         "consume-icons": {
-            "on": " "
+            "off": "",
+            "on": "<span color=\"#f53c3c\"></span> "
         },
         "random-icons": {
-            "off": "<span color=\"#f53c3c\"></span> ",
-            "on": " "
+            "off": "",
+            "on": "<span color=\"#f53c3c\"></span> ",
         },
         "repeat-icons": {
-            "on": " "
+            "off": "",
+            "on": "<span color=\"#f53c3c\"></span> "
         },
         "single-icons": {
-            "on": "1 "
+            "off": "",
+            "on": "<span color=\"#f53c3c\">1</span> ",
         },
         "state-icons": {
-            "paused": "",
-            "playing": ""
+            "paused": "<span color=\"#ff00ff\"></span> ",
+            "playing": "<span color=\"#ff00ff\"></span> "
         },
         "tooltip-format": "MPD (connected)",
         "tooltip-format-disconnected": "MPD (disconnected)"
