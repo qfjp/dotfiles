@@ -199,7 +199,7 @@ poke() {
             zgen load 'Tarrasch/zsh-functional'
             zgen load 'rylnd/shpec'
             zgen load 'zsh-users/zsh-autosuggestions'
-            zgen load 'zdharma/fast-syntax-highlighting'
+            zgen load 'zdharma-continuum/fast-syntax-highlighting'
 
             zgen load 'qfjp/k'
 
