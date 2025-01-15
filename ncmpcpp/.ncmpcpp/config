@@ -34,10 +34,10 @@
 ## }
 ##
 #
-visualizer_fifo_path = "/tmp/mpd.fifo"
-visualizer_output_name = "My FIFO"
-visualizer_sync_interval = "30"
+visualizer_data_source = "/tmp/mpd.fifo"
+visualizer_output_name = "ncmpcpp_fifo"
 visualizer_type = "spectrum" #(spectrum/wave)
+visualizer_look = "+|"
 #
 ##
 ## Note: Below parameter is needed for ncmpcpp
