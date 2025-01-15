@@ -9,7 +9,7 @@ commands in a terminal:
 
 1. Clone the repository:
     ```bash
-    git clone --recurse-submodules https://gitlab.com/qfjp/dotfiles "$DOTFILES_DIR"
+    git clone --recurse-submodules https://github.com/qfjp/dotfiles "$DOTFILES_DIR"
     ```
 
 2. Change to the directory:
