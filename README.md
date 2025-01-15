@@ -40,6 +40,22 @@ stow -D -t "$HOME" *(/)
 
 ## Application Specific Instructions
 
+### Hyprland
+
+Hyprland plugins are included as submodules, so make sure to clone
+this recursively:
+```bash
+git clone --recurse-submodules https://github.com/qfjp/dotfiles
+```
+
+The plugins still need to be built. Patches are included for some of
+the plugins, as they are not compiled against the latest version as of
+this writing. To patch and build the plugins:
+```bash
+cd hypr/.config/hypr/plugins
+make
+```
+
 ### Firefox
 
 #### Hotkeys
