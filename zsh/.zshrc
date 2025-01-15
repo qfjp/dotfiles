@@ -344,18 +344,21 @@ poke() {
     alias        gksu='gksudo'
     alias          ls='ls --group-directories-first --color=auto'
     alias           l='ls --group-directories-first --color=auto -F'
-    alias        less='less -R'
+    alias        less='less -i -R -S'
     alias         mpv='mpv --no-osc'
     alias       notes='vim -c "VimwikiIndex"'
     alias          rm='nocorrect rm'
     alias          rg='rg --color always --heading --line-number'
-    alias     yaourtc='yaourt --color'
+    alias        diff='diff --unified --show-c-function'
 
     alias       magit='vim -c MagitOnly'
     alias        wiki='vim -c "VimwikiIndex"'
 
     alias           d='dirs -v'
     alias        spim='rlwrap spim'
+    alias       paint='classic-colors'
+    alias    wl-paste='wl-paste -p'
+    alias      record='wf-recorder -g "$(slurp)" --audio=alsa_output.pci-0000_00_1f.3.analog-stereo.monitor'
 
 # }}}
 
@@ -363,6 +366,7 @@ poke() {
 
     for profile in ${(z)NIX_PROFILES}; do
         fpath+=($profile/share/zsh/site-functions $profile/share/zsh/$ZSH_VERSION/functions $profile/share/zsh/vendor-completions)
+        fpath+=($HOME/.zfunc)
     done
 
 
