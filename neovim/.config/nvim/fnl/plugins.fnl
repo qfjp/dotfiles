@@ -46,7 +46,7 @@
                            :rktjmp/hotpot.nvim []
                            ;; Vim Essentials
                            :mbbill/undotree {:cmd :UndoTreeToggle}
-                           :nvim-lualine/lualine.nvim {:requires {1 :kyazdani42/nvim-web-devicons
+                           :nvim-lualine/lualine.nvim {:requires {1 :nvim-tree/nvim-web-devicons
                                                                   :opt true}
                                                        :config (when (pcall require
                                                                             :lualine)
@@ -71,6 +71,7 @@
                            :ggandor/lightspeed.nvim []
                            :sjbach/Lusty []
                            ;; Highfalutin n' Fancy
+                           :xiyaowong/transparent.nvim []
                            :folke/twilight.nvim {:cmd :Twilight
                                                  :TwilightEnable :TwilightDisable}
                            :junegunn/goyo.vim {:cmd :Goyo
@@ -78,8 +79,11 @@
                            :nvim-treesitter/playground {:requires :nvim-treesitter/nvim-treesitter}
                            :Olical/conjure []
                            :rinx/nvim-minimap []
+                           :nvim-tree/nvim-web-devicons []
                            :folke/which-key.nvim {:config (SafeRequire :which-key
-                                                                       {})}
+                                                                       {})
+                                                  :requires {1 :nvim-tree/nvim-web-devicons
+                                                             2 :echasnovski/mini.icons}}
                            :karb94/neoscroll.nvim {:config (SafeRequire :neoscroll
                                                                         neoscroll_conf)}
                            :camspiers/lens.vim {:requires [:camspiers/animate.vim]}

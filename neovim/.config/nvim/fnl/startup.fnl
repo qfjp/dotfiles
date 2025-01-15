@@ -13,6 +13,13 @@
 
 ;; {{{ Plugin Configs
 ;; ------------------
+
+(when (pcall require :transparent)
+  (let [transparent (require :transparent)]
+    ((. transparent :setup) {:exclude_groups [:Visual]})
+    ((. transparent :clear_prefix) :GitSigns)
+    ((. transparent :clear_prefix) :Visual)))
+
 (when (pcall require :cmp)
   (require :completion_config))
 
