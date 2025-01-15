@@ -2,8 +2,11 @@ TOPTARGETS := all clean
 
 SUBDIRS := $(wildcard */.)
 
-$(TOPTARGETS): $(SUBDIRS)
+$(TOPTARGETS): apply_patches $(SUBDIRS)
 $(SUBDIRS):
 	$(MAKE) -C $@ $(MAKECMDGLOBALS)
 
-.PHONY: $(TOPTARGETS) $(SUBDIRS)
+apply_patches:
+	./apply-patches.sh
+
+.PHONY: $(TOPTARGETS) $(SUBDIRS) apply_patches
