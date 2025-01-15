@@ -165,10 +165,8 @@ poke() {
 # {{{ Colors
 
     # Translates ls colors to 'LS_COLORS'
-    eval "$(dircolors -b "$HOME/.dircolors")"
-    LS_COLORS+="*pdf=00;32:*.ps=00;32:*.txt=00;32:*.patch=00;32:"
-    LS_COLORS+="*.diff=00;32:*.log=00;32:*.tex=00;32:*.doc=00;32:"
-
+    eval $(dircolors -b)
+    export LS_COLORS="${LS_COLORS}:*.m2ts=01;35"
     export GREP_COLORS="mt=0;31"
 
 # }}}
