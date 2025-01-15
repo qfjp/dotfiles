@@ -4,12 +4,12 @@
 
 Before you get started, choose a directory where the configuration
 files will be kept. I normally choose
-`DOTFILES_DIR=$HOME/.github/dotfiles"``. Then, Run the following
+`DOTFILES_DIR="$HOME/.github/dotfiles"`. Then, Run the following
 commands in a terminal:
 
 1. Clone the repository:
     ```bash
-    git clone --recurse-submodules https://gitlab.com/qfjp/dotfiles "$DOTFILES_DIR"`
+    git clone --recurse-submodules https://gitlab.com/qfjp/dotfiles "$DOTFILES_DIR"
     ```
 
 2. Change to the directory:
