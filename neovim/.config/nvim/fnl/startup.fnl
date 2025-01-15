@@ -290,194 +290,292 @@
         t (fn [str]
             (vim.api.nvim_replace_termcodes str true true true))]
     ;; Command
-    (wk.register {:s {:name :Sayonara
-                      ";" [:Sayonara!<CR> "Forget File Buffer"]
-                      "a;" [:Sayonara<CR> "Forget File Buffer And Layout"]}}
-                 {:mode :c :silent false})
+    (wk.add {:mode [:c]
+             1 {1 :s :group :Sayonara :silent false}
+             2 {1 "s;"
+                2 :Sayonara!<CR>
+                :desc "Forget File Buffer"
+                :silent false}
+             3 {1 "sa;"
+                2 :Sayonara<CR>
+                :desc "Forget File Buffer And Layout"
+                :silent false}})
     ;; Visual
-    (wk.register {:g {:k [:k "Move up one actual line"]
-                      :j [:j "Move down one actual line"]
-                      :0 [:0
-                          "Move to the beginning of the current (actual) line"]
-                      :$ ["$" "Move to the end of the current (actual) line"]}
-                  :k [:gk "Move up one visual line"]
-                  :j [:gj "Move down one visual line"]
-                  :0 [:g0 "Move to the beginning of the current (visual) line"]
-                  :$ [:g$ "Move to the end of the current (visual) line"]}
-                 {:mode :v})
+    (wk.add {:mode [:v]
+             1 {1 :J 2 ":m '>+1<CR>gv=gv" :desc "Move line up"}
+             2 {1 :K 2 ":m '<-2<CR>gv=gv" :desc "Move line down"}})
+    ;; Visual + Normal
+    (wk.add {:mode [:n :v]
+             1 {1 :gk 2 :k :desc "Move up one actual line"}
+             2 {1 :gj 2 :j :desc "Move down one actual line"}
+             3 {1 :g0
+                2 :0
+                :desc "Move to the beginning of the current (actual) line"}
+             4 {1 :g$
+                2 "$"
+                :desc "Move to the end of the current (actual) line"}
+             5 {1 :k 2 :gk :desc "Move up one visual line"}
+             6 {1 :j 2 :gj :desc "Move down one visual line"}
+             7 {1 :0
+                2 :g0
+                :desc "Move to the beginning of the current (visual) line"}
+             8 {1 "$"
+                2 :g$
+                :desc "Move to the end of the current (visual) line"}
+             9 {1 :<C-f>
+                2 ":TSHighlightCapturesUnderCursor<CR>"
+                :desc "Show highlight group"}
+             10 {1 :<F10>
+                 2 ":TSHighlightCapturesUnderCursor<CR>"
+                 :desc "Show highlight group"}
+             11 {1 :<C-n> 2 ":bnext<CR>" :desc "Next buffer"}
+             12 {1 :<C-b> 2 ":bprev<CR>" :desc "Prev Buffer"}
+             13 {1 "'" 2 "`" :desc "Jump to mark"}
+             14 {1 "`" 2 "'" :desc "Jump to mark^"}
+             16 {1 :z :group :Folds :silent false}
+             17 {1 "z["
+                 2 (. (require :ufo) :openAllFolds)
+                 :desc "Open all folds"}
+             18 {1 "z]"
+                 2 (. (require :ufo) :closeAllFolds)
+                 :desc "Close all folds"}
+             19 {1 :<C-s> 2 ":Scratch<CR>" :desc "Scratch Buffer"}
+             20 {1 :<C-h>
+                 2 ":TmuxNavigateLeft<CR>"
+                 :desc "Select Window/Pane Left"}
+             21 {1 :<C-l>
+                 2 ":TmuxNavigateRight<CR>"
+                 :desc "Select Window/Pane Right"}
+             22 {1 :<C-k>
+                 2 ":TmuxNavigateUp<CR>"
+                 :desc "Select Window/Pane Down"}
+             23 {1 :<C-j>
+                 2 ":TmuxNavigateDown<CR>"
+                 :desc "Select Window/Pane Up"}
+             24 {1 :n 2 "n:lua HlNext(0.4)<CR>" :desc "Glow Next"}
+             25 {1 :N 2 "N:lua HlNext(0.4)<CR>" :desc "Glow Prev"}
+             26 {1 ";" 2 ":" :desc "Quick Command"}})
     ;; Normal
-    (wk.register {:g {:k [:k "Move up one actual line"]
-                      :j [:j "Move down one actual line"]
-                      :0 [:0
-                          "Move to the beginning of the current (actual) line"]
-                      :$ ["$" "Move to the end of the current (actual) line"]
-                      :f [":e <cfile><CR>" "Open file (always)"]
-                      :d {:name "Vim Diagnostic"
-                          :f [(fn []
-                                (vim.diagnostic.open_float))
-                              "Open diagnostic options"]
-                          :n [(fn []
-                                (vim.diagnostic.goto_next))
-                              "Goto next error/warning"]
-                          :p [(fn []
-                                (vim.diagnostic.goto_prev))
-                              "Goto prev error/warning"]
-                          :h [(fn []
-                                (vim.diagnostic.hide))
-                              "Hide diagnostics"]
-                          :s [(fn []
-                                (vim.diagnostic.show))
-                              "Show diagostics"]}
-                      :l {:name "Vim LSP"
-                          :a [(fn []
-                                (vim.lsp.buf.code_action))
-                              "Code actions"]
-                          :d [(fn []
-                                (vim.lsp.buf.definition))
-                              "Show definition"]
-                          :D [(fn []
-                                (vim.lsp.buf.declaration))
-                              "Show declaration"]
-                          :e [(fn []
-                                (vim.diagnostic.open_float))
-                              "Show error messages"]
-                          :f [(fn []
-                                (vim.diagnostic.open_float))
-                              "Open diagnostic options"]
-                          :h [(fn []
-                                (vim.lsp.buf.hover))
-                              "LSP Hover"]
-                          :i [(fn []
-                                (vim.lsp.buf.implementation))
-                              "Show implementation"]
-                          :l [(fn []
-                                (vim.lsp.util.show_line_diagnostics))
-                              "Show line diagnostics"]
-                          :n [(fn []
-                                (vim.diagnostic.goto_next))
-                              "Goto next error/warning"]
-                          :p [(fn []
-                                (vim.diagnostic.goto_prev))
-                              "Goto prev error/warning"]
-                          :s [(fn []
-                                (vim.lsp.buf.signature_help))
-                              "Show signature"]
-                          :t [(fn []
-                                (vim.lsp.buf.type_definition))
-                              "Show type definition"]}
-                      :o {:name :GitSigns
-                          :n [(fn []
-                                (package.loaded.gitsigns.next_hunk))
-                              "Next hunk"]
-                          :p [(fn []
-                                (package.loaded.gitsigns.prev_hunk))
-                              "Previous hunk"]
-                          :P [(fn []
-                                (package.loaded.gitsigns.preview_hunk))
-                              "Preview hunk"]
-                          :l [(fn []
-                                (package.loaded.gitsigns.blame_line {:full true}))
-                              "Full Blame"]
-                          :t [(fn []
-                                (package.loaded.gitsigns.toggle_current_line_blame))
-                              "Toggle line blame"]
-                          :d [(fn []
-                                (package.loaded.gitsigns.diffthis))
-                              "Split Diff"]
-                          :D [(fn []
-                                (package.loaded.gitsigns.toggle_deleted))
-                              "Show deleted lines"]}}
-                  :K [(fn []
-                        (vim.lsp.buf.hover))
-                      "LSP Hover"]
-                  :<leader> {:name :leader
-                             :c [":set spell!<CR>" "Spell Checker"]
-                             :n [":tabnext<CR>" "Next Tab"]
-                             :b [":tabprev<CR>" "Prev Tab"]
-                             :G [":Goyo<CR>" "Focused Editing"]
-                             :l {:name :LustyJuggler}
-                             :d [(t "<C-\\><C-n>:SSave! default | qall<CR>")
-                                 "Save default session and quit"]
-                             :D [(t "<C-\\><C-n>:SLoad default<CR>")
-                                 "Load default session"]}
-                  :z {:name :folds
-                      "[" [":set foldlevel=99<CR>" "Open all folds"]
-                      "]" [":set foldlevel=0<CR>" "Close all folds"]}
-                  :<C-w> {:name :+window
-                          :c [":tabnew<CR>" "Create New Tab"]
-                          :n [":tabnext<CR>" "Next Tab"]
-                          :b [":tabprev<CR>" "Prev Tab"]
-                          :+ [":vertical resize +10<CR>" "Increase height"]
-                          :- [":vertical resize -10<CR>" "Decrease height"]
-                          :> [":resize +10<CR>" "Increase width"]
-                          :< [":resize -10<CR>" "Decrease width"]
-                          :d [":SSave! default | qall<CR>"
-                              "Save default session and quit"]
-                          :D [":SLoad default<CR>" "Load default session"]}
-                  :<C-Space> {:name :+window
-                              :c [":tabnew<CR>" "Create New Tab"]
-                              :n [":tabnext<CR>" "Next Tab"]
-                              :b [":tabprev<CR>" "Prev Tab"]
-                              :s [":split<CR>" "Split Window (H)"]
-                              :v [":vertical split<CR>" "Split Window (V)"]
-                              := [:<C-w>= "Equally high and wide"]
-                              :+ [":vertical resize +10<CR>" "Increase height"]
-                              :- [":vertical resize -10<CR>" "Decrease height"]
-                              :> [":vertical resize +10<CR>" "Increase width"]
-                              :< [":vertical resize -10<CR>" "Decrease width"]
-                              :l [":vertical resize +10<CR>" "Grow Window (V)"]
-                              :d [":SSave! default | qall<CR>"
-                                  "Save default session and quit"]
-                              :D [":SLoad default<CR>" "Load default session"]}
-                  :<C-f> [":TSHighlightCapturesUnderCursor<CR>"
-                          "Show Highlight Group"]
-                  :<F10> [":TSHighlightCapturesUnderCursor<CR>"
-                          "Show Highlight Group"]
-                  :<C-n> [":bnext<CR>" "Next Buffer"]
-                  :<C-b> [":bprev<CR>" "Prev Buffer"]
-                  :k [:gk "Move up one visual line"]
-                  :j [:gj "Move down one visual line"]
-                  :0 [:g0 "Move to the beginning of the current (visual) line"]
-                  :$ [:g$ "Move to the end of the current (visual) line"]
-                  :<C-s> [":Scratch<CR>" "Scratch Buffer"]
-                  :<C-h> [":TmuxNavigateLeft<CR>" "Select Window/Pane Left"]
-                  :<C-l> [":TmuxNavigateRight<CR>" "Select Window/Pane Right"]
-                  :<C-k> [":TmuxNavigateUp<CR>" "Select Window/Pane Down"]
-                  :<C-j> [":TmuxNavigateDown<CR>" "Select Window/Pane Up"]
-                  :n ["n:lua HlNext(0.4)<CR>" "Glow Next"]
-                  :N ["N:lua HlNext(0.4)<CR>" "Glow Prev"]
-                  ";" [":" "Quick Command"]} {:mode :n})
+    (wk.add {:mode [:n]
+             1 {1 :gf 2 ":e <cfile><CR>" :desc "Open file (always)"}
+             2 {1 :gd :group "Vim Diagnostic" :silent false}
+             3 {1 :gdf
+                2 #(vim.diagnostic.open_float)
+                :desc "Open diagnostic options"}
+             4 {1 :gdn
+                2 #(vim.diagnostic.goto_next)
+                :desc "Goto next error/warning"}
+             5 {1 :gdp
+                2 #(vim.diagnostic.goto_prev)
+                :desc "Goto prev error/warning"}
+             6 {1 :gdh 2 #(vim.diagnostic.hide) :desc "Hide diagnostics"}
+             7 {1 :gds 2 #(vim.diagnostic.show) :desc "Show diagnostics"}
+             8 {1 :gl :group "Vim LSP" :silent false}
+             9 {1 :gla 2 #(vim.lsp.buf.code_action) :desc "Code actions"}
+             10 {1 :gld 2 #(vim.lsp.buf.definition) :desc "Show definition"}
+             11 {1 :glD 2 #(vim.lsp.buf.declaration) :desc "Show declaration"}
+             12 {1 :gle
+                 2 #(vim.diagnostic.open_float)
+                 :desc "Show error messages"}
+             13 {1 :glf
+                 2 #(vim.diagnostic.open_float)
+                 :desc "Open diagnostic options"}
+             14 {1 :glh 2 #(vim.lsp.buf.hover) :desc "LSP Hover"}
+             15 {1 :gli
+                 2 #(vim.lsp.buf.implementation)
+                 :desc "Show implementation"}
+             16 {1 :gll
+                 2 #(vim.lsp.util.show_line_diagnostics)
+                 :desc "Show line diagnostics"}
+             17 {1 :gln
+                 2 #(vim.diagnostic.goto_next)
+                 :desc "Goto next error/warning"}
+             18 {1 :glp
+                 2 #(vim.diagnostic.goto_prev)
+                 :desc "Goto prev error/warning"}
+             19 {1 :gls
+                 2 #(vim.diagnostic.signature_help)
+                 :desc "Show signature"}
+             20 {1 :glt
+                 2 #(vim.lsp.buf.type_definition)
+                 :desc "Show type definition"}
+             21 {1 :gK 2 #(vim.lsp.buf.hover) :desc "LSP Hover"}
+             22 {1 :go :group "Git Signs" :silent false}
+             23 {1 :gon
+                 2 #(package.loaded.gitsigns.next_hunk)
+                 :desc "Next hunk"}
+             24 {1 :gop
+                 2 #(package.loaded.gitsigns.prev_hunk)
+                 :desc "Prev hunk"}
+             25 {1 :goP
+                 2 #(package.loaded.gitsigns.preview_hunk)
+                 :desc "Preview hunk"}
+             26 {1 :gol
+                 2 #(package.loaded.gitsigns.blame_line {:full true})
+                 :desc "Full blame"}
+             27 {1 :got
+                 2 #(package.loaded.gitsigns.toggle_current_line_blame)
+                 :desc "Toggle line blame"}
+             28 {1 :god
+                 2 #(package.loaded.gitsigns.diffthis)
+                 :desc "Split diff"}
+             29 {1 :goD
+                 2 #(package.loaded.gitsigns.toggle_deleted)
+                 :desc "Show deleted lines"}
+             30 {1 :g<leader>c 2 ":set spell!<CR>" :desc "Spell checker"}
+             31 {1 :g<leader>n 2 ":tabnext<CR>" :desc "Next tab"}
+             32 {1 :g<leader>b 2 ":tabprev<CR>" :desc "Prev tab"}
+             33 {1 :g<leader>G 2 ":Goyo<CR>" :desc "Focused Editing"}
+             34 {1 :g<leader>l :group "Lusty Juggler" :silent false}
+             35 {1 :g<leader>dt
+                 2 "<C-\\><C-n>:SSave! default | qall<CR>"
+                 :desc "Save default session and quit"}
+             36 {1 :g<leader>s 2 ":split<CR>" :desc "Split window (H)"}
+             36 {1 :g<leader>s 2 ":split<CR>" :desc "Split window (H)"}
+             37 {1 :g<leader>v
+                 2 ":vertical split<CR>"
+                 :desc "Split window (V)"}
+             38 {1 :g<leader>= 2 :<C-w>= :desc "Equally high and wide"}
+             39 {1 :g<leader>+
+                 2 ":vertical resize +10<CR>"
+                 :desc "Increase height"}
+             40 {1 :g<leader>-
+                 2 ":vertical resize -10<CR>"
+                 :desc "Decrease height"}
+             41 {1 :g<leader>>
+                 2 ":vertical resize +10<CR>"
+                 :desc "Increase width"}
+             42 {1 :g<leader><
+                 2 ":vertical resize -10<CR>"
+                 :desc "Decrease width"}
+             43 {1 :g<leader>l
+                 2 ":vertical resize +10<CR>"
+                 :desc "Grow window (V)"}
+             44 {1 :g<leader>dt
+                 2 ":SSave! default | qall<CR>"
+                 :desc "Save default session and quit"}
+             45 {1 :g<leader>Dt
+                 2 ":SLoad default<CR>"
+                 :desc "Load default session"}
+             46 {1 :<C-f>
+                 2 ":TSHighlightCapturesUnderCursor<CR>"
+                 :desc "Show highlight group"}
+             47 {1 :<F10>
+                 2 ":TSHighlightCapturesUnderCursor<CR>"
+                 :desc "Show highlight group"}
+             48 {1 :<C-n> 2 ":bnext<CR>" :desc "Next buffer"}
+             49 {1 :<C-b> 2 ":bprev<CR>" :desc "Prev Buffer"}
+             50 {1 "'" 2 "`" :desc "Jump to mark"}
+             51 {1 "`" 2 "'" :desc "Jump to mark^"}})
     ;; Insert
-    (wk.register {:jk [:<Esc> "Quick Escape"] :<C-k> [:<C-p> "Prev Item"]}
-                 {:mode :i})
-    ;; Insert (<expr>)
-    (wk.register {:<C-n> ["pumvisible() ? \"\\<C-n>\" : \"\\<C-x>\\<C-o>\""
-                          "Next Item"]
-                  :<C-j> ["pumvisible() ? \"\\<C-n>\" : \"\\<C-x>\\<C-o>\""
-                          "Next Item"]
-                  :<S-Tab> ["pumvisible() ? \"\\<C-p> : \"\\<C-h>\""
-                            "Prev Item"]}
-                 {:mode :i :expr true})
-    ;; Visual
-    (wk.register {:J [":m '>+1<CR>gv=gv" "Move Line Up"]
-                  :K [":m '<-2<CR>gv=gv" "Move Line Down"]}
-                 {:mode :v})
+    (wk.add (let [cmp (require :cmp)
+                  types (require :cmp.types)
+                  nextfn #(if ((. cmp :visible))
+                              ((. cmp :select_next_item) {:behavior types.cmp.SelectBehavior.Insert})
+                              ((. cmp :complete)))]
+              {:mode [:i]
+               1 {1 :<C-j> 2 nextfn}
+               2 {1 :<C-n> 2 nextfn}
+               3 {1 :<Tab>
+                  2 #(if ((. cmp :visible))
+                         ((. cmp :select_next_item))
+                         (vim.cmd "call feedkeys(\"\\<Tab>\", \"n\")"))}
+               4 {1 :<S-Tab>
+                  2 #(if ((. cmp :visible))
+                         ((. cmp :select_prev_item))
+                         ((. cmp :complete)))}
+               5 {1 :jk 2 :<Esc> :desc "Quick escape"}
+               6 {1 :<C-k> 2 :<C-p> :desc "Prev item"}}))
     ;; Terminal
-    (wk.register {:<C-w> [(t "<C-\\><C-n>") "Escape terminal"]
-                  :<C-Space> {:name "Tmux Prefix-alike"
-                              :v [(t "<C-\\><C-n><C-w>v") "Split vertically"]
-                              :h [(t "<C-\\><C-n><C-w>v") "Split horizontally"]
-                              :d [(t "<C-\\><C-n>:SSave! default | qall<CR>")
-                                  "Save default session and quit"]
-                              :D [(t "<C-\\><C-n>:SLoad default<CR>")
-                                  "Load default session"]}
-                  :<C-v> [(t "<C-\\><C-n><C-w>v") "Split vertically"]
-                  :<C-s> [(t "<C-\\><C-n><C-w>v") "Split horizontally"]
-                  :<C-k> [(t "<C-\\><C-n><C-w>k") "Move to window above"]
-                  :<C-j> [(t "<C-\\><C-n><C-w>j") "Move to window below"]
-                  :<C-h> [(t "<C-\\><C-n><C-w>h") "Move to window left"]
-                  :<C-l> [(t "<C-\\><C-n><C-w>l") "Move to window right"]}
-                 {:mode :t})))
+    (wk.add {:mode :t
+             1 {1 :<C-Space> :group "Tmux prefix-alike" :silent false}
+             2 {1 :<C-Space>vt 2 "<C-\\><C-n><C-w>v" :desc "Split vertically"}
+             3 {1 :<C-Space>ht
+                2 "<C-\\><C-n><C-w>s"
+                :desc "Split horizontally"}
+             4 {1 :<C-Space>dt
+                2 "<C-\\><C-n>SSave! default | qall<CR>"
+                :desc "Save default session and quit"}
+             5 {1 :<C-Space>Dt
+                2 "<C-\\><C-n>:SLoad default<CR>"
+                :desc "Load default session"}
+             6 {1 :<C-v>t 2 "<C-\\><C-n><C-w>v" :desc "Split vertically"}
+             7 {1 :<C-s>t 2 "<C-\\><C-n><C-w>v" :desc "Split vertically"}
+             8 {1 :<C-k>t 2 "<C-\\><C-n><C-w>k" :desc "Move to window above"}
+             9 {1 :<C-j>t 2 "<C-\\><C-n><C-w>j" :desc "Move to window below"}
+             10 {1 :<C-h>t 2 "<C-\\><C-n><C-w>h" :desc "Move to window left"}
+             11 {1 :<C-l>t 2 "<C-\\><C-n><C-w>l" :desc "Move to window right"}
+             ;; Vim as Tmux-alike
+             12 {1 :<C-w> :name :+window}
+             13 {1 :<C-w>c 2 ":tabnew<CR>" :desc "Create new tab"}
+             14 {1 :<C-w>n 2 ":tabnext<CR>" :desc "Next Tab"}
+             15 {1 :<C-w>b 2 ":tabprev<CR>" :desc "Prev Tab"}
+             16 {1 :<C-w>+
+                 2 ":vertical resize +10<CR>"
+                 :desc "Increase height"}
+             17 {1 :<C-w>-
+                 2 ":vertical resize -10<CR>"
+                 :desc "Decrease height"}
+             18 {1 :<C-w>> 2 ":resize +10<CR>" :desc "Increase width"}
+             19 {1 :<C-w>< 2 ":resize -10<CR>" :desc "Decrease width"}
+             20 {1 :<C-w>d
+                 2 ":SSave! default | qall<CR>"
+                 :desc "Save default session and quit"}
+             21 {1 :<C-w>D 2 ":SLoad default<CR>" :desc "Load default session"}
+             22 {1 :<C-Space> :name :+window}
+             23 {1 :<C-Space>c 2 ":tabnew<CR>" :desc "Create new tab"}
+             24 {1 :<C-Space>n 2 ":tabnext<CR>" :desc "Next Tab"}
+             25 {1 :<C-Space>b 2 ":tabprev<CR>" :desc "Prev Tab"}
+             26 {1 :<C-Space>s 2 ":split<CR>" :desc "Split Window (H)"}
+             27 {1 :<C-Space>v
+                 2 ":vertical split<CR>"
+                 :desc "Split Window (V)"}
+             28 {1 :<C-Space>= 2 :<C-w>= :desc "Equally high and wide"}
+             29 {1 :<C-Space>+
+                 2 ":vertical resize +10<CR>"
+                 :desc "Increase height"}
+             30 {1 :<C-Space>-
+                 2 ":vertical resize -10<CR>"
+                 :desc "Decrease height"}
+             31 {1 :<C-Space>>
+                 2 ":vertical resize +10<CR>"
+                 :desc "Increase width"}
+             32 {1 :<C-Space><
+                 2 ":vertical resize -10<CR>"
+                 :desc "Decrease width"}
+             33 {1 :<C-Space>l
+                 2 ":vertical resize +10<CR>"
+                 :desc "Grow Window (V)"}
+             45 {1 :<C-Space>d 2 ":SSave! default | qall<CR>"}
+             34 "Save default session and quit"
+             35 {1 :<C-Space>D
+                 2 ":SLoad default<CR>"
+                 :desc "Load default session"}})))
+
+;(wk.register
+;; Vim as Tmux-alike
+;;:<C-f> [":TSHighlightCapturesUnderCursor<CR>"
+;;        "Show Highlight Group"
+;;:<F10> [":TSHighlightCapturesUnderCursor<CR>"
+;;        "Show Highlight Group"]
+;;:<C-n> [":bnext<CR>" "Next Buffer"]
+;;:<C-b> [":bprev<CR>" "Prev Buffer"]
+;;"'" ["`" "Jump to mark"]
+;;"`" ["'" "Jump to mark^"]
+;:k [:gk "Move up one visual line"]
+;:j [:gj "Move down one visual line"]
+;:0 [:g0 "Move to the beginning of the current (visual) line"]
+;:$ [:g$ "Move to the end of the current (visual) line"]
+;:<C-s> [":Scratch<CR>" "Scratch Buffer"]
+;:<C-h> [":TmuxNavigateLeft<CR>" "Select Window/Pane Left"]
+;:<C-l> [":TmuxNavigateRight<CR>" "Select Window/Pane Right"]
+;:<C-k> [":TmuxNavigateUp<CR>" "Select Window/Pane Down"]
+;:<C-j> [":TmuxNavigateDown<CR>" "Select Window/Pane Up"]
+;:n ["n:lua HlNext(0.4)<CR>" "Glow Next"]
+;:N ["N:lua HlNext(0.4)<CR>" "Glow Prev"])
+;;";" [":" "Quick Command"]} {:mode :n})
+;; Insert
+;(wk.register {:jk [:<Esc> "Quick Escape"] :<C-k> [:<C-p> "Prev Item"]} {:mode :i})))
 
 ;; }}}
 
