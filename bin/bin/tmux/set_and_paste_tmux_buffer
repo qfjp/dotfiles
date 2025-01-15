@@ -1,6 +1,7 @@
 #!/bin/sh
 if [ "$WAYLAND_DISPLAY" ]; then
-    tmux set-buffer -- "$(wl-paste)"
+    clipse -p | wl-copy -p
+    tmux set-buffer -- "$(wl-paste -p)"
     tmux paste-buffer
 else
     tmux set-buffer -- "$(xsel -o)"

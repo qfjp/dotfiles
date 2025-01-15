@@ -1,0 +1,9 @@
+#!/bin/bash
+
+_dragon_daemon() {
+    setsid dragon-drop -a -x "$@" 2>/dev/null
+}
+
+_dragon_daemon "$@" &
+sleep 0.1
+kill $PPID
