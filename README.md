@@ -9,7 +9,7 @@ commands in a terminal:
 
 1. Clone the repository:
     ```bash
-    git clone https://gitlab.com/qfjp/dotfiles "$DOTFILES_DIR"`
+    git clone --recurse-submodules https://gitlab.com/qfjp/dotfiles "$DOTFILES_DIR"`
     ```
 
 2. Change to the directory:
@@ -96,7 +96,7 @@ The original code:
 The modified code:
 ```XML
       <key id="key_viewInfo"
-           key="w"
+           key="e"
            command="View:PageInfo"
            modifiers="accel"
       </key>
