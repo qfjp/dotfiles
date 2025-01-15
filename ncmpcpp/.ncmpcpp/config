@@ -272,11 +272,11 @@ search_engine_display_mode = "columns" (classic/columns)
 #
 #default_place_to_search_in = "database" (database/playlist)
 #
-user_interface = "alternative" #(classic/alternative)
+user_interface = "classic" #(classic/alternative)
 #
 #media_library_left_column = "a" (possible values: a,y,g,c,p, legend above)
 #
-#default_find_mode = "wrapped" (wrapped/normal)
+default_find_mode = "normal" (wrapped/normal)
 #
 #default_space_mode = "add" (add/select)
 #
