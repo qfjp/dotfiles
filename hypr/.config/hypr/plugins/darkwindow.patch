@@ -1,0 +1,39 @@
+diff --unified --show-c-function -ura Hypr-DarkWindow/src/main.cpp Hypr-DarkWindow/src/main.cpp
+--- Hypr-DarkWindow/src/main.cpp	2025-01-14 21:52:13.408154624 -0500
++++ Hypr-DarkWindow/src/main.cpp	2025-01-14 19:14:37.580195039 -0500
+@@ -102,12 +102,12 @@ APICALL EXPORT PLUGIN_DESCRIPTION_INFO P
+         g_WindowInverter.NoIgnoreDecorations();
+     }
+ 
+-    HyprlandAPI::addDispatcherV2(PHANDLE, "invertwindow", [&](std::string args) {
++    HyprlandAPI::addDispatcher(PHANDLE, "invertwindow", [&](std::string args) {
+         std::lock_guard<std::mutex> lock(g_InverterMutex);
+         g_WindowInverter.ToggleInvert(g_pCompositor->getWindowByRegex(args));
+         return SDispatchResult{};
+     });
+-    HyprlandAPI::addDispatcherV2(PHANDLE, "invertactivewindow", [&](std::string args) {
++    HyprlandAPI::addDispatcher(PHANDLE, "invertactivewindow", [&](std::string args) {
+         std::lock_guard<std::mutex> lock(g_InverterMutex);
+         g_WindowInverter.ToggleInvert(g_pCompositor->m_pLastWindow.lock());
+         return SDispatchResult{};
+diff --unified --show-c-function -ura Hypr-DarkWindow/src/WindowInverter.cpp Hypr-DarkWindow/src/WindowInverter.cpp
+--- Hypr-DarkWindow/src/WindowInverter.cpp	2025-01-14 21:52:13.408154624 -0500
++++ Hypr-DarkWindow/src/WindowInverter.cpp	2025-01-14 19:14:37.580195039 -0500
+@@ -7,7 +7,7 @@
+ 
+ void WindowInverter::OnRenderWindowPre()
+ {
+-    auto window = g_pHyprOpenGL->m_RenderData.currentWindow.lock();
++    auto window = g_pHyprOpenGL->m_pCurrentWindow.lock();
+     bool shouldInvert =
+         (std::find(m_InvertedWindows.begin(), m_InvertedWindows.end(), window)
+             != m_InvertedWindows.end()) ^
+@@ -43,7 +43,7 @@ void WindowInverter::OnRenderWindowPost(
+     {
+         if (m_DecorationsWrapped)
+         {
+-            for (auto& decoration : g_pHyprOpenGL->m_RenderData.currentWindow.lock()->m_dWindowDecorations)
++            for (auto& decoration : g_pHyprOpenGL->m_pCurrentWindow.lock()->m_dWindowDecorations)
+             {
+                 // Debug::log(LOG, "REMOVE: Window {:p}, Decoration {:p}", (void*)g_pHyprOpenGL->m_pCurrentWindow.get(), (void*)decoration.get());
+                 if (DecorationsWrapper* wrapper = dynamic_cast<DecorationsWrapper*>(decoration.get()))
