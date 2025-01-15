@@ -171,6 +171,7 @@ key_move_song_down = '.'
 #key_toggle_separators_in_playlist = '!'
 #
 #key_toggle_lyrics_db = 'L'
+key_refetch_lyrics 'F'
 #
 #key_go_to_containing_directory = 'G'
 #

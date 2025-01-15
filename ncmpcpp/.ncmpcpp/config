@@ -298,6 +298,7 @@ default_find_mode = "normal" (wrapped/normal)
 #
 #lines_scrolled = "2"
 #
+lyrics_fetchers = azlyrics, genius, musixmatch, sing365, metrolyrics, justsomelyrics, jahlyrics, plyrics, tekstowo, zeneszoveg, internet
 follow_now_playing_lyrics = "yes"
 #
 #store_lyrics_in_song_dir = "no"
