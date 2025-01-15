@@ -150,8 +150,6 @@
 (set! hidden)
 (set! formatoptions :coq2)
 
-(set! pastetoggle :<F1>)
-
 (augroup :QFixToggle
          (autocmd :BufWinEnter :quickfix
                   "let g:qfix_win=bufnr(\"$\")|set nolist|set colorcolumn=0")
