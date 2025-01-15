@@ -26,6 +26,30 @@
 (when (pcall require :nvim-treesitter)
   (require :treesitter_config))
 
+(when (pcall require :telescope)
+  (let [telescope (require :telescope)
+        themes (require :telescope.themes)]
+    ((. telescope :setup) {:extensions {:opts {}
+                                        :picker_list {}
+                                        :excluded_pickers {}
+                                        :docker {}
+                                        :undo {}
+                                        :lsp_handlers {:code_action {:telescope ((. themes
+                                                                                    :get_dropdown) {})}}}})
+    ((. telescope :load_extension) :fzy_native)
+    ((. telescope :load_extension) :packer)
+    ((. telescope :load_extension) :jj)
+    ((. telescope :load_extension) :foldmarkers)
+    ((. telescope :load_extension) :texsuite)
+    ((. telescope :load_extension) :docker)
+    ((. telescope :load_extension) :undo)
+    ((. telescope :load_extension) :ports)
+    ((. telescope :load_extension) :conventional_commits)
+    ((. telescope :load_extension) :lsp_handlers)
+    ((. telescope :load_extension) :ht)
+    ;; picker_list must be last
+    ((. telescope :load_extension) :picker_list)))
+
 (require :startify_config)
 (require :goyo_config)
 

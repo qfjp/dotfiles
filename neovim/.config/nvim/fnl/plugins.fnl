@@ -92,6 +92,34 @@
                            ;; Formatting
                            :junegunn/vim-easy-align []
                            :sbdchd/neoformat []
+                           ;; Telescope
+                           :rcarriga/nvim-notify {:branch :master}
+                           ;;;; create notifications with
+                           ;;;; lua> require("notify").notify("Hello, World!")
+                           :vigoux/notifier.nvim {:config (SafeRequire :notifier {})}
+                           ;;;; create notifications with
+                           ;;;; lua> require("notifier").notify("Hello, World!")
+                           :nvim-telescope/telescope.nvim
+                           {:requires
+                             [:BurntSushi/ripgrep
+                              :nvim-lua/plenary.nvim
+                              :nvim-telescope/telescope-fzy-native.nvim
+                              :nvim-telescope/telescope-packer.nvim
+                              :zschreur/telescope-jj.nvim
+                              :gbirke/telescope-foldmarkers.nvim
+                              :OliverChao/telescope-picker-list.nvim
+                              :cagve/telescope-texsuite
+                              :lpoto/telescope-docker.nvim
+                              :debugloop/telescope-undo.nvim
+                              :LinArcX/telescope-ports.nvim
+                              :olacin/telescope-cc.nvim
+                              :gbrlsnchs/telescope-lsp-handlers.nvim
+                              :mrcjkb/haskell-tools.nvim]}
+
+                           :kevinhwang91/nvim-ufo {:requires :kevinhwang91/promise-async}
+                           :camilledejoye/nvim-lsp-selection-range {}
+                           :nvimdev/lspsaga.nvim
+                           {:after :nvim-lspconfig :config (SafeRequire :lspsaga {})}
                            ;; LSP Configuration
                            :neovim/nvim-lspconfig []
                            :scalameta/nvim-metals []
