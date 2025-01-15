@@ -21,7 +21,6 @@ set foldcolumn=0
 "set nowrap
 set linebreak
 
-
 set nonumber
 set norelativenumber
 
