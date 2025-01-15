@@ -58,6 +58,32 @@ econs()
     emacsclient -a "" -nw "$@"
 }
 
+# some shamelessly stolen from https://superuser.com/questions/302769/how-to-check-if-an-ssh-connection-is-open-or-not
+# true if we have the given command(s)
+we_have() { type "$@" >/dev/null 2>&1; }
+
+# Usage: probe SERVER PORT|SERVICE
+# returns true when SERVER has PORT opened (and responds within one
+# second)
+if we_have nc; then
+    probe() { nc -zw1 "$@" > /dev/null 2>&1; }
+else
+    probe() { echo X | telnet -e X "$@" > /dev/null 2>&1; }
+fi
+
+# Usage: poke SERVER [PORT|SERVICE]
+# As probe. Also: PORT defaults to 80 (http) and reports the result
+poke() {
+    local RETVAL STATUS
+    probe "$1" "${2:-80}"
+    RETVAL=$?
+    if [ "$RETVAL" != 0 ]; then
+        STATUS=" not"
+    fi
+    echo "could$STATUS connect to port ${2:-80} on host '$1'"
+    return $RETVAL
+}
+
 # }}}
 
 # {{{ Tmux
