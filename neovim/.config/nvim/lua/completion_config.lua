@@ -175,27 +175,96 @@ if pcall(require, "cmp") then
     })
 end
 
-local capabilities = nil
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities.textDocument.foldingRange = {
+    dynamicRegistration = false,
+    lineFoldingOnly = true
+}
 -- Setup lspconfig.
 if pcall(require, "cmp_nvim_lsp") then
-    capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
+    capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 end
 
 if pcall(require, "nvim-lsp-installer") then
     require("nvim-lsp-installer").setup {}
 end
 if pcall(require, "lspconfig") then
-    local lspconfig = require 'lspconfig'
-    lspconfig.fennel_language_server.setup {}
+    local lspconfig = require('lspconfig')
+    local lsp_selection_range = require('lsp-selection-range')
+    capabilities = lsp_selection_range.update_capabilities(capabilities)
+    local on_attach = function(client, bufnr)
+        local bmap = function(mode, lhs, rhs, options)
+            options = options or {}
+            vim.api.nvim_buf_set_keymap(bufnr, mode, lhs, rhs, options)
+        end
+
+        local function check_codelens_support()
+            local clients = vim.lsp.get_active_clients({ bufnr = 0 })
+            for _, c in ipairs(clients) do
+                if c.server_capabilities.codeLensProvider then
+                    return true
+                end
+            end
+            return false
+        end
+        -- trigger codelens refresh
+
+        vim.api.nvim_create_autocmd(
+            { 'TextChanged', 'InsertLeave', 'CursorHold', 'LspAttach', 'BufEnter' },
+            {
+                buffer = bufnr,
+                callback = function()
+                    if check_codelens_support() then
+                        vim.lsp.codelens.refresh({ bufnr = 0 })
+                    end
+                end
+            })
+
+        -- setup Markdown Oxide daily note commands
+        if client.name == "markdown_oxide" then
+            vim.api.nvim_create_user_command(
+                "Daily",
+                function(args)
+                    local input = args.args
+                    vim.lsp.buf.execute_command({ command = "jump", arguments = { input } })
+                end,
+                { desc = 'Open daily note', nargs = "*" }
+            )
+        end
+        -- Put here any configuration to execute when attaching a client to a buffer
+
+        -- Create mappings to trigger or expand the selection
+        bmap('n', 'vv', [[<cmd>lua require('lsp-selection-range').trigger()<CR>]], { noremap = true })
+        bmap('v', 'vv', [[<cmd>lua require('lsp-selection-range').expand()<CR>]], { noremap = true })
+    end
     lspconfig.bashls.setup {
         cmd = { "bash-language-server", "start" },
         filetypes = { "sh", "bash", "zsh" },
-        capabilities = capabilities
+        capabilities = capabilities,
+        on_attach = on_attach,
+    };
+    lspconfig.ccls.setup {
+        init_options = {
+            compilationDatabaseDirectory = "build",
+            index = {
+                threads = 0,
+            },
+            clang = {
+                excludeArgs = { "-frounding-math" },
+            },
+        },
+        capabilities = capabilities,
+        on_attach = on_attach,
     };
     lspconfig.cssls.setup {
         capabilities = capabilities,
+        on_attach = on_attach,
         cmd = { "vscode-css-languageserver", "--stdio" },
         filetypes = { "css", "scss", "less" },
+    };
+    lspconfig.fennel_language_server.setup {
+        capabilities = capabilities,
+        on_attach = on_attach,
     };
     lspconfig.lua_ls.setup {
         settings = {
@@ -214,8 +283,29 @@ if pcall(require, "lspconfig") then
                 },
             },
         },
-        capabilities = capabilities
+        capabilities = capabilities,
+        on_attach = on_attach,
     };
+    lspconfig.markdown_oxide.setup({
+        -- Ensure that dynamicRegistration is enabled! This allows the LS to take into account actions like the
+        -- Create Unresolved File code action, resolving completions for unindexed code blocks, ...
+        capabilities = vim.tbl_deep_extend(
+            'force',
+            capabilities,
+            {
+                workspace = {
+                    didChangeWatchedFiles = {
+                        dynamicRegistration = true,
+                    },
+                },
+            }
+        ),
+        on_attach = on_attach,
+    })
+    lspconfig.marksman.setup {
+        capabilities = capabilities,
+        on_attach = on_attach,
+    }
     lspconfig.pylsp.setup {
         settings = {
             pyls = {
@@ -238,10 +328,12 @@ if pcall(require, "lspconfig") then
                 },
             },
         },
-        capabilities = capabilities
+        capabilities = capabilities,
+        on_attach = on_attach,
     };
     lspconfig.jsonls.setup {
-        capabilities = capabilities
+        capabilities = capabilities,
+        on_attach = on_attach,
     };
     lspconfig.vimls.setup {
         filetypes = { "vim" },
@@ -249,7 +341,8 @@ if pcall(require, "lspconfig") then
         initializationOptions = {
             isNeovim = true,
         },
-        capabilities = capabilities
+        capabilities = capabilities,
+        on_attach = on_attach,
     };
     lspconfig.hls.setup {
         cmd = { "haskell-language-server-wrapper", "--lsp" },
@@ -260,7 +353,8 @@ if pcall(require, "lspconfig") then
             },
         },
         single_file_support = true,
-        capabilities = capabilities
+        capabilities = capabilities,
+        on_attach = on_attach,
     };
     lspconfig.texlab.setup {
         settings = {
@@ -281,7 +375,8 @@ if pcall(require, "lspconfig") then
                 },
             },
         },
-        capabilities = capabilities
+        capabilities = capabilities,
+        on_attach = on_attach,
     };
 end
 
