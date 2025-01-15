@@ -200,6 +200,7 @@ poke() {
             zgen load 'rylnd/shpec'
             zgen load 'zsh-users/zsh-autosuggestions'
             zgen load 'zdharma-continuum/fast-syntax-highlighting'
+            zgen load 'Vifon/deer'
 
             zgen load 'qfjp/k'
 
