@@ -120,7 +120,14 @@ if pcall(require, "cmp") then
             ['<CR>'] = cmp.mapping.confirm({ select = false }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
         }),
         sources = cmp.config.sources({
-            { name = 'nvim_lsp' },
+            {
+                name = 'nvim_lsp',
+                option = {
+                    markdown_oxide = {
+                        keyword_pattern = [[\(\k\| \|\/\|#\)\+]]
+                    }
+                }
+            },
             { name = 'nvim_lsp_signature_help' },
             { name = 'nvim_lua' },
             { name = 'vsnip' },

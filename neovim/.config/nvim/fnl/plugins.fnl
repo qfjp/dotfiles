@@ -160,7 +160,8 @@
                            :norcalli/nvim-colorizer.lua {:config (SafeRequire :colorizer)}
                            ;; Tmux
                            :christoomey/vim-tmux-navigator []
-                           :vimwiki/vimwiki {:ft [:vimwiki]}}))
+                           :vimwiki/vimwiki {:ft [:vimwiki]}
+                           :Feel-ix-343/markdown-oxide {}}))
 
 {:packer_table [packer-fn packer-opts]}
 
