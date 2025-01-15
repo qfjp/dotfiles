@@ -20,7 +20,7 @@ commands in a terminal:
 3. Stow the config files as symlinks:
     * ZSH can glob on directories:
         ```bash
-        for x in *(/); do stow -t "$HOME" "$x"; done
+        stow -t "$HOME" *(/)
         ```
     * Otherwise, use a for loop:
         ```bash
