@@ -9,7 +9,7 @@ import           XMonad                         ( X
                                                 )
 
 spawnedApps :: [String]
-spawnedApps = ["dzen2", "stalonetray", "picom", "flashfocus"]
+spawnedApps = ["dzen2", "stalonetray", "flashfocus"]
 
 killSpawns :: X ()
 killSpawns = mapM_ (\x -> spawn ("killall " ++ x)) spawnedApps
