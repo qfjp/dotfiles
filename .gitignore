@@ -7,3 +7,4 @@ xmonad/.xmonad/*
 packer_compiled.lua
 redshift
 mpd
+__pycache__/
