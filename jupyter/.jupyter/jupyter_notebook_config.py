@@ -45,7 +45,7 @@
 #  Use '*' to allow any origin to access your server.
 #
 #  Takes precedence over allow_origin_pat.
-# c.NotebookApp.allow_origin = ''
+c.NotebookApp.allow_origin = "*"
 
 ## Use a regular expression for the Access-Control-Allow-Origin header
 #
@@ -205,7 +205,7 @@ c.NotebookApp.notebook_dir = "/home/dan/Sync/"
 #  platform dependent and determined by the python standard library `webbrowser`
 #  module, unless it is overridden using the --browser (NotebookApp.browser)
 #  configuration option.
-# c.NotebookApp.open_browser = True
+c.NotebookApp.open_browser = False
 
 ## Hashed password to use for web authentication.
 #
@@ -267,7 +267,7 @@ c.NotebookApp.password = open("hashed_pass", "rt").read()[:-1]
 ## Whether to trust or not X-Scheme/X-Forwarded-Proto and X-Real-Ip/X-Forwarded-
 #  For headerssent by the upstream reverse proxy. Necessary if the proxy handles
 #  SSL
-# c.NotebookApp.trust_xheaders = False
+c.NotebookApp.trust_xheaders = True
 
 ## DEPRECATED, use tornado_settings
 # c.NotebookApp.webapp_settings = {}
@@ -603,3 +603,7 @@ c.NotebookApp.password = open("hashed_pass", "rt").read()[:-1]
 #
 #  By default, all installed kernels are allowed.
 # c.KernelSpecManager.whitelist = set()
+
+c.NotebookApp.allow_remote_access = True
+c.NotebookApp.custom_display_url = "https://jupyter.morethanaresu.me"
+c.NotebookApp.quit_button = False
