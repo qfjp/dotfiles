@@ -21,7 +21,7 @@ import           System.Process                 ( StdStream(CreatePipe)
                                                 )
 
 displayForBar :: String
-displayForBar = "HDMI-0"
+displayForBar = "DP-0"
 
 list2Tup :: [a] -> (a, a)
 list2Tup (x : y : _) = (x, y)
