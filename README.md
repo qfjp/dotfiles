@@ -116,4 +116,4 @@ Simple configuration files are maintained as github gists:
 
 # Misc
 
-Background image shamelessly stolen from [this sddm theme collection](ttps://github.com/keyitdev/sddm-astronaut-theme)
+Background image shamelessly stolen from [this sddm theme collection](https://github.com/keyitdev/sddm-astronaut-theme)
