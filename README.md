@@ -113,3 +113,7 @@ The modified code:
 Simple configuration files are maintained as github gists:
 
 - [Firefox userChrome](https://gist.github.com/qfjp/fd50f6a0b5c0048eec7a564580874f98)
+
+# Misc
+
+Background image shamelessly stolen from [this sddm theme collection](ttps://github.com/keyitdev/sddm-astronaut-theme)
