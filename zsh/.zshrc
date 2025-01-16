@@ -313,6 +313,7 @@ poke() {
         export PAGER="vimpager"
         export MANPAGER="nvim -u $HOME/.config/nvim/vimpagerrc -c ':Man!' -"
         [ -z "$EDITOR" ] && export EDITOR='nvim'
+        [ -z "$SYSTEMD_EDITOR" ] && export SYSTEMD_EDITOR="$EDITOR"
 
     # }}}
 
@@ -323,8 +324,13 @@ poke() {
         export PATH="$HOME/bin/macros:$PATH"
         export PATH="$PATH:$HOME/.cabal/bin"
         export PATH="$PATH:$HOME/.yarn/bin/"
+        export PATH="$PATH:$HOME/.cargo/bin"
+        export PATH="$HOME/.ghcup/bin:$PATH"
         export LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH"
+        # Python Completions (in console)
+        export PYTHONSTARTUP="$(python -m jedi repl)"
         # PySpark
+        export PATH="$PATH:/opt/apache-spark/bin"
         export PYTHONPATH="/opt/apache-spark/python/lib/py4j-0.10.7-src.zip:/opt/apache-spark/python"
         export JUPYTERLAB_DIR=$HOME/.local/share/jupyter/lab
 
