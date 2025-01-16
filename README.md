@@ -32,7 +32,7 @@ If everything went well, all of the dot files should be in place.
 ## Uninstall
 
 ```bash {data-filename="zsh"}
-cd "DOTFILES_DIR"
+cd "$DOTFILES_DIR"
 stow -D -t "$HOME" *(/)
 # For shells that don't have advanced globbing, use:
 # stow -D -t "$HOME" $(for file in * do; if [ -d $file ]; then printf "$file "; fi; done
