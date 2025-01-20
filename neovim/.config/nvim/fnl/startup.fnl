@@ -592,31 +592,6 @@
              2 {1 :<C-w>H 2 ":vertical resize -10<CR>" :desc "Decrease width"}})))
     {:group OnEnterKeyBinds})
 
-;(wk.register
-;; Vim as Tmux-alike
-;;:<C-f> [":TSHighlightCapturesUnderCursor<CR>"
-;;        "Show Highlight Group"
-;;:<F10> [":TSHighlightCapturesUnderCursor<CR>"
-;;        "Show Highlight Group"]
-;;:<C-n> [":bnext<CR>" "Next Buffer"]
-;;:<C-b> [":bprev<CR>" "Prev Buffer"]
-;;"'" ["`" "Jump to mark"]
-;;"`" ["'" "Jump to mark^"]
-;:k [:gk "Move up one visual line"]
-;:j [:gj "Move down one visual line"]
-;:0 [:g0 "Move to the beginning of the current (visual) line"]
-;:$ [:g$ "Move to the end of the current (visual) line"]
-;:<C-s> [":Scratch<CR>" "Scratch Buffer"]
-;:<C-h> [":TmuxNavigateLeft<CR>" "Select Window/Pane Left"]
-;:<C-l> [":TmuxNavigateRight<CR>" "Select Window/Pane Right"]
-;:<C-k> [":TmuxNavigateUp<CR>" "Select Window/Pane Down"]
-;:<C-j> [":TmuxNavigateDown<CR>" "Select Window/Pane Up"]
-;:n ["n:lua HlNext(0.4)<CR>" "Glow Next"]
-;:N ["N:lua HlNext(0.4)<CR>" "Glow Prev"])
-;;";" [":" "Quick Command"]} {:mode :n})
-;; Insert
-;(wk.register {:jk [:<Esc> "Quick Escape"] :<C-k> [:<C-p> "Prev Item"]} {:mode :i})))
-
 ;; }}}
 
 ;; {{{ Auto Commands
