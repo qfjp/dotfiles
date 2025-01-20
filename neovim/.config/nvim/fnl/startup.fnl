@@ -1,4 +1,5 @@
 (import-macros my-macros :macros)
+(import-macros aucmd-macros :katcros-fnl.macros.nvim.api.autocommands.macros)
 
 ;; Initialize packer
 (let [packer-path (.. (my-macros.vimfn stdpath :data) :/site/pack/packer/start)
@@ -578,6 +579,17 @@
              41 {1 :<C-Space>D
                   2 ":SLoad default<CR>"
                   :desc "Load default session"}})))
+
+;; My <C-w>H/L bindings are getting cleared. Why? WHO KNOWS
+(local OnEnterKeyBinds (aucmd-macros.def-aug- :WtfKeybinds))
+(aucmd-macros.auc- :UIEnter "*"
+    (fn []
+      (let [wk (require :which-key)]
+         (wk.add
+           {:mode [:n]
+             1 {1 :<C-w>L 2 ":vertical resize +10<CR>" :desc "Increase width"}
+             2 {1 :<C-w>H 2 ":vertical resize -10<CR>" :desc "Decrease width"}})))
+    {:group OnEnterKeyBinds})
 
 ;(wk.register
 ;; Vim as Tmux-alike

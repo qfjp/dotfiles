@@ -45,6 +45,7 @@
                            :p00f/nvim-ts-rainbow []
                            :mnacamura/vim-fennel-syntax {:ft :fennel}
                            :rktjmp/hotpot.nvim []
+                           :katawful/katcros-fnl {}
                            ;; Vim Essentials
                            :mbbill/undotree {:cmd :UndoTreeToggle}
                            :nvim-lualine/lualine.nvim {:requires {1 :nvim-tree/nvim-web-devicons
