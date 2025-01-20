@@ -29,6 +29,7 @@ end
 Bootstrap("rktjmp", "hotpot.nvim", {})
 Bootstrap('lewis6991', 'impatient.nvim', { { "enable_profile" } })
 Bootstrap("wbthomason", "packer.nvim", {})
+Bootstrap("katawful", "katcros-fnl", {})
 
 if pcall(require, "hotpot") then
     require('hotpot').setup({
