@@ -342,6 +342,7 @@
 (vim.api.nvim_set_keymap :c :<ESC>f :<End> {:nowait true})
 (vim.api.nvim_set_keymap :c "w;" :w<CR> {:nowait true})
 
+(vim.keymap.del :n :<C-w><C-d>)
 (when (pcall require :which-key)
   (let [wk package.loaded.which-key
         t (fn [str]
