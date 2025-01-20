@@ -1,34 +1,34 @@
 ;; {{{ Goyo
 ;; --------
-(require-macros :macros)
+(import-macros my-macros :macros)
 
-(g! limelight_priority -1)
+(my-macros.g! limelight_priority -1)
 ;; 240 -> #262626
-(g! limelight_conceal_ctermfg 240)
-(g! limelight_conceal_guifg 240)
-(g! limelight_paragraph_span 0)
+(my-macros.g! limelight_conceal_ctermfg 240)
+(my-macros.g! limelight_conceal_guifg 240)
+(my-macros.g! limelight_paragraph_span 0)
 
 (global GoyoEnterFn
         (fn []
           (vim.cmd "silent !tmux set status off"
-                   (b! sign_status (opt signcolumn)
-                       (b! cursor_line (opt cursorline))
-                       (b! show_cmd (opt showcmd)) (set! signcolumn :no)
-                       (set! nocursorline) (set! noshowcmd) (vim.cmd :Twilight)))))
+                    (my-macros.b! sign_status (my-macros.opt signcolumn)
+                        (my-macros.b! cursor_line (my-macros.opt cursorline))
+                        (my-macros.b! show_cmd (my-macros.opt showcmd)) (my-macros.set! signcolumn :no)
+                        (my-macros.set! nocursorline) (my-macros.set! noshowcmd) (vim.cmd :Twilight)))))
 
 (global GoyoLeaveFn (fn []
                       (vim.cmd "silent !tmux set status on")
-                      (set! signcolumn (b sign_status))
-                      (set! cursorline (b cursor_line))
-                      (set! showcmd (b show_cmd))
+                      (my-macros.set! signcolumn (my-macros.b sign_status))
+                      (my-macros.set! cursorline (my-macros.b cursor_line))
+                      (my-macros.set! showcmd (my-macros.b show_cmd))
                       (vim.cmd "unlet b:sign_status")
                       (vim.cmd "unlet b:cursor_line")
                       (vim.cmd "unlet b:show_cmd")
                       (vim.cmd :TwilightDisable)))
 
-(augroup :Goyo
-         [(autocmd :User :GoyoEnter "call v:lua.GoyoEnterFn()")
-          (autocmd :User :GoyoLeave "call v:lua.GoyoLeaveFn()")])
+(my-macros.augroup :Goyo
+         [(my-macros.autocmd :User :GoyoEnter "call v:lua.GoyoEnterFn()")
+          (my-macros.autocmd :User :GoyoLeave "call v:lua.GoyoLeaveFn()")])
 
 ;; }}}
 

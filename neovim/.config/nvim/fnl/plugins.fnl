@@ -1,10 +1,10 @@
-(require-macros :macros)
-(local conf (.. (vimfn stdpath :config) :/bundle/))
+(import-macros my-macros :macros)
+(local conf (.. (my-macros.vimfn stdpath :config) :/bundle/))
 (local plugins {})
 
 (fn SayoConfig []
-  (exec [[command! S Sayonara] [command! Sa Sayonara]])
-  (g! sayonara_confirm_quit true))
+  (my-macros.exec [[command! S Sayonara] [command! Sa Sayonara]])
+  (my-macros.g! sayonara_confirm_quit true))
 
 (local lualine-conf (. (require :lualine-conf) :lualine-conf))
 (local cmpdict-conf (. (require :completion_config) :cmpdict_conf))
@@ -28,7 +28,8 @@
                                                    :float)}}
                     :profile {:enable true :threshold 0.1}})
 
-(local packer-fn (packer! {;;startup
+(local packer-fn
+       (my-macros.packer! {;;startup
                            :lewis6991/impatient.nvim []
                            :wbthomason/packer.nvim []
                            ;; personal
@@ -64,9 +65,10 @@
                            :lewis6991/gitsigns.nvim {:config (SafeRequire :gitsigns
                                                                           (. (require :gitsigns_config)
                                                                              :git_sign_table))}
-                           :NeogitOrg/neogit {:config (SafeRequire :neogit
-                                                                   [])
-                                              :requires [:nvim-lua/plenary.nvim :nvim-telescope/telescope.nvim :sindrets/diffview.nvim]}
+                           :NeogitOrg/neogit {:config (SafeRequire :neogit [])
+                                              :requires [:nvim-lua/plenary.nvim
+                                                         :nvim-telescope/telescope.nvim
+                                                         :sindrets/diffview.nvim]}
                            ;; Motions
                            :ggandor/lightspeed.nvim []
                            :sjbach/Lusty []
@@ -96,30 +98,29 @@
                            :rcarriga/nvim-notify {:branch :master}
                            ;;;; create notifications with
                            ;;;; lua> require("notify").notify("Hello, World!")
-                           :vigoux/notifier.nvim {:config (SafeRequire :notifier {})}
+                           :vigoux/notifier.nvim {:config (SafeRequire :notifier
+                                                                       {})}
                            ;;;; create notifications with
                            ;;;; lua> require("notifier").notify("Hello, World!")
-                           :nvim-telescope/telescope.nvim
-                           {:requires
-                             [:BurntSushi/ripgrep
-                              :nvim-lua/plenary.nvim
-                              :nvim-telescope/telescope-fzy-native.nvim
-                              :nvim-telescope/telescope-packer.nvim
-                              :zschreur/telescope-jj.nvim
-                              :gbirke/telescope-foldmarkers.nvim
-                              :OliverChao/telescope-picker-list.nvim
-                              :cagve/telescope-texsuite
-                              :lpoto/telescope-docker.nvim
-                              :debugloop/telescope-undo.nvim
-                              :LinArcX/telescope-ports.nvim
-                              :olacin/telescope-cc.nvim
-                              :gbrlsnchs/telescope-lsp-handlers.nvim
-                              :mrcjkb/haskell-tools.nvim]}
-
+                           :nvim-telescope/telescope.nvim {:requires [:BurntSushi/ripgrep
+                                                                      :nvim-lua/plenary.nvim
+                                                                      :nvim-telescope/telescope-fzy-native.nvim
+                                                                      :nvim-telescope/telescope-packer.nvim
+                                                                      :zschreur/telescope-jj.nvim
+                                                                      :gbirke/telescope-foldmarkers.nvim
+                                                                      :OliverChao/telescope-picker-list.nvim
+                                                                      :cagve/telescope-texsuite
+                                                                      :lpoto/telescope-docker.nvim
+                                                                      :debugloop/telescope-undo.nvim
+                                                                      :LinArcX/telescope-ports.nvim
+                                                                      :olacin/telescope-cc.nvim
+                                                                      :gbrlsnchs/telescope-lsp-handlers.nvim
+                                                                      :mrcjkb/haskell-tools.nvim]}
                            :kevinhwang91/nvim-ufo {:requires :kevinhwang91/promise-async}
                            :camilledejoye/nvim-lsp-selection-range {}
-                           :nvimdev/lspsaga.nvim
-                           {:after :nvim-lspconfig :config (SafeRequire :lspsaga {})}
+                           :nvimdev/lspsaga.nvim {:after :nvim-lspconfig
+                                                  :config (SafeRequire :lspsaga
+                                                                       {})}
                            ;; LSP Configuration
                            :neovim/nvim-lspconfig []
                            :scalameta/nvim-metals []

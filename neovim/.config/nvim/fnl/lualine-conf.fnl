@@ -1,4 +1,4 @@
-(require-macros :macros)
+(import-macros my-macros :macros)
 
 (local lualine-conf (let [theme-name :silverscreen
                           mod_color "#b4695e"
@@ -11,7 +11,7 @@
                                         theme.inactive.a.fg)
                           ro-fn (fn []
                                   "Show readonly"
-                                  (or (and (bo readonly) "") ""))
+                                  (or (and (my-macros.bo readonly) "") ""))
                           only-whitespace (fn [str]
                                             "Replace str with spaces (use for inactive components)"
                                             (string.gsub str "." " "))]
@@ -30,7 +30,7 @@
                                   :lualine_b [{1 :buffers
                                                :icons_enabled false
                                                :buffers_color {:active (fn []
-                                                                         {:bg (and (bo modified)
+                                                                         {:bg (and (my-macros.bo modified)
                                                                                    mod_color)
                                                                           :fg nil
                                                                           :gui :none})

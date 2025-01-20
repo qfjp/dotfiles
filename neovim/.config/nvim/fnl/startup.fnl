@@ -1,7 +1,7 @@
-(require-macros :macros)
+(import-macros my-macros :macros)
 
 ;; Initialize packer
-(let [packer-path (.. (vimfn stdpath :data) :/site/pack/packer/start)
+(let [packer-path (.. (my-macros.vimfn stdpath :data) :/site/pack/packer/start)
       cmd (io.popen (.. "find " packer-path "* -maxdepth 1"))
       files {}
       packer (require :packer)]
@@ -59,48 +59,50 @@
         (fn []
           "Settings for Neovide and Gonvim"
           (do
-            (set! guifont "FiraCode Nerd Font:h10")
-            (set! showtabline 2)
-            (g! neovide_no_idle true)
-            (g! neovide_curosr_vfx_mode :wireframe)
-            (when (g :goneovim)
-              (exec [[GonvimSmoothCursors] [GonvimSmoothScroll]])))))
+            (my-macros.set! guifont "FiraCode Nerd Font:h10")
+            (my-macros.set! showtabline 2)
+            (my-macros.g! neovide_no_idle true)
+            (my-macros.g! neovide_curosr_vfx_mode :wireframe)
+            (when (my-macros.g :goneovim)
+              (my-macros.exec [[GonvimSmoothCursors] [GonvimSmoothScroll]])))))
 
-(when (or (g goneovim) (g neovide))
-  (augroup :Gui (autocmd :UIEnter "*" "call v:lua.GuiSetup()")))
+(when (or (my-macros.g goneovim) (my-macros.g neovide))
+  (my-macros.augroup :Gui
+                     (my-macros.autocmd :UIEnter "*" "call v:lua.GuiSetup()")))
 
-(g! mapleader " ")
-(g! maplocalleader " ")
+(my-macros.g! mapleader " ")
+(my-macros.g! maplocalleader " ")
 
 ;; {{{ Theme
 ;; ---------
-(set! noshowmode)
-(set! laststatus 2)
-(set! cursorline)
-(set! colorcolumn :71)
-(set! background :dark)
+(my-macros.set! noshowmode)
+(my-macros.set! laststatus 2)
+(my-macros.set! cmdheight 0)
+(my-macros.set! cursorline)
+(my-macros.set! colorcolumn :71)
+(my-macros.set! background :dark)
 ;; }}}
 
 ;; {{{ Greek Char Maps
 ;; -------------------
-(vim.cmd (.. :source (.. (vimfn stdpath :config) :/greek.vim)))
+(vim.cmd (.. :source (.. (my-macros.vimfn stdpath :config) :/greek.vim)))
 
 ;; }}}
 
 ;; {{{ Search Options
 ;; ------------------
-(set! hlsearch)
-(set! incsearch)
-(set! nowrapscan)
-(set! ignorecase)
-(set! smartcase)
+(my-macros.set! hlsearch)
+(my-macros.set! incsearch)
+(my-macros.set! nowrapscan)
+(my-macros.set! ignorecase)
+(my-macros.set! smartcase)
 
 (global HlNext
         (fn [blinktime]
-          (exec [[highlight! link SearchBlink IncSearch]])
+          (my-macros.exec [[highlight! link SearchBlink IncSearch]])
           (let [search_text (vim.api.nvim_eval "@/")
                 target_pat (.. "\\c\\%#" search_text)
-                ring (vimfn matchadd :SearchBlink target_pat 101)
+                ring (my-macros.vimfn matchadd :SearchBlink target_pat 101)
                 sleep_str (string.format "%sm" (* blinktime 200))
                 call_str (string.format "matchdelete(%s)" ring)]
             (vim.cmd (.. "redraw | sleep " sleep_str " | call " call_str)))))
@@ -109,56 +111,57 @@
 
 ;; {{{ Indent Options
 ;; ------------------
-(set! autoindent)
-(set! smarttab)
-(set! expandtab)
-(set! tabstop 4)
-(set! shiftwidth 4)
-(set! textwidth 70)
+(my-macros.set! autoindent)
+(my-macros.set! smarttab)
+(my-macros.set! expandtab)
+(my-macros.set! tabstop 4)
+(my-macros.set! shiftwidth 4)
+(my-macros.set! textwidth 70)
 
-(set! linebreak)
-(set! breakindent)
-(set! showbreak "-→")
-(g! html_indent_inctags "head,html,body,p,head,table,tbody,div,script")
-(g! html_indent_script1 :inc)
-(g! html_indent_style1 :inc)
+(my-macros.set! linebreak)
+(my-macros.set! breakindent)
+(my-macros.set! showbreak "-→")
+(my-macros.g! html_indent_inctags
+              "head,html,body,p,head,table,tbody,div,script")
+(my-macros.g! html_indent_script1 :inc)
+(my-macros.g! html_indent_style1 :inc)
 ;; }}}
 
 ;; {{{ Behaviors
 ;; -------------
-(set! wrap)
-(set! linebreak)
+(my-macros.set! wrap)
+(my-macros.set! linebreak)
 
-(set! undofile)
-(set! undodir (.. (os.getenv :HOME) :/.local/share/vim-backup))
-(set! scrolloff 5)
-(set! autochdir)
+(my-macros.set! undofile)
+(my-macros.set! undodir (.. (os.getenv :HOME) :/.local/share/vim-backup))
+(my-macros.set! scrolloff 5)
+(my-macros.set! autochdir)
 
-(set! history 1000)
-(set! undolevels 1000)
+(my-macros.set! history 1000)
+(my-macros.set! undolevels 1000)
 
-(set! mouse "")
+(my-macros.set! mouse "")
 
-(set! backspace [:indent :eol :start])
-(set+ cpoptions "$")
+(my-macros.set! backspace [:indent :eol :start])
+(my-macros.set+ cpoptions "$")
 
-(set! ruler)
-(set! title)
-(set! autoread)
-(set! wildmenu)
+(my-macros.set! ruler)
+(my-macros.set! title)
+(my-macros.set! autoread)
+(my-macros.set! wildmenu)
 
-(set! hidden)
-(set! formatoptions :coq2)
+(my-macros.set! hidden)
+(my-macros.set! formatoptions :coq2)
 
-(augroup :QFixToggle
-         (autocmd :BufWinEnter :quickfix
-                  "let g:qfix_win=bufnr(\"$\")|set nolist|set colorcolumn=0")
-         (autocmd :BufWinLeave :quickfix
-                  "if exists(\"g:qfix_win\") && g:qfix_win == expand(\"<abuf>\")|unlet! g:qfix_win|endif"))
+(my-macros.augroup :QFixToggle
+                   (my-macros.autocmd :BufWinEnter :quickfix
+                                      "let g:qfix_win=bufnr(\"$\")|set nolist|set colorcolumn=0")
+                   (my-macros.autocmd :BufWinLeave :quickfix
+                                      "if exists(\"g:qfix_win\") && g:qfix_win == expand(\"<abuf>\")|unlet! g:qfix_win|endif"))
 
 (fn ScratchBuf []
   (var scratchname :scratch)
-  (var scratchbuf (vimfn bufnr scratchname))
+  (var scratchbuf (my-macros.vimfn bufnr scratchname))
   (when (= -1 scratchbuf)
     (do
       (set scratchbuf (vim.api.nvim_create_buf true true))
@@ -168,14 +171,14 @@
   (set vim.opt_local.bufhidden :hide)
   (set vim.opt_local.swapfile false))
 
-(defcommand :Scratch ScratchBuf)
+(my-macros.defcommand :Scratch ScratchBuf)
 ;; }}}
 
 ;; {{{ Visual
 ;; ----------
-(set! showmatch)
-(set! list)
-(set! conceallevel 0)
+(my-macros.set! showmatch)
+(my-macros.set! list)
+(my-macros.set! conceallevel 0)
 
 (fn MatchHighIp [str]
   "True if an IP address is above '3' on the local network"
@@ -184,9 +187,9 @@
         (string.match str (.. subnet "[1-9][0-9]"))
         (string.match str (.. subnet "[1-2][0-9][0-9]")))))
 
-(set! termguicolors)
+(my-macros.set! termguicolors)
 
-(set! listchars "tab:▕░,trail:▒,extends:>,precedes:<")
+(my-macros.set! listchars "tab:▕░,trail:▒,extends:>,precedes:<")
 
 ;; }}}
 
@@ -194,48 +197,50 @@
 ;; ----------------------
 (set vim.env.NVIM_LISTEN_ADDRESS vim.v.servername)
 
-(global TermOptions (fn []
-                      (do
-                        (set! filetype :terminal)
-                        ;; Black
-                        (b! terminal_color_0 "#1A1919")
-                        (b! terminal_color_8 "#75715e")
-                        ;; Red
-                        (b! terminal_color_1 "#f92672")
-                        (b! terminal_color_9 "#f92672")
-                        ;; Green
-                        (b! terminal_color_2 "#a6e22e")
-                        (b! terminal_color_10 "#a6e22e")
-                        ;; Yellow
-                        (b! terminal_color_3 "#f4bf75")
-                        (b! terminal_color_11 "#f4bf75")
-                        ;; Blue
-                        (b! terminal_color_4 "#66d9ef")
-                        (b! terminal_color_12 "#66d9ef")
-                        ;; Magenta
-                        (b! terminal_color_5 "#ae81ff")
-                        (b! terminal_color_13 "#ae81ff")
-                        ;; Cyan
-                        (b! terminal_color_6 "#a1efe4")
-                        (b! terminal_color_14 "#a1efe4")
-                        ;; White
-                        (b! terminal_color_7 "#989892")
-                        (b! terminal_color_15 "#f9f8f5"))))
+(global TermOptions
+        (fn []
+          (do
+            (set! filetype :terminal)
+            ;; Black
+            (my-macros.b! terminal_color_0 "#1A1919")
+            (my-macros.b! terminal_color_8 "#75715e")
+            ;; Red
+            (my-macros.b! terminal_color_1 "#f92672")
+            (my-macros.b! terminal_color_9 "#f92672")
+            ;; Green
+            (my-macros.b! terminal_color_2 "#a6e22e")
+            (my-macros.b! terminal_color_10 "#a6e22e")
+            ;; Yellow
+            (my-macros.b! terminal_color_3 "#f4bf75")
+            (my-macros.b! terminal_color_11 "#f4bf75")
+            ;; Blue
+            (my-macros.b! terminal_color_4 "#66d9ef")
+            (my-macros.b! terminal_color_12 "#66d9ef")
+            ;; Magenta
+            (my-macros.b! terminal_color_5 "#ae81ff")
+            (my-macros.b! terminal_color_13 "#ae81ff")
+            ;; Cyan
+            (my-macros.b! terminal_color_6 "#a1efe4")
+            (my-macros.b! terminal_color_14 "#a1efe4")
+            ;; White
+            (my-macros.b! terminal_color_7 "#989892")
+            (my-macros.b! terminal_color_15 "#f9f8f5"))))
 
-(augroup :Terminal (autocmd :TermOpen "*" "call v:lua.TermOptions()"))
+(my-macros.augroup :Terminal
+                   (my-macros.autocmd :TermOpen "*" "call v:lua.TermOptions()"))
 
 ;; }}}
 
 ;; {{{ Folds
 ;; ---------
-(set! foldcolumn :0)
-(set! foldlevelstart 99)
+(my-macros.set! foldcolumn :0)
+(my-macros.set! foldlevelstart 99)
 
-(rem! viewoptions :options)
+(my-macros.rem! viewoptions :options)
 
-(augroup :Folds
-         (autocmd :FileType "vim,zsh,lua,fennel"
-                  "set foldmethod=marker|set foldtext=v:lua.SimpleFoldText()"))
+(my-macros.augroup :Folds
+                   (my-macros.autocmd :FileType "vim,zsh,lua,fennel"
+                                      "set foldmethod=marker|set foldtext=v:lua.SimpleFoldText()"))
 
 (global HaskellToolsFn
         (fn []
@@ -258,28 +263,31 @@
                             #(ht.repl.toggle (vim.api.nvim_buf_get_name 0)) opts)
             (vim.keymap.set :n :<leader>rq ht.repl.quit opts))))
 
-(augroup :HaskellTools
-         (autocmd :FileType "haskell,cabal" "call v:lua.HaskellToolsFn()"))
+(my-macros.augroup :HaskellTools
+                   (my-macros.autocmd :FileType "haskell,cabal"
+                                      "call v:lua.HaskellToolsFn()"))
 
-(set! foldtext "v:lua.CFoldText()")
+(my-macros.set! foldtext "v:lua.CFoldText()")
 
 (fn PadToRight [lstring rstring]
-  (let [width (vimfn winwidth ".")
+  (let [width (my-macros.vimfn winwidth ".")
         offset (string.rep " " (- width (string.len (.. lstring rstring))))]
     (.. lstring offset rstring)))
 
 (global SimpleFoldText (fn []
                          (let [ell " ⋯ "
-                               vstart (vimfn getline vim.v.foldstart)
-                               vend (vimfn trim (vimfn getline vim.v.foldened))
+                               vstart (my-macros.vimfn getline vim.v.foldstart)
+                               vend (my-macros.vimfn trim
+                                                     (my-macros.vimfn getline
+                                                                      vim.v.foldened))
                                startpattern "^%s*[\"#-;]+%-?%s*{{{"
                                endpattern "^%s*[\"#-;]+%-?%s*}}}"
                                vstartPrime (string.gsub vstart startpattern "")
                                vendPrime (string.gsub vend endpattern "")
                                linestring (.. " === "
-                                              (table.maxn (vimfn getline
-                                                                 vim.v.foldstart
-                                                                 vim.v.foldend))
+                                              (table.maxn (my-macros.vimfn getline
+                                                                           vim.v.foldstart
+                                                                           vim.v.foldend))
                                               " lines === ")]
                            (PadToRight (.. vstartPrime " " ell " " vendPrime)
                                        linestring))))
@@ -287,13 +295,15 @@
 (global CFoldText
         (fn []
           (let [ell " ⋯ "
-                lines (vimfn getline vim.v.foldstart vim.v.foldend)
+                lines (my-macros.vimfn getline vim.v.foldstart vim.v.foldend)
                 size (table.maxn lines)
                 linestring (.. " === " size " lines === ")
-                vstart (vimfn getline vim.v.foldstart)]
+                vstart (my-macros.vimfn getline vim.v.foldstart)]
             (if (or (string.match vstart "{$") (string.match vstart "-$"))
                 (PadToRight (.. vstart ell
-                                (vimfn trim (vimfn getline vim.v.foldend)))
+                                (my-macros.vimfn trim
+                                                 (my-macros.vimfn getline
+                                                                  vim.v.foldend)))
                             linestring)
                 (do
                   (var had_comma false)
@@ -304,7 +314,7 @@
                       (var curline line)
                       (when (not= ix 1)
                         (do
-                          (set curline (vimfn trim curline))
+                          (set curline (my-macros.vimfn trim curline))
                           (set curline (string.gsub curline "%s+" " "))))
                       (when had_comma
                         (set curline (.. " " curline))
@@ -473,46 +483,28 @@
              32 {1 :g<leader>b 2 ":tabprev<CR>" :desc "Prev tab"}
              33 {1 :g<leader>G 2 ":Goyo<CR>" :desc "Focused Editing"}
              34 {1 :g<leader>l :group "Lusty Juggler" :silent false}
-             35 {1 :g<leader>dt
-                 2 "<C-\\><C-n>:SSave! default | qall<CR>"
-                 :desc "Save default session and quit"}
-             36 {1 :g<leader>s 2 ":split<CR>" :desc "Split window (H)"}
              36 {1 :g<leader>s 2 ":split<CR>" :desc "Split window (H)"}
              37 {1 :g<leader>v
                  2 ":vertical split<CR>"
                  :desc "Split window (V)"}
              38 {1 :g<leader>= 2 :<C-w>= :desc "Equally high and wide"}
-             39 {1 :g<leader>+
-                 2 ":vertical resize +10<CR>"
-                 :desc "Increase height"}
-             40 {1 :g<leader>-
-                 2 ":vertical resize -10<CR>"
-                 :desc "Decrease height"}
-             41 {1 :g<leader>>
-                 2 ":vertical resize +10<CR>"
-                 :desc "Increase width"}
-             42 {1 :g<leader><
-                 2 ":vertical resize -10<CR>"
-                 :desc "Decrease width"}
-             43 {1 :g<leader>l
-                 2 ":vertical resize +10<CR>"
-                 :desc "Grow window (V)"}
-             44 {1 :g<leader>dt
+             39 {1 :g<leader>+ 2 ":resize +10<CR>" :desc "Increase height"}
+             40 {1 :g<leader>- 2 ":resize -10<CR>" :desc "Decrease height"}
+             41 {1 :<C-w> :group :Window :silent false}
+             42 {1 :<C-w>J 2 ":resize -10<CR>" :desc "Decrease height"}
+             43 {1 :<C-w>K 2 ":resize +10<CR>" :desc "Increase height"}
+             44 {1 :<C-w>j 2 :<C-w>j :desc "Move down"}
+             45 {1 :<C-w>k 2 :<C-w>k :desc "Move up"}
+             44 {1 :<C-w>j 2 :<C-w>j :desc "Move down"}
+             45 {1 :<C-w>k 2 :<C-w>k :desc "Move up"}
+             46 {1 :<C-w>l 2 :<C-w>L :desc "Move right"}
+             47 {1 :<C-w>h 2 :<c-w>H :desc "Move left"}
+             49 {1 :g<leader>dt
                  2 ":SSave! default | qall<CR>"
                  :desc "Save default session and quit"}
-             45 {1 :g<leader>Dt
+             50 {1 :g<leader>Dt
                  2 ":SLoad default<CR>"
-                 :desc "Load default session"}
-             46 {1 :<C-f>
-                 2 ":TSHighlightCapturesUnderCursor<CR>"
-                 :desc "Show highlight group"}
-             47 {1 :<F10>
-                 2 ":TSHighlightCapturesUnderCursor<CR>"
-                 :desc "Show highlight group"}
-             48 {1 :<C-n> 2 ":bnext<CR>" :desc "Next buffer"}
-             49 {1 :<C-b> 2 ":bprev<CR>" :desc "Prev Buffer"}
-             50 {1 "'" 2 "`" :desc "Jump to mark"}
-             51 {1 "`" 2 "'" :desc "Jump to mark^"}})
+                 :desc "Load default session"}})
     ;; Insert
     (wk.add (let [cmp (require :cmp)
                   types (require :cmp.types)
@@ -547,12 +539,9 @@
                 :desc "Load default session"}
              6 {1 :<C-v>t 2 "<C-\\><C-n><C-w>v" :desc "Split vertically"}
              7 {1 :<C-s>t 2 "<C-\\><C-n><C-w>v" :desc "Split vertically"}
-             8 {1 :<C-k>t 2 "<C-\\><C-n><C-w>k" :desc "Move to window above"}
-             9 {1 :<C-j>t 2 "<C-\\><C-n><C-w>j" :desc "Move to window below"}
-             10 {1 :<C-h>t 2 "<C-\\><C-n><C-w>h" :desc "Move to window left"}
-             11 {1 :<C-l>t 2 "<C-\\><C-n><C-w>l" :desc "Move to window right"}
              ;; Vim as Tmux-alike
-             12 {1 :<C-w> :name :+window}
+             11 {1 :<C-w> :name :+window}
+             12 {1 :<C-w>w 2 "<C-\\><C-n>" :desc "Escape terminal"}
              13 {1 :<C-w>c 2 ":tabnew<CR>" :desc "Create new tab"}
              14 {1 :<C-w>n 2 ":tabnext<CR>" :desc "Next Tab"}
              15 {1 :<C-w>b 2 ":tabprev<CR>" :desc "Prev Tab"}
@@ -560,43 +549,35 @@
                  2 ":vertical resize +10<CR>"
                  :desc "Increase height"}
              17 {1 :<C-w>-
-                 2 ":vertical resize -10<CR>"
-                 :desc "Decrease height"}
-             18 {1 :<C-w>> 2 ":resize +10<CR>" :desc "Increase width"}
-             19 {1 :<C-w>< 2 ":resize -10<CR>" :desc "Decrease width"}
-             20 {1 :<C-w>d
+                  2 ":vertical resize -10<CR>"
+                  :desc "Decrease height"}
+             18 {1 :<C-w>J 2 ":resize -10<CR>" :desc "Decrease height"}
+             19 {1 :<C-w>K 2 ":resize +10<CR>" :desc "Increase height"}
+             20 {1 :<C-w>L 2 ":vertical resize +10" :desc "Increase width"}
+             21 {1 :<C-w>H 2 ":vertical resize -10" :desc "Decrease width"}
+             22 {1 :<C-w>j 2 :<C-w>j :desc "Move down"}
+             23 {1 :<C-w>k 2 :<C-w>k :desc "Move up"}
+             24 {1 :<C-w>l 2 :<C-w>L :desc "Move right"}
+             25 {1 :<C-w>h 2 :<c-w>H :desc "Move left"}
+             27 {1 :<C-w>D 2 ":SLoad default<CR>" :desc "Load default session"}
+             28 {1 :<C-Space> :name :+window}
+             29 {1 :<C-Space>c 2 ":tabnew<CR>" :desc "Create new tab"}
+             30 {1 :<C-Space>n 2 ":tabnext<CR>" :desc "Next Tab"}
+             31 {1 :<C-Space>b 2 ":tabprev<CR>" :desc "Prev Tab"}
+             32 {1 :<C-Space>s 2 ":split<CR>" :desc "Split Window (H)"}
+             33 {1 :<C-Space>v 2 ":resize -10<CR>" :desc "Decrease width"}
+             34 {1 :<C-Space>= 2 :<C-w>= :desc "Equally high and wide"}
+             35 {1 :<C-Space>+ 2 ":resize -10<CR>" :desc "Decrease width"}
+             36 {1 :<C-Space>- 2 ":resize -10<CR>" :desc "Decrease width"}
+             37 {1 :<C-Space>> 2 ":resize -10<CR>" :desc "Decrease width"}
+             38 {1 :<C-Space>< 2 ":resize -10<CR>" :desc "Decrease width"}
+             39 {1 :<C-Space>l 5 ":resize +10<CR>" :desc "Increase width"}
+             40 {1 :<C-Space>d
                  2 ":SSave! default | qall<CR>"
                  :desc "Save default session and quit"}
-             21 {1 :<C-w>D 2 ":SLoad default<CR>" :desc "Load default session"}
-             22 {1 :<C-Space> :name :+window}
-             23 {1 :<C-Space>c 2 ":tabnew<CR>" :desc "Create new tab"}
-             24 {1 :<C-Space>n 2 ":tabnext<CR>" :desc "Next Tab"}
-             25 {1 :<C-Space>b 2 ":tabprev<CR>" :desc "Prev Tab"}
-             26 {1 :<C-Space>s 2 ":split<CR>" :desc "Split Window (H)"}
-             27 {1 :<C-Space>v
-                 2 ":vertical split<CR>"
-                 :desc "Split Window (V)"}
-             28 {1 :<C-Space>= 2 :<C-w>= :desc "Equally high and wide"}
-             29 {1 :<C-Space>+
-                 2 ":vertical resize +10<CR>"
-                 :desc "Increase height"}
-             30 {1 :<C-Space>-
-                 2 ":vertical resize -10<CR>"
-                 :desc "Decrease height"}
-             31 {1 :<C-Space>>
-                 2 ":vertical resize +10<CR>"
-                 :desc "Increase width"}
-             32 {1 :<C-Space><
-                 2 ":vertical resize -10<CR>"
-                 :desc "Decrease width"}
-             33 {1 :<C-Space>l
-                 2 ":vertical resize +10<CR>"
-                 :desc "Grow Window (V)"}
-             45 {1 :<C-Space>d 2 ":SSave! default | qall<CR>"}
-             34 "Save default session and quit"
-             35 {1 :<C-Space>D
-                 2 ":SLoad default<CR>"
-                 :desc "Load default session"}})))
+             41 {1 :<C-Space>D
+                  2 ":SLoad default<CR>"
+                  :desc "Load default session"}})))
 
 ;(wk.register
 ;; Vim as Tmux-alike
@@ -628,29 +609,32 @@
 ;; {{{ Auto Commands
 ;; -----------------
 ; Open at last line
-(augroup :Utilities
-         (autocmd :BufReadPost "*"
-                  "if line(\"'\\\"\") > 1 && line(\"'\\\"\") <= line(\"$\") | exe \"normal! g`\\\"\" | endif"))
+(my-macros.augroup :Utilities
+                   (my-macros.autocmd :BufReadPost "*"
+                                      "if line(\"'\\\"\") > 1 && line(\"'\\\"\") <= line(\"$\") | exe \"normal! g`\\\"\" | endif"))
 
-(augroup :LatexHelp (autocmd :FileType :tex "set fileencoding=ascii"))
+(my-macros.augroup :LatexHelp
+                   (my-macros.autocmd :FileType :tex "set fileencoding=ascii"))
 
 (global SourceHelp (fn []
                      "Source custom ftplugin"
-                     (vim.cmd (.. "source " (vimfn stdpath :config)
+                     (vim.cmd (.. "source " (my-macros.vimfn stdpath :config)
                                   :/ftplugin/help.vim))))
 
-(augroup :HelpFiles (autocmd :FileType "call v:lua.SourceHelp()"))
+(my-macros.augroup :HelpFiles
+                   (my-macros.autocmd :FileType "call v:lua.SourceHelp()"))
 
-(augroup :Scala (autocmd "BufNewFile,BufRead" :*.sc "set ft=scala"))
+(my-macros.augroup :Scala
+                   (my-macros.autocmd "BufNewFile,BufRead" :*.sc "set ft=scala"))
 
 ;; }}}
 
 ;; {{{ netrw
 ;; ---------
-(g! netrw_browse_split 4)
-(g! netrw_altv 1)
-(g! netrw_list_hide "^\\.")
-(g! netrw_hide 1)
+(my-macros.g! netrw_browse_split 4)
+(my-macros.g! netrw_altv 1)
+(my-macros.g! netrw_list_hide "^\\.")
+(my-macros.g! netrw_hide 1)
 ;; }}}
 
 (vim.cmd "colorscheme silverscreen")
