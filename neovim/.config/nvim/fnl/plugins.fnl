@@ -64,9 +64,9 @@
                            :lewis6991/gitsigns.nvim {:config (SafeRequire :gitsigns
                                                                           (. (require :gitsigns_config)
                                                                              :git_sign_table))}
-                           :TimUntersberger/neogit {:config (SafeRequire :neogit
-                                                                         [])
-                                                    :requires :nvim-lua/plenary.nvim}
+                           :NeogitOrg/neogit {:config (SafeRequire :neogit
+                                                                   [])
+                                              :requires [:nvim-lua/plenary.nvim :nvim-telescope/telescope.nvim :sindrets/diffview.nvim]}
                            ;; Motions
                            :ggandor/lightspeed.nvim []
                            :sjbach/Lusty []
