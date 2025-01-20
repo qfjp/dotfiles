@@ -388,7 +388,7 @@
                  :desc "Show highlight group"}
              11 {1 :<C-n> 2 ":bnext<CR>" :desc "Next buffer"}
              12 {1 :<C-b> 2 ":bprev<CR>" :desc "Prev Buffer"}
-             13 {1 "'" 2 "`" :desc "Jump to mark"}
+             13 {1 "'" 2 "`" :desc "Jump to line of mark"}
              14 {1 "`" 2 "'" :desc "Jump to mark^"}
              16 {1 :z :group :Folds :silent false}
              17 {1 "z["
