@@ -1,8 +1,21 @@
-(import-macros my-macros :macros)
+(import-macros {: augroup
+                : autocmd
+                : b!
+                : defcommand
+                : exec
+                : g
+                : g!
+                : rem!
+                : set!
+                : setlocal!
+                : set+
+                : vimfn} :macros)
+(import-macros {: def-aug- : aug- : auc-}
+               :katcros-fnl.macros.nvim.api.autocommands.macros)
 (import-macros aucmd-macros :katcros-fnl.macros.nvim.api.autocommands.macros)
 
 ;; Initialize packer
-(let [packer-path (.. (my-macros.vimfn stdpath :data) :/site/pack/packer/start)
+(let [packer-path (.. (vimfn stdpath :data) :/site/pack/packer/start)
       cmd (io.popen (.. "find " packer-path "* -maxdepth 1"))
       files {}
       packer (require :packer)]
@@ -60,50 +73,49 @@
         (fn []
           "Settings for Neovide and Gonvim"
           (do
-            (my-macros.set! guifont "FiraCode Nerd Font:h10")
-            (my-macros.set! showtabline 2)
-            (my-macros.g! neovide_no_idle true)
-            (my-macros.g! neovide_curosr_vfx_mode :wireframe)
-            (when (my-macros.g :goneovim)
-              (my-macros.exec [[GonvimSmoothCursors] [GonvimSmoothScroll]])))))
+            (set! guifont "FiraCode Nerd Font:h10")
+            (set! showtabline 2)
+            (g! neovide_no_idle true)
+            (g! neovide_curosr_vfx_mode :wireframe)
+            (when (g :goneovim)
+              (exec [[GonvimSmoothCursors] [GonvimSmoothScroll]])))))
 
-(when (or (my-macros.g goneovim) (my-macros.g neovide))
-  (my-macros.augroup :Gui
-                     (my-macros.autocmd :UIEnter "*" "call v:lua.GuiSetup()")))
+(when (or (g goneovim) (g neovide))
+  (augroup :Gui (autocmd :UIEnter "*" "call v:lua.GuiSetup()")))
 
-(my-macros.g! mapleader " ")
-(my-macros.g! maplocalleader " ")
+(g! mapleader " ")
+(g! maplocalleader " ")
 
 ;; {{{ Theme
 ;; ---------
-(my-macros.set! noshowmode)
-(my-macros.set! laststatus 2)
-(my-macros.set! cmdheight 0)
-(my-macros.set! cursorline)
-(my-macros.set! colorcolumn :71)
-(my-macros.set! background :dark)
+(set! noshowmode)
+(set! laststatus 2)
+(set! cmdheight 0)
+(set! cursorline)
+(set! colorcolumn :71)
+(set! background :dark)
 ;; }}}
 
 ;; {{{ Greek Char Maps
 ;; -------------------
-(vim.cmd (.. :source (.. (my-macros.vimfn stdpath :config) :/greek.vim)))
+(vim.cmd (.. :source (.. (vimfn stdpath :config) :/greek.vim)))
 
 ;; }}}
 
 ;; {{{ Search Options
 ;; ------------------
-(my-macros.set! hlsearch)
-(my-macros.set! incsearch)
-(my-macros.set! nowrapscan)
-(my-macros.set! ignorecase)
-(my-macros.set! smartcase)
+(set! hlsearch)
+(set! incsearch)
+(set! nowrapscan)
+(set! ignorecase)
+(set! smartcase)
 
 (global HlNext
         (fn [blinktime]
-          (my-macros.exec [[highlight! link SearchBlink IncSearch]])
+          (exec [[highlight! link SearchBlink IncSearch]])
           (let [search_text (vim.api.nvim_eval "@/")
                 target_pat (.. "\\c\\%#" search_text)
-                ring (my-macros.vimfn matchadd :SearchBlink target_pat 101)
+                ring (vimfn matchadd :SearchBlink target_pat 101)
                 sleep_str (string.format "%sm" (* blinktime 200))
                 call_str (string.format "matchdelete(%s)" ring)]
             (vim.cmd (.. "redraw | sleep " sleep_str " | call " call_str)))))
@@ -112,57 +124,57 @@
 
 ;; {{{ Indent Options
 ;; ------------------
-(my-macros.set! autoindent)
-(my-macros.set! smarttab)
-(my-macros.set! expandtab)
-(my-macros.set! tabstop 4)
-(my-macros.set! shiftwidth 4)
-(my-macros.set! textwidth 70)
+(set! autoindent)
+(set! smarttab)
+(set! expandtab)
+(set! tabstop 4)
+(set! shiftwidth 4)
+(set! textwidth 70)
 
-(my-macros.set! linebreak)
-(my-macros.set! breakindent)
-(my-macros.set! showbreak "-→")
-(my-macros.g! html_indent_inctags
-              "head,html,body,p,head,table,tbody,div,script")
-(my-macros.g! html_indent_script1 :inc)
-(my-macros.g! html_indent_style1 :inc)
+(set! linebreak)
+(set! breakindent)
+(set! showbreak "-→")
+(g! html_indent_inctags "head,html,body,p,head,table,tbody,div,script")
+
+(g! html_indent_script1 :inc)
+(g! html_indent_style1 :inc)
 ;; }}}
 
 ;; {{{ Behaviors
 ;; -------------
-(my-macros.set! wrap)
-(my-macros.set! linebreak)
+(set! wrap)
+(set! linebreak)
 
-(my-macros.set! undofile)
-(my-macros.set! undodir (.. (os.getenv :HOME) :/.local/share/vim-backup))
-(my-macros.set! scrolloff 5)
-(my-macros.set! autochdir)
+(set! undofile)
+(set! undodir (.. (os.getenv :HOME) :/.local/share/vim-backup))
+(set! scrolloff 5)
+(set! autochdir)
 
-(my-macros.set! history 1000)
-(my-macros.set! undolevels 1000)
+(set! history 1000)
+(set! undolevels 1000)
 
-(my-macros.set! mouse "")
+(set! mouse "")
 
-(my-macros.set! backspace [:indent :eol :start])
-(my-macros.set+ cpoptions "$")
+(set! backspace [:indent :eol :start])
+(set+ cpoptions "$")
 
-(my-macros.set! ruler)
-(my-macros.set! title)
-(my-macros.set! autoread)
-(my-macros.set! wildmenu)
+(set! ruler)
+(set! title)
+(set! autoread)
+(set! wildmenu)
 
-(my-macros.set! hidden)
-(my-macros.set! formatoptions :coq2)
+(set! hidden)
+(set! formatoptions :coq2)
 
-(my-macros.augroup :QFixToggle
-                   (my-macros.autocmd :BufWinEnter :quickfix
-                                      "let g:qfix_win=bufnr(\"$\")|set nolist|set colorcolumn=0")
-                   (my-macros.autocmd :BufWinLeave :quickfix
-                                      "if exists(\"g:qfix_win\") && g:qfix_win == expand(\"<abuf>\")|unlet! g:qfix_win|endif"))
+(augroup :QFixToggle
+         (autocmd :BufWinEnter :quickfix
+                  "let g:qfix_win=bufnr(\"$\")|set nolist|set colorcolumn=0")
+         (autocmd :BufWinLeave :quickfix
+                  "if exists(\"g:qfix_win\") && g:qfix_win == expand(\"<abuf>\")|unlet! g:qfix_win|endif"))
 
 (fn ScratchBuf []
   (var scratchname :scratch)
-  (var scratchbuf (my-macros.vimfn bufnr scratchname))
+  (var scratchbuf (vimfn bufnr scratchname))
   (when (= -1 scratchbuf)
     (do
       (set scratchbuf (vim.api.nvim_create_buf true true))
@@ -172,14 +184,14 @@
   (set vim.opt_local.bufhidden :hide)
   (set vim.opt_local.swapfile false))
 
-(my-macros.defcommand :Scratch ScratchBuf)
+(defcommand :Scratch ScratchBuf)
 ;; }}}
 
 ;; {{{ Visual
 ;; ----------
-(my-macros.set! showmatch)
-(my-macros.set! list)
-(my-macros.set! conceallevel 0)
+(set! showmatch)
+(set! list)
+(set! conceallevel 0)
 
 (fn MatchHighIp [str]
   "True if an IP address is above '3' on the local network"
@@ -188,9 +200,9 @@
         (string.match str (.. subnet "[1-9][0-9]"))
         (string.match str (.. subnet "[1-2][0-9][0-9]")))))
 
-(my-macros.set! termguicolors)
+(set! termguicolors)
 
-(my-macros.set! listchars "tab:▕░,trail:▒,extends:>,precedes:<")
+(set! listchars "tab:▕░,trail:▒,extends:>,precedes:<")
 
 ;; }}}
 
@@ -198,50 +210,48 @@
 ;; ----------------------
 (set vim.env.NVIM_LISTEN_ADDRESS vim.v.servername)
 
-(global TermOptions
-        (fn []
-          (do
-            (set! filetype :terminal)
-            ;; Black
-            (my-macros.b! terminal_color_0 "#1A1919")
-            (my-macros.b! terminal_color_8 "#75715e")
-            ;; Red
-            (my-macros.b! terminal_color_1 "#f92672")
-            (my-macros.b! terminal_color_9 "#f92672")
-            ;; Green
-            (my-macros.b! terminal_color_2 "#a6e22e")
-            (my-macros.b! terminal_color_10 "#a6e22e")
-            ;; Yellow
-            (my-macros.b! terminal_color_3 "#f4bf75")
-            (my-macros.b! terminal_color_11 "#f4bf75")
-            ;; Blue
-            (my-macros.b! terminal_color_4 "#66d9ef")
-            (my-macros.b! terminal_color_12 "#66d9ef")
-            ;; Magenta
-            (my-macros.b! terminal_color_5 "#ae81ff")
-            (my-macros.b! terminal_color_13 "#ae81ff")
-            ;; Cyan
-            (my-macros.b! terminal_color_6 "#a1efe4")
-            (my-macros.b! terminal_color_14 "#a1efe4")
-            ;; White
-            (my-macros.b! terminal_color_7 "#989892")
-            (my-macros.b! terminal_color_15 "#f9f8f5"))))
+(global TermOptions (fn []
+                      (do
+                        (set! filetype :terminal)
+                        ;; Black
+                        (b! terminal_color_0 "#1A1919")
+                        (b! terminal_color_8 "#75715e")
+                        ;; Red
+                        (b! terminal_color_1 "#f92672")
+                        (b! terminal_color_9 "#f92672")
+                        ;; Green
+                        (b! terminal_color_2 "#a6e22e")
+                        (b! terminal_color_10 "#a6e22e")
+                        ;; Yellow
+                        (b! terminal_color_3 "#f4bf75")
+                        (b! terminal_color_11 "#f4bf75")
+                        ;; Blue
+                        (b! terminal_color_4 "#66d9ef")
+                        (b! terminal_color_12 "#66d9ef")
+                        ;; Magenta
+                        (b! terminal_color_5 "#ae81ff")
+                        (b! terminal_color_13 "#ae81ff")
+                        ;; Cyan
+                        (b! terminal_color_6 "#a1efe4")
+                        (b! terminal_color_14 "#a1efe4")
+                        ;; White
+                        (b! terminal_color_7 "#989892")
+                        (b! terminal_color_15 "#f9f8f5"))))
 
-(my-macros.augroup :Terminal
-                   (my-macros.autocmd :TermOpen "*" "call v:lua.TermOptions()"))
+(augroup :Terminal (autocmd :TermOpen "*" "call v:lua.TermOptions()"))
 
 ;; }}}
 
 ;; {{{ Folds
 ;; ---------
-(my-macros.set! foldcolumn :0)
-(my-macros.set! foldlevelstart 99)
+(set! foldcolumn :0)
+(set! foldlevelstart 99)
 
-(my-macros.rem! viewoptions :options)
+(rem! viewoptions :options)
 
-(my-macros.augroup :Folds
-                   (my-macros.autocmd :FileType "vim,zsh,lua,fennel"
-                                      "set foldmethod=marker|set foldtext=v:lua.SimpleFoldText()"))
+(augroup :Folds
+         (autocmd :FileType "vim,zsh,lua,fennel"
+                  "set foldmethod=marker|set foldtext=v:lua.SimpleFoldText()"))
 
 (global HaskellToolsFn
         (fn []
@@ -264,31 +274,28 @@
                             #(ht.repl.toggle (vim.api.nvim_buf_get_name 0)) opts)
             (vim.keymap.set :n :<leader>rq ht.repl.quit opts))))
 
-(my-macros.augroup :HaskellTools
-                   (my-macros.autocmd :FileType "haskell,cabal"
-                                      "call v:lua.HaskellToolsFn()"))
+(augroup :HaskellTools
+         (autocmd :FileType "haskell,cabal" "call v:lua.HaskellToolsFn()"))
 
-(my-macros.set! foldtext "v:lua.CFoldText()")
+(set! foldtext "v:lua.CFoldText()")
 
 (fn PadToRight [lstring rstring]
-  (let [width (my-macros.vimfn winwidth ".")
+  (let [width (vimfn winwidth ".")
         offset (string.rep " " (- width (string.len (.. lstring rstring))))]
     (.. lstring offset rstring)))
 
 (global SimpleFoldText (fn []
                          (let [ell " ⋯ "
-                               vstart (my-macros.vimfn getline vim.v.foldstart)
-                               vend (my-macros.vimfn trim
-                                                     (my-macros.vimfn getline
-                                                                      vim.v.foldened))
+                               vstart (vimfn getline vim.v.foldstart)
+                               vend (vimfn trim (vimfn getline vim.v.foldened))
                                startpattern "^%s*[\"#-;]+%-?%s*{{{"
                                endpattern "^%s*[\"#-;]+%-?%s*}}}"
                                vstartPrime (string.gsub vstart startpattern "")
                                vendPrime (string.gsub vend endpattern "")
                                linestring (.. " === "
-                                              (table.maxn (my-macros.vimfn getline
-                                                                           vim.v.foldstart
-                                                                           vim.v.foldend))
+                                              (table.maxn (vimfn getline
+                                                                 vim.v.foldstart
+                                                                 vim.v.foldend))
                                               " lines === ")]
                            (PadToRight (.. vstartPrime " " ell " " vendPrime)
                                        linestring))))
@@ -296,15 +303,13 @@
 (global CFoldText
         (fn []
           (let [ell " ⋯ "
-                lines (my-macros.vimfn getline vim.v.foldstart vim.v.foldend)
+                lines (vimfn getline vim.v.foldstart vim.v.foldend)
                 size (table.maxn lines)
                 linestring (.. " === " size " lines === ")
-                vstart (my-macros.vimfn getline vim.v.foldstart)]
+                vstart (vimfn getline vim.v.foldstart)]
             (if (or (string.match vstart "{$") (string.match vstart "-$"))
                 (PadToRight (.. vstart ell
-                                (my-macros.vimfn trim
-                                                 (my-macros.vimfn getline
-                                                                  vim.v.foldend)))
+                                (vimfn trim (vimfn getline vim.v.foldend)))
                             linestring)
                 (do
                   (var had_comma false)
@@ -315,7 +320,7 @@
                       (var curline line)
                       (when (not= ix 1)
                         (do
-                          (set curline (my-macros.vimfn trim curline))
+                          (set curline (vimfn trim curline))
                           (set curline (string.gsub curline "%s+" " "))))
                       (when had_comma
                         (set curline (.. " " curline))
@@ -597,32 +602,32 @@
 ;; {{{ Auto Commands
 ;; -----------------
 ; Open at last line
-(my-macros.augroup :Utilities
-                   (my-macros.autocmd :BufReadPost "*"
+(augroup :Utilities
+                   (autocmd :BufReadPost "*"
                                       "if line(\"'\\\"\") > 1 && line(\"'\\\"\") <= line(\"$\") | exe \"normal! g`\\\"\" | endif"))
 
-(my-macros.augroup :LatexHelp
-                   (my-macros.autocmd :FileType :tex "set fileencoding=ascii"))
+(augroup :LatexHelp
+                   (autocmd :FileType :tex "set fileencoding=ascii"))
 
 (global SourceHelp (fn []
                      "Source custom ftplugin"
-                     (vim.cmd (.. "source " (my-macros.vimfn stdpath :config)
+                     (vim.cmd (.. "source " (vimfn stdpath :config)
                                   :/ftplugin/help.vim))))
 
-(my-macros.augroup :HelpFiles
-                   (my-macros.autocmd :FileType "call v:lua.SourceHelp()"))
+(augroup :HelpFiles
+                   (autocmd :FileType "call v:lua.SourceHelp()"))
 
-(my-macros.augroup :Scala
-                   (my-macros.autocmd "BufNewFile,BufRead" :*.sc "set ft=scala"))
+(augroup :Scala
+                   (autocmd "BufNewFile,BufRead" :*.sc "set ft=scala"))
 
 ;; }}}
 
 ;; {{{ netrw
 ;; ---------
-(my-macros.g! netrw_browse_split 4)
-(my-macros.g! netrw_altv 1)
-(my-macros.g! netrw_list_hide "^\\.")
-(my-macros.g! netrw_hide 1)
+(g! netrw_browse_split 4)
+(g! netrw_altv 1)
+(g! netrw_list_hide "^\\.")
+(g! netrw_hide 1)
 ;; }}}
 
 (vim.cmd "colorscheme silverscreen")
