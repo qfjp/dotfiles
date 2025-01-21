@@ -509,7 +509,7 @@
              51 {1 :g<leader>dt
                  2 ":SSave! default | qall<CR>"
                  :desc "Save default session and quit"}
-             50 {1 :g<leader>Dt
+             52 {1 :g<leader>Dt
                  2 ":SLoad default<CR>"
                  :desc "Load default session"}})
     ;; Insert
@@ -556,8 +556,8 @@
                  2 ":vertical resize +10<CR>"
                  :desc "Increase height"}
              17 {1 :<C-w>-
-                  2 ":vertical resize -10<CR>"
-                  :desc "Decrease height"}
+                 2 ":vertical resize -10<CR>"
+                 :desc "Decrease height"}
              18 {1 :<C-w>J 2 ":resize -10<CR>" :desc "Decrease height"}
              19 {1 :<C-w>K 2 ":resize +10<CR>" :desc "Increase height"}
              20 {1 :<C-w>L 2 ":vertical resize +10" :desc "Increase width"}
@@ -583,8 +583,8 @@
                  2 ":SSave! default | qall<CR>"
                  :desc "Save default session and quit"}
              41 {1 :<C-Space>D
-                  2 ":SLoad default<CR>"
-                  :desc "Load default session"}})))
+                 2 ":SLoad default<CR>"
+                 :desc "Load default session"}})))
 
 ;; }}}
 
