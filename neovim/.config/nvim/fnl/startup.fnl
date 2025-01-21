@@ -500,13 +500,13 @@
              41 {1 :<C-w> :group :Window :silent false}
              42 {1 :<C-w>J 2 ":resize -10<CR>" :desc "Decrease height"}
              43 {1 :<C-w>K 2 ":resize +10<CR>" :desc "Increase height"}
-             44 {1 :<C-w>j 2 :<C-w>j :desc "Move down"}
-             45 {1 :<C-w>k 2 :<C-w>k :desc "Move up"}
-             44 {1 :<C-w>j 2 :<C-w>j :desc "Move down"}
-             45 {1 :<C-w>k 2 :<C-w>k :desc "Move up"}
-             46 {1 :<C-w>l 2 :<C-w>L :desc "Move right"}
-             47 {1 :<C-w>h 2 :<c-w>H :desc "Move left"}
-             49 {1 :g<leader>dt
+             44 {1 :<C-w>L 2 ":vertical resize +10<CR>" :desc "Increase width"}
+             45 {1 :<C-w>H 2 ":vertical resize -10<CR>" :desc "Decrease width"}
+             46 {1 :<C-w>j 2 :<C-w>j :desc "Move down"}
+             47 {1 :<C-w>k 2 :<C-w>k :desc "Move up"}
+             48 {1 :<C-w>l 2 :<C-w>L :desc "Move right"}
+             49 {1 :<C-w>h 2 :<c-w>H :desc "Move left"}
+             51 {1 :g<leader>dt
                  2 ":SSave! default | qall<CR>"
                  :desc "Save default session and quit"}
              50 {1 :g<leader>Dt
@@ -585,17 +585,6 @@
              41 {1 :<C-Space>D
                   2 ":SLoad default<CR>"
                   :desc "Load default session"}})))
-
-;; My <C-w>H/L bindings are getting cleared. Why? WHO KNOWS
-(local OnEnterKeyBinds (aucmd-macros.def-aug- :WtfKeybinds))
-(aucmd-macros.auc- :UIEnter "*"
-    (fn []
-      (let [wk (require :which-key)]
-         (wk.add
-           {:mode [:n]
-             1 {1 :<C-w>L 2 ":vertical resize +10<CR>" :desc "Increase width"}
-             2 {1 :<C-w>H 2 ":vertical resize -10<CR>" :desc "Decrease width"}})))
-    {:group OnEnterKeyBinds})
 
 ;; }}}
 
