@@ -1,18 +1,8 @@
-(import-macros {: augroup
-                : autocmd
-                : b!
-                : defcommand
-                : exec
-                : g
-                : g!
-                : rem!
-                : set!
-                : setlocal!
-                : set+
-                : vimfn} :macros)
+(import-macros {: b! : defcommand : exec : g : g! : rem! : set! : set+ : vimfn}
+               :macros)
+
 (import-macros {: def-aug- : aug- : auc-}
                :katcros-fnl.macros.nvim.api.autocommands.macros)
-(import-macros aucmd-macros :katcros-fnl.macros.nvim.api.autocommands.macros)
 
 ;; Initialize packer
 (let [packer-path (.. (vimfn stdpath :data) :/site/pack/packer/start)
@@ -69,19 +59,16 @@
 
 ;; }}}
 
-(global GuiSetup
-        (fn []
-          "Settings for Neovide and Gonvim"
-          (do
-            (set! guifont "FiraCode Nerd Font:h10")
-            (set! showtabline 2)
-            (g! neovide_no_idle true)
-            (g! neovide_curosr_vfx_mode :wireframe)
-            (when (g :goneovim)
-              (exec [[GonvimSmoothCursors] [GonvimSmoothScroll]])))))
-
 (when (or (g goneovim) (g neovide))
-  (augroup :Gui (autocmd :UIEnter "*" "call v:lua.GuiSetup()")))
+  (def-aug- :Gui)
+  (aug- (auc- :UIEnter "*"
+              #(do
+                 (set! guifont "FiraCode Nerd Font:h10")
+                 (set! showtabline 2)
+                 (g! neovide_no_idle true)
+                 (g! neovide_curosr_vfx_mode :wireframe)
+                 (when (g :goneovim)
+                   (exec [[GonvimSmoothCursors] [GonvimSmoothScroll]]))))))
 
 (g! mapleader " ")
 (g! maplocalleader " ")
@@ -166,11 +153,12 @@
 (set! hidden)
 (set! formatoptions :coq2)
 
-(augroup :QFixToggle
-         (autocmd :BufWinEnter :quickfix
-                  "let g:qfix_win=bufnr(\"$\")|set nolist|set colorcolumn=0")
-         (autocmd :BufWinLeave :quickfix
-                  "if exists(\"g:qfix_win\") && g:qfix_win == expand(\"<abuf>\")|unlet! g:qfix_win|endif"))
+(def-aug- :QFixToggle)
+(aug- :QFixToggle
+      (auc- :BufWinEnter :quickfix
+            "let g:qfix_win=bufnr(\"$\")|set nolist|set colorcolumn=0")
+      (auc- :BufWinLeave :quickfix
+            "if exists(\"g:qfix_win\") && g:qfix_win == expand(\"<abuf>\")|unlet! g:qfix_win|endif"))
 
 (fn ScratchBuf []
   (var scratchname :scratch)
@@ -210,35 +198,36 @@
 ;; ----------------------
 (set vim.env.NVIM_LISTEN_ADDRESS vim.v.servername)
 
-(global TermOptions (fn []
-                      (do
-                        (set! filetype :terminal)
-                        ;; Black
-                        (b! terminal_color_0 "#1A1919")
-                        (b! terminal_color_8 "#75715e")
-                        ;; Red
-                        (b! terminal_color_1 "#f92672")
-                        (b! terminal_color_9 "#f92672")
-                        ;; Green
-                        (b! terminal_color_2 "#a6e22e")
-                        (b! terminal_color_10 "#a6e22e")
-                        ;; Yellow
-                        (b! terminal_color_3 "#f4bf75")
-                        (b! terminal_color_11 "#f4bf75")
-                        ;; Blue
-                        (b! terminal_color_4 "#66d9ef")
-                        (b! terminal_color_12 "#66d9ef")
-                        ;; Magenta
-                        (b! terminal_color_5 "#ae81ff")
-                        (b! terminal_color_13 "#ae81ff")
-                        ;; Cyan
-                        (b! terminal_color_6 "#a1efe4")
-                        (b! terminal_color_14 "#a1efe4")
-                        ;; White
-                        (b! terminal_color_7 "#989892")
-                        (b! terminal_color_15 "#f9f8f5"))))
+(fn TermOptions []
+  (do
+    (set! filetype :terminal)
+    ;; Black
+    (b! terminal_color_0 "#1A1919")
+    (b! terminal_color_8 "#75715e")
+    ;; Red
+    (b! terminal_color_1 "#f92672")
+    (b! terminal_color_9 "#f92672")
+    ;; Green
+    (b! terminal_color_2 "#a6e22e")
+    (b! terminal_color_10 "#a6e22e")
+    ;; Yellow
+    (b! terminal_color_3 "#f4bf75")
+    (b! terminal_color_11 "#f4bf75")
+    ;; Blue
+    (b! terminal_color_4 "#66d9ef")
+    (b! terminal_color_12 "#66d9ef")
+    ;; Magenta
+    (b! terminal_color_5 "#ae81ff")
+    (b! terminal_color_13 "#ae81ff")
+    ;; Cyan
+    (b! terminal_color_6 "#a1efe4")
+    (b! terminal_color_14 "#a1efe4")
+    ;; White
+    (b! terminal_color_7 "#989892")
+    (b! terminal_color_15 "#f9f8f5")))
 
-(augroup :Terminal (autocmd :TermOpen "*" "call v:lua.TermOptions()"))
+(def-aug- :Terminal)
+(aug- :Terminal (auc- :TermOpen "*" TermOptions))
 
 ;; }}}
 
@@ -249,89 +238,87 @@
 
 (rem! viewoptions :options)
 
-(augroup :Folds
-         (autocmd :FileType "vim,zsh,lua,fennel"
-                  "set foldmethod=marker|set foldtext=v:lua.SimpleFoldText()"))
+(def-aug- :Folds)
+(aug- :Folds
+      (auc- :FileType "vim,zsh,lua,fennel"
+            #(do
+               (set! foldmethod :marker)
+               (tset vim.opt :foldtext "v:lua.SimpleFoldText()"))))
 
-(global HaskellToolsFn
-        (fn []
-          (let [ht (require :haskell-tools)
-                bufnr (vim.api.nvim_get_current_buf)
-                opts {:noremap true :silent true :buffer bufnr}]
-            ;; haskell-language-server relies heavily on codeLenses,
-            ;; so auto-refresh is enabled by default
-            ;; why not vim.api.nvim_set_keymap?
-            (vim.keymap.set :n :<Space>cl :vim.lsp.codelens.run opts)
-            ;; Hoogle search for the type signature of the definition
-            ;; under the cursor
-            (vim.keymap.set :n :<Space>hs ht.hoogle.hoogle_signature)
-            ;;; Evaluate all code snippets
-            (vim.keymap.set :n :<Space>ea ht.lsp.buf_eval_all opts)
-            ;;; Toggle a GHCi repl for the current package
-            (vim.keymap.set :n :<leader>rr ht.repl.toggle opts)
-            ;;; Toggle a GHCi repl for the current buffer
-            (vim.keymap.set :n :<leader>rf
-                            #(ht.repl.toggle (vim.api.nvim_buf_get_name 0)) opts)
-            (vim.keymap.set :n :<leader>rq ht.repl.quit opts))))
+(fn HaskellToolsFn []
+  (let [ht (require :haskell-tools)
+        bufnr (vim.api.nvim_get_current_buf)
+        opts {:noremap true :silent true :buffer bufnr}]
+    ;; haskell-language-server relies heavily on codeLenses,
+    ;; so auto-refresh is enabled by default
+    ;; why not vim.api.nvim_set_keymap?
+    (vim.keymap.set :n :<Space>cl :vim.lsp.codelens.run opts)
+    ;; Hoogle search for the type signature of the definition
+    ;; under the cursor
+    (vim.keymap.set :n :<Space>hs ht.hoogle.hoogle_signature)
+    ;;; Evaluate all code snippets
+    (vim.keymap.set :n :<Space>ea ht.lsp.buf_eval_all opts)
+    ;;; Toggle a GHCi repl for the current package
+    (vim.keymap.set :n :<leader>rr ht.repl.toggle opts)
+    ;;; Toggle a GHCi repl for the current buffer
+    (vim.keymap.set :n :<leader>rf
+                    #(ht.repl.toggle (vim.api.nvim_buf_get_name 0)) opts)
+    (vim.keymap.set :n :<leader>rq ht.repl.quit opts)))
 
-(augroup :HaskellTools
-         (autocmd :FileType "haskell,cabal" "call v:lua.HaskellToolsFn()"))
+(def-aug- :HaskellTools)
+(aug- :HaskellTools (auc- :FileType :haskell HaskellToolsFn)
+      (auc- :FileType :cabal HaskellToolsFn))
 
-(set! foldtext "v:lua.CFoldText()")
+(set! foldtext CFoldText)
 
 (fn PadToRight [lstring rstring]
   (let [width (vimfn winwidth ".")
         offset (string.rep " " (- width (string.len (.. lstring rstring))))]
     (.. lstring offset rstring)))
 
-(global SimpleFoldText (fn []
-                         (let [ell " ⋯ "
-                               vstart (vimfn getline vim.v.foldstart)
-                               vend (vimfn trim (vimfn getline vim.v.foldened))
-                               startpattern "^%s*[\"#-;]+%-?%s*{{{"
-                               endpattern "^%s*[\"#-;]+%-?%s*}}}"
-                               vstartPrime (string.gsub vstart startpattern "")
-                               vendPrime (string.gsub vend endpattern "")
-                               linestring (.. " === "
-                                              (table.maxn (vimfn getline
-                                                                 vim.v.foldstart
-                                                                 vim.v.foldend))
-                                              " lines === ")]
-                           (PadToRight (.. vstartPrime " " ell " " vendPrime)
-                                       linestring))))
+(fn SimpleFoldText []
+  (let [ell " ⋯ "
+        vstart (vimfn getline vim.v.foldstart)
+        vend (vimfn trim (vimfn getline vim.v.foldened))
+        startpattern "^%s*[\"#-;]+%-?%s*{{{"
+        endpattern "^%s*[\"#-;]+%-?%s*}}}"
+        vstartPrime (string.gsub vstart startpattern "")
+        vendPrime (string.gsub vend endpattern "")
+        linestring (.. " === "
+                       (table.maxn (vimfn getline vim.v.foldstart vim.v.foldend))
+                       " lines === ")]
+    (PadToRight (.. vstartPrime " " ell " " vendPrime) linestring)))
 
-(global CFoldText
-        (fn []
-          (let [ell " ⋯ "
-                lines (vimfn getline vim.v.foldstart vim.v.foldend)
-                size (table.maxn lines)
-                linestring (.. " === " size " lines === ")
-                vstart (vimfn getline vim.v.foldstart)]
-            (if (or (string.match vstart "{$") (string.match vstart "-$"))
-                (PadToRight (.. vstart ell
-                                (vimfn trim (vimfn getline vim.v.foldend)))
-                            linestring)
+(fn CFoldText []
+  (let [ell " ⋯ "
+        lines (vimfn getline vim.v.foldstart vim.v.foldend)
+        size (table.maxn lines)
+        linestring (.. " === " size " lines === ")
+        vstart (vimfn getline vim.v.foldstart)]
+    (if (or (string.match vstart "{$") (string.match vstart "-$"))
+        (PadToRight (.. vstart ell (vimfn trim (vimfn getline vim.v.foldend)))
+                    linestring)
+        (do
+          (var had_comma false)
+          (var new_lines {})
+          (var done false)
+          (each [ix line (pairs lines)]
+            (when (not done)
+              (var curline line)
+              (when (not= ix 1)
                 (do
-                  (var had_comma false)
-                  (var new_lines {})
-                  (var done false)
-                  (each [ix line (pairs lines)]
-                    (when (not done)
-                      (var curline line)
-                      (when (not= ix 1)
-                        (do
-                          (set curline (vimfn trim curline))
-                          (set curline (string.gsub curline "%s+" " "))))
-                      (when had_comma
-                        (set curline (.. " " curline))
-                        (set had_comma false))
-                      (when (string.match curline ",$")
-                        (set had_comma true))
-                      (tset new_lines ix curline)
-                      (when (string.match line "%)%s*:.*=%s*")
-                        (tset new_lines ix ")")
-                        (set done true))))
-                  (PadToRight (table.concat new_lines) linestring))))))
+                  (set curline (vimfn trim curline))
+                  (set curline (string.gsub curline "%s+" " "))))
+              (when had_comma
+                (set curline (.. " " curline))
+                (set had_comma false))
+              (when (string.match curline ",$")
+                (set had_comma true))
+              (tset new_lines ix curline)
+              (when (string.match line "%)%s*:.*=%s*")
+                (tset new_lines ix ")")
+                (set done true))))
+          (PadToRight (table.concat new_lines) linestring)))))
 
 ;; }}}
 
@@ -591,23 +578,23 @@
 ;; {{{ Auto Commands
 ;; -----------------
 ; Open at last line
-(augroup :Utilities
-                   (autocmd :BufReadPost "*"
-                                      "if line(\"'\\\"\") > 1 && line(\"'\\\"\") <= line(\"$\") | exe \"normal! g`\\\"\" | endif"))
+(def-aug- :Utilities)
+(aug- :Utilities (auc- :BufReadPost "*"
+                       #(when (and (> (vimfn line "'\"") 1)
+                                   (<= (vimfn line "'\"") (vimfn line "$")))
+                          (vim.cmd "exe \"normal! g`\\\"\""))))
 
-(augroup :LatexHelp
-                   (autocmd :FileType :tex "set fileencoding=ascii"))
+(def-aug- :LatexHelp)
+(aug- :LatexHelp (auc- :FileType :tex #(set! fileencoding :ascii)))
 
-(global SourceHelp (fn []
-                     "Source custom ftplugin"
-                     (vim.cmd (.. "source " (vimfn stdpath :config)
-                                  :/ftplugin/help.vim))))
+(def-aug- :HelpFiles)
+(aug- :HelpFiles (auc- :FileType "*"
+                       #(vim.cmd (.. "source " (vimfn stdpath :config)
+                                     :/ftplugin/help.vim))))
 
-(augroup :HelpFiles
-                   (autocmd :FileType "call v:lua.SourceHelp()"))
-
-(augroup :Scala
-                   (autocmd "BufNewFile,BufRead" :*.sc "set ft=scala"))
+(def-aug- :Scala)
+(aug- :Scala (auc- :BufNewFile :*.sc #(set! filetype :scala))
+      (auc- :BufRead :*.sc #(set! filetype :scala)))
 
 ;; }}}
 
@@ -622,4 +609,3 @@
 (vim.cmd "colorscheme silverscreen")
 
 (require :neoformat_config)
-
