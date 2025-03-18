@@ -15,8 +15,11 @@
           , "latex"
           , "lua"
           , "make"
+          , "markdown"
+          , "markdown_inline"
           , "python"
           , "query"
+          , "regex"
           , "scala"
           , "scheme"
           , "vim"
@@ -24,7 +27,7 @@
         sync_install = false,
         highlight = {
             enable = true,
-            disable = {"scala"},
+            disable = {"scala", "fennel"},
         --    additional_vim_regex_highlighting = {"scala"},
         },
         rainbow = {
