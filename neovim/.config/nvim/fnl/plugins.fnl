@@ -47,7 +47,7 @@
                            :rktjmp/hotpot.nvim []
                            :katawful/katcros-fnl {}
                            ;; Vim Essentials
-                           :mbbill/undotree {:cmd :UndoTreeToggle}
+                           :mbbill/undotree {:cmd :UndotreeShow}
                            :nvim-lualine/lualine.nvim {:requires {1 :nvim-tree/nvim-web-devicons
                                                                   :opt true}
                                                        :config (when (pcall require
