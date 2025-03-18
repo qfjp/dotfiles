@@ -241,13 +241,6 @@
 
 (rem! viewoptions :options)
 
-(def-aug- :Folds)
-(aug- :Folds
-      (auc- :FileType "vim,zsh,lua,fennel"
-            #(do
-               (set! foldmethod :marker)
-               (tset vim.opt :foldtext "v:lua.SimpleFoldText()"))))
-
 (fn HaskellToolsFn []
   (let [ht (require :haskell-tools)
         bufnr (vim.api.nvim_get_current_buf)
@@ -271,57 +264,6 @@
 (def-aug- :HaskellTools)
 (aug- :HaskellTools (auc- :FileType :haskell HaskellToolsFn)
       (auc- :FileType :cabal HaskellToolsFn))
-
-(set! foldtext CFoldText)
-
-(fn PadToRight [lstring rstring]
-  (let [width (vimfn winwidth ".")
-        offset (string.rep " " (- width (string.len (.. lstring rstring))))]
-    (.. lstring offset rstring)))
-
-(fn SimpleFoldText []
-  (let [ell " ⋯ "
-        vstart (vimfn getline vim.v.foldstart)
-        vend (vimfn trim (vimfn getline vim.v.foldened))
-        startpattern "^%s*[\"#-;]+%-?%s*{{{"
-        endpattern "^%s*[\"#-;]+%-?%s*}}}"
-        vstartPrime (string.gsub vstart startpattern "")
-        vendPrime (string.gsub vend endpattern "")
-        linestring (.. " === "
-                       (table.maxn (vimfn getline vim.v.foldstart vim.v.foldend))
-                       " lines === ")]
-    (PadToRight (.. vstartPrime " " ell " " vendPrime) linestring)))
-
-(fn CFoldText []
-  (let [ell " ⋯ "
-        lines (vimfn getline vim.v.foldstart vim.v.foldend)
-        size (table.maxn lines)
-        linestring (.. " === " size " lines === ")
-        vstart (vimfn getline vim.v.foldstart)]
-    (if (or (string.match vstart "{$") (string.match vstart "-$"))
-        (PadToRight (.. vstart ell (vimfn trim (vimfn getline vim.v.foldend)))
-                    linestring)
-        (do
-          (var had_comma false)
-          (var new_lines {})
-          (var done false)
-          (each [ix line (pairs lines)]
-            (when (not done)
-              (var curline line)
-              (when (not= ix 1)
-                (do
-                  (set curline (vimfn trim curline))
-                  (set curline (string.gsub curline "%s+" " "))))
-              (when had_comma
-                (set curline (.. " " curline))
-                (set had_comma false))
-              (when (string.match curline ",$")
-                (set had_comma true))
-              (tset new_lines ix curline)
-              (when (string.match line "%)%s*:.*=%s*")
-                (tset new_lines ix ")")
-                (set done true))))
-          (PadToRight (table.concat new_lines) linestring)))))
 
 ;; }}}
 
