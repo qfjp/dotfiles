@@ -1,12 +1,12 @@
 [user]
-    name = DJP
-    email = djpade@gmail.com
+    name = qfjp
+    email = qfjp@users.noreply.github.com
 [color]
     diff = auto
     status = auto
     branch = auto
 [core]
-    pager = vimpager
+    pager = less
 [merge]
     tool = vimdiff
 [pager]
@@ -31,3 +31,12 @@
     required = true
 [pull]
     rebase = false
+[safe]
+	directory = /srv/podfetch
+	directory = /opt/whisper-asr-webservice
+	directory = /srv/whisper-asr-webservice
+	directory = /srv/micro-gpodder-server
+	directory = /srv/podfetch/PodFetch
+	directory = /srv/whisper-asr-webservice/cloned
+[init]
+	defaultBranch = master
