@@ -1,0 +1,196 @@
+#!/usr/bin/python
+# Depends on a running instance of whisper-asr on port 9000
+import argparse as ap
+import os
+import pathlib as p
+import random
+import subprocess as s
+import sys
+
+import requests
+
+NONCE_LEN = 5
+
+
+class CliState:
+    FILES: list[p.Path]
+    host_uri: str
+    port: int
+    language: str
+    translate: bool
+
+
+CLI_STATE = CliState()
+
+
+def get_subfile_name(media_file: p.Path) -> p.Path:
+    return media_file.with_suffix(".en.srt")
+
+
+def rand_str(length: int) -> str:
+    alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+    result = [alphabet[random.randint(0, len(alphabet))] for _ in range(length)]
+    return "".join(result)
+
+
+def retrieve_audio(media_file: p.Path) -> p.Path | None:
+    out_file = "/tmp/{}.opus".format(rand_str(NONCE_LEN))
+    cmd = [
+        "ffmpeg",
+        "-i",
+        str(media_file),
+        "-strict",
+        "-2",
+        "-vn",
+        "-acodec",
+        "opus",
+        out_file,
+    ]
+    ffmpeg_out = s.run(cmd, capture_output=True)
+    if ffmpeg_out.returncode != 0:
+        sys.stderr.write(f"error: ffmpeg failed with code {ffmpeg_out.returncode}\n\n")
+        sys.stderr.write(ffmpeg_out.stderr.decode("UTF-8"))
+        return None
+
+    return p.Path(out_file)
+
+
+def run_whisper(audio_file: p.Path) -> str:
+    """
+    :param audio_file: The *absolute path* of the audio file
+    :returns: the subtitles as a string (formatted like srt).
+    """
+    host = CLI_STATE.host_uri
+    port = CLI_STATE.port
+
+    form_data = {
+        "audio_file": (
+            str(audio_file),
+            open(audio_file, "rb"),
+            "audio/opus",
+        )
+    }
+    url_params = {
+        "encode": "true",
+        "task": "translate" if CLI_STATE.translate else "transcribe",
+        "language": CLI_STATE.language,
+        "vad_filter": "true",
+        "word_timestamps": "false",
+        "output": "srt",
+    }
+    whisper_req = requests.post(
+        "http://{host}:{port}/asr".format(host=host, port=port),
+        params=url_params,
+        files=form_data,
+    )
+    try:
+        whisper_req.raise_for_status()
+    except requests.exceptions.HTTPError as e:
+        sys.stderr.write("{}\n".format(e))
+        return ""
+    return whisper_req.text
+
+
+def main() -> None:
+    audio_file: p.Path = p.Path("")
+    for ix, fname in enumerate(CLI_STATE.FILES):
+        if ix != 0:  # Cleanup
+            if audio_file.exists():
+                os.remove(audio_file)
+            print()
+        media_file = fname.absolute()
+        print(f"Processing:  {media_file}")
+        subfile_name = get_subfile_name(media_file).absolute()
+        if subfile_name.exists():
+            sys.stderr.write("subtitle file already exists, skipping.\n")
+            continue
+        print(f"Output file: {subfile_name}")
+        mayb_audio_file = retrieve_audio(media_file)
+        if mayb_audio_file is None:
+            continue
+        audio_file = mayb_audio_file.absolute()
+        print(f"Audio extraction succeeded ({audio_file})")
+        subs = run_whisper(audio_file)
+        if subs == "":
+            continue
+        print(
+            "Subtitle generation succeeded, writing file '{file_name}'".format(
+                file_name=subfile_name
+            )
+        )
+        with open(subfile_name, "w") as subfile:
+            subfile.write(subs)
+
+
+def pre_main_argparse() -> CliState:
+    def replace_space(string: str) -> str:
+        while "  " in string:
+            string = string.replace("  ", "")
+        while ";;" in string:
+            string = string.replace(";;", " ")
+        return string
+
+    parser = ap.ArgumentParser(
+        formatter_class=ap.RawTextHelpFormatter,
+        prog="generate_subs",
+        description=replace_space(
+            """Automatically generate subtitles for a video file.
+
+        This depends on a running instance of whisper-asr on port 9090
+        (though this may be changed with the proper flag). This will
+        first convert the audio into an opus file using ffmpeg, then
+        use whisper to generate the subtitles.
+        """
+        ),
+    )
+    parser.add_argument(
+        "-p",
+        "--port",
+        action="store",
+        type=int,
+        default=9000,
+        help="The port on which whisper is running",
+    )
+    parser.add_argument(
+        "-u",
+        "--host-uri",
+        action="store",
+        type=str,
+        default="localhost",
+        help="The hostname on which whisper is running",
+    )
+    parser.add_argument(
+        "-t",
+        "--translate",
+        action="store_true",
+        help="Set action to translate instead of transcribe",
+    )
+    parser.add_argument(
+        "-l",
+        "--language",
+        action="store",
+        type=str,
+        default="en",
+        required="--translate" in sys.argv or "-t" in sys.argv,
+        help="The language of the audio track. Required if '--translate' is enabled.",
+    )
+    parser.add_argument(
+        "FILES",
+        default=[],
+        nargs="*",
+        type=p.Path,
+        action="extend",
+        help="The list of video/audio files for which to generate subtitles",
+    )
+    parser.parse_args(namespace=CLI_STATE)
+    if len(CLI_STATE.FILES) == 0:
+        sys.stderr.write("error: no files specified\n")
+        sys.stderr.write("-------------------------\n")
+        parser.print_help()
+        sys.exit(1)
+    return CLI_STATE
+
+
+if __name__ == "__main__":
+    pre_main_argparse()
+    main()
