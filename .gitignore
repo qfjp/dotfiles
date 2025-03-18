@@ -8,3 +8,5 @@ packer_compiled.lua
 redshift
 mpd
 __pycache__/
+
+.uuid
