@@ -13,3 +13,6 @@
 [submodule "hypr/.config/hypr/plugins/Hyprchroma"]
 	path = hypr/.config/hypr/plugins/Hyprchroma
 	url = https://github.com/alexhulbert/Hyprchroma
+[submodule "hypr/.config/hypr/plugins/hypr-zoom"]
+	path = hypr/.config/hypr/plugins/hypr-zoom
+	url = https://github.com/FaqihS/hypr-zoom.git

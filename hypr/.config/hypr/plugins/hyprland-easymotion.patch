@@ -1,6 +1,6 @@
 Only in hyprland-easymotion: .ccls-cache
-diff --unified --show-c-function -ura easymotionorig/easymotionDeco.cpp hyprland-easymotion/easymotionDeco.cpp
---- easymotionorig/easymotionDeco.cpp	2025-01-14 21:58:12.091256542 -0500
+diff --unified --show-c-function -ura hyprland-easymotion/easymotionDeco.cpp hyprland-easymotion/easymotionDeco.cpp
+--- hyprland-easymotion/easymotionDeco.cpp	2025-01-14 21:58:12.091256542 -0500
 +++ hyprland-easymotion/easymotionDeco.cpp	2025-01-14 22:15:03.667233076 -0500
 @@ -116,7 +116,7 @@ void CHyprEasyLabel::draw(PHLMONITOR pMo
          return;
@@ -34,8 +34,8 @@ diff --unified --show-c-function -ura easymotionorig/easymotionDeco.cpp hyprland
  }
 Only in hyprland-easymotion: .git
 Only in hyprland-easymotion: hypreasymotion.so
-diff --unified --show-c-function -ura easymotionorig/main.cpp hyprland-easymotion/main.cpp
---- easymotionorig/main.cpp	2025-01-14 21:58:12.091256542 -0500
+diff --unified --show-c-function -ura hyprland-easymotion/main.cpp hyprland-easymotion/main.cpp
+--- hyprland-easymotion/main.cpp	2025-01-14 21:58:12.091256542 -0500
 +++ hyprland-easymotion/main.cpp	2025-01-14 22:01:45.821114727 -0500
 @@ -239,9 +239,9 @@ APICALL EXPORT PLUGIN_DESCRIPTION_INFO P
  
