@@ -39,6 +39,7 @@ return {
         }
     },
     font = wezterm.font(font),
-    font_size = 9,
+    font_size = 16,
     freetype_load_target = "Light",
+    warn_about_missing_glyphs = false,
 }
