@@ -1,28 +1,31 @@
+// icons can be found here: https://www.nerdfonts.com/cheat-sheet
 {
     "layer": "top", // Waybar at top layer (in front of all windows)
     "position": "top", // Waybar position (top|bottom|left|right)
-    "height": 22, // Waybar height (to be removed for auto height)
     //"output": "DP-1",
     "width": 3800, // Waybar width
     // Samsung TV:
     //"output": "DVI-I-1",
     //"width": 1910,
-    "spacing": 5, // Gaps between modules (4px)
-    //"modules-left": ["hyprland/workspaces", "mpd"],
-    "modules-left": ["mpd"],
+    "spacing": 2, // Gaps between modules (4px)
+    "mode": "hide",
+    "start_hidden": false,
+    "passthrough": false,
+    "modules-left": ["custom/scroller-mode", "mpd", "custom/scroller-trail"],
     "modules-center": ["hyprland/window"],
-    "modules-right": ["custom/scroller-mode", "pulseaudio", "tray", "clock"],
+    "modules-right": ["pulseaudio#sink", "pulseaudio#source", "tray", "clock"],
     "hyprland/window": {
-        "format": "{}",
+        "format": "{class} {title}",
         "rewrite": {
-            "(.*) — Mozilla Firefox": "🌎 $1",
-            "(.*) - kitty": "> [$1]"
+            "([^ ]*) (.*) — Mozilla Firefox": "$1  $2",
+            "zen (.*) — Zen Browser": "zen  $1",
+            "([^ ]*) (.*) — Ablaze Floorp": "$1  $2",
+            "kitty (.*)": "kitty   $1",
         },
         "separate-outputs": true
     },
     "hyprland/workspaces": {
          "active-only": false,
-         //"persistent-workspaces": 
          "disable-scroll": true,
          "all-outputs": true,
          "format": "{name}: {icon}",
@@ -64,9 +67,9 @@
         "format": "<span style=\"italic\">{}</span>"
     },
     "mpd": {
-        "format": "{stateIcon}{consumeIcon}{randomIcon}{repeatIcon}{singleIcon}{artist} - {album} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S}) ⸨{songPosition}|{queueLength}⸩ {volume}% <span color=\"#ff00ff\">♫</span>",
-        "format-disconnected": "Disconnected <span color=\"#0ac3c3\">♫</span>",
-        "format-stopped": "■ {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}Stopped <span color=\"#ff00ff\">♫</span>",
+        "format": "<span color=\"#f53c3c\">♫</span> {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}{artist} - {album} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S}) ⸨{songPosition}|{queueLength}⸩  {stateIcon}",
+        "format-disconnected": "<span color=\"#f53c3c\">♫</span> Disconnected",
+        "format-stopped": "<span color=\"#f53c3c\">♫</span> {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}Stopped  <span color=\"#ff6e67\">■</span>  ",
         "unknown-tag": "N/A",
         "interval": 2,
         "consume-icons": {
@@ -86,8 +89,8 @@
             "on": "<span color=\"#f53c3c\">1</span> ",
         },
         "state-icons": {
-            "paused": "<span color=\"#ff00ff\"></span> ",
-            "playing": "<span color=\"#ff00ff\"></span> "
+            "paused": "<span color=\"#ff6e67\"></span> ",
+            "playing": "<span color=\"#ff6e67\"></span> "
         },
         "tooltip-format": "MPD (connected)",
         "tooltip-format-disconnected": "MPD (disconnected)"
@@ -106,8 +109,8 @@
     "clock": {
         "timezone": "America/New_York",
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-        "format-alt": "<span color='#b08e6c'><i>{0:%Y-%m-%d}</i></span> <span color='#ededed'><b>{0:%I:%M %p}</b></span>",
-        "format": "<span color='#b08e6c'><i>{0:%Y-%m-%d}</i></span> <span color='#ededed'><b>{0:%I:%M %p}</b></span>",
+        "format": "<b><span color='#745230'><i><b>{0:%Y-%m-%d}</b></i></span> {0:%I:%M %p}</b>",
+        "on-click": "yad --calendar --undecorated --no-buttons --date-format %F --borders=10 --title=yad-popup-calendar | wl-copy -p"
     },
 
     "cpu": {
@@ -147,44 +150,50 @@
     "battery#bat2": {
         "bat": "BAT2"
     },
-    //"network": {
-    //    // "interface": "wlp2*", // (Optional) To force the use of this interface
-    //    "format-wifi": "{essid} ({signalStrength}%) ",
-    //    "format-ethernet": "{ipaddr}/{cidr} ",
-    //    "tooltip-format": "{ifname} via {gwaddr} ",
-    //    "format-linked": "{ifname} (No IP) ",
-    //    "format-disconnected": "Disconnected ⚠",
-    //    "format-alt": "{ifname}: {ipaddr}/{cidr}"
-    //},
     "network": {
-        "tooltip": false,
-        "format-wifi": " {essid} {ipaddr}",
-        "format-ethernet": " {ipaddr}"
+        // "interface": "wlp2*", // (Optional) To force the use of this interface
+        "tooltip": true,
+        "family": "ipv4",
+        "format-wifi": " {essid} ({signalStrength}) {ipaddr}",
+        "format-ethernet": " {ipaddr}",
+        "tooltip-format": " {ifname} via {gwaddr}",
+        "format-linked": " {ifname} (No IP)",
+        "format-disconnected": "⚠ Disconnected",
     },
-    "pulseaudio": {
-        "scroll-step": 1, // %, can be a float
-        "format": "{volume}% {icon} {format_source}",
-        "format-bluetooth": "{volume}% {icon} {format_source}",
-        "format-bluetooth-muted": " {icon} {format_source}",
-        "format-muted": " {format_source}",
-        "format-source": "{volume}% ",
-        "format-source-muted": "",
+    "pulseaudio#sink": {
+        "format": "{volume}% {icon}",
+        "format-bluetooth": "{volume}% {icon} ",
+        "format-bluetooth-muted": "{volume}%   ",
+        "format-muted": "{volume}% ",
         "format-icons": {
             "headphone": "",
-            "hands-free": "",
-            "headset": "",
-            "phone": "",
-            "portable": "",
+            "hands-free": "",
+            "headset": "",
+            "phone": "",
+            "portable": "",
             "car": "",
             "default": ["", "", ""]
         },
-        "on-click": "pavucontrol",
+        "on-click": "cycle-audio sink mute",
+        "on-click-right": "cycle-audio sink",
+        "on-scroll-up": "pactl_bounded_volume sink +5.1%",
+        "on-scroll-down": "pactl_bounded_volume sink -5.1%",
         "tooltip": true,
-        "scroll-step": 5,
-        // "format": "{icon} {volume}%",
-        // "format-icons": {
-        //     "default": ["奄", "奔", "墳"]
-        // }
+        "tooltip-format": "{desc}",
+    },
+    "pulseaudio#source": {
+        "format": "{format_source}",
+        "format-bluetooth": "{format_source}",
+        "format-bluetooth-muted": "{format_source}",
+        "format-muted": "{format_source}",
+        "format-source": "{volume}% ",
+        "format-source-muted": "{volume}% 󰍭",
+        "on-click": "cycle-audio source mute",
+        "on-click-right": "cycle-audio source",
+        "on-scroll-up": "pactl_bounded_volume source +5.1%",
+        "on-scroll-down": "pactl_bounded_volume source -5.1%",
+        "tooltip": false,
+        "tooltip-format": "{desc}",
     },
     "custom/media": {
         "format": "{icon} {}",
@@ -198,14 +207,25 @@
         "exec": "$HOME/.config/waybar/mediaplayer.py 2> /dev/null" // Script in resources folder
         // "exec": "$HOME/.config/waybar/mediaplayer.py --player spotify 2> /dev/null" // Filter player based on name
     },
+    "custom/scroller-trail": {
+        "exec": "~/bin/hyprctl_trail_reader.sh",
+        "return-type": "json",
+        "interval": "once",
+        "signal": 8,
+        "on-click": "hyprctl dispatch submap reset && pkill -SIGRTMIN+8 waybar",
+        "format": "{text}{icon}",
+        "format-icons": [" ", ", ✔"]
+    },
     "custom/scroller-mode": {
-        "exec": "~/bin/hyprctl_message_reader.sh",
+        "exec": "~/bin/hyprctl_mode_reader.sh",
         "return-type": "json",
         "interval": "once",
         "signal": 8,
         "on-click": "hyprctl dispatch submap reset && pkill -SIGRTMIN+8 waybar",
         "format": "{icon}",
-        "format-icons": ["", ""]
-    }
+        // "" <- doesn't show up correctly
+        // "" "󰣟" "" "󱪶" "󱪷" "" "󰠷" "󰠵"
+        "format-icons": ["󰠷", "󰠵"] // row, col
+    },
 }
 

@@ -10,8 +10,7 @@
 
 * {
     border: none;
-    border-radius: 10;
-    /*font-family: Nerd Font Hack;*/
+    border-radius: 10px;
     font-family: JetBrains Mono;
     font-size: 14px;
     min-height: 24px;
@@ -29,12 +28,9 @@ window#waybar.hidden {
     margin-top: 8px;
     padding-left: 16px;
     padding-right: 16px;
-    /*border-radius: 26px;*/
     transition: none;
     color: #f8f8f2;
     background: #282a36;
-    /*color: transparent;*/
-    /*background: transparent;*/
 }
 
 
@@ -50,7 +46,6 @@ window#waybar.PCSX2 #window {
     margin-top: 8px;
     margin-left: 12px;
     margin-bottom: 0;
-    /*border-radius: 26px;*/
     background: #282a36;
     transition: none;
 }
@@ -77,19 +72,17 @@ window#waybar.PCSX2 #window {
     margin-top: 8px;
     margin-left: 8px;
     padding-left: 16px;
-    padding-right: 16px;
+    padding-right: 0;
+    margin-right: 0;
     margin-bottom: 0;
-    /*border-radius: 26px;*/
-    background: #282a36;
-    transition: none;
-    color: #4d4d4d;
-    background: #5af78e;
+    background: #c5c5c5;
+    color: #50525e;
 }
 
 #mpd.disconnected,
 #mpd.stopped {
-    color: #f8f8f2;
-    background: #282a36;
+    background: #c5c5c5;
+    color: #50525e;
 }
 
 #tray {
@@ -98,8 +91,8 @@ window#waybar.PCSX2 #window {
     padding-left: 16px;
     padding-right: 16px;
     margin-bottom: 0;
-    color: #4d4d4d;
-    background: #bd93f9;
+    background: #c5c5c5;
+    color: #50525e;
 }
 
 #network {
@@ -108,10 +101,9 @@ window#waybar.PCSX2 #window {
     padding-left: 16px;
     padding-right: 16px;
     margin-bottom: 0;
-    /*border-radius: 26px;*/
     transition: none;
-    color: #4d4d4d;
-    background: #bd93f9;
+    color: #f8f8f2;
+    background: #282a36;
 }
 
 #pulseaudio {
@@ -120,13 +112,22 @@ window#waybar.PCSX2 #window {
     padding-left: 16px;
     padding-right: 16px;
     margin-bottom: 0;
-    /*border-radius: 26px;*/
     transition: none;
-    color: #4d4d4d;
-    background: #9aedfe;
+    color: #c5c5c5;
+    background: #50525e;
+}
+#pulseaudio.sink {
+    margin-right: 0px;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+#pulseaudio.source {
+    margin-left: 0px;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
 }
 #pulseaudio:hover {
-    color: red;
+    color: #ededed;
 }
 
 #temperature {
@@ -135,7 +136,6 @@ window#waybar.PCSX2 #window {
     padding-left: 16px;
     padding-right: 16px;
     margin-bottom: 0;
-    /*border-radius: 26px;*/
     transition: none;
     color: #4d4d4d;
     background: #5af78e;
@@ -147,10 +147,21 @@ window#waybar.PCSX2 #window {
     padding-left: 13px;
     padding-right: 16px;
     margin-bottom: 0;
-    /*border-radius: 26px;*/
     transition: none;
-    color: #4d4d4d;
-    background: #f1fa8c;
+    color: #30312C;
+    background: #5ED0F7;
+}
+
+#custom-scroller-trail {
+    margin-top: 8px;
+    margin-left: 8px;
+    padding-left: 8px;
+    padding-right: 4px;
+    margin-right: 0px;
+    margin-bottom: 0;
+    transition: none;
+    color: #c5c5c5;
+    background: #50525e;
 }
 
 #cpu {
@@ -159,7 +170,6 @@ window#waybar.PCSX2 #window {
     padding-left: 16px;
     padding-right: 16px;
     margin-bottom: 0;
-    /*border-radius: 26px;*/
     transition: none;
     color: #4d4d4d;
     background: #f1fa8c;
@@ -171,7 +181,6 @@ window#waybar.PCSX2 #window {
     padding-left: 16px;
     padding-right: 16px;
     margin-bottom: 0;
-    /*border-radius: 26px;*/
     transition: none;
     color: #4d4d4d;
     background: #ff6e67;
@@ -184,9 +193,7 @@ window#waybar.PCSX2 #window {
     padding-left: 16px;
     padding-right: 16px;
     margin-bottom: 0;
-    /*border-radius: 26px;*/
     transition: none;
-    color: #f8f8f2;
-    background: #282a36;
+    color: #30312C;
+    background: #5ED0F7;
 }
-

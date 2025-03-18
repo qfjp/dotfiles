@@ -17,7 +17,7 @@ elif [[ "$current_mode" == "Column" ]]; then
 else
     icon="Row"
     percent=0
-    class=""
+    class="Row"
 fi
 
-echo "{\"text\":\"$icon\", \"tooltip\":\"Scroller Mode: $current_mode\", \"class\":\"$class\",\"percentage\": $percent}"
+echo "{\"text\":\"$icon\", \"tooltip\":\"Mode:$current_mode\", \"class\":\"$class\",\"percentage\":$percent}"

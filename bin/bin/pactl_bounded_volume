@@ -1,0 +1,68 @@
+#!/usr/bin/python
+import re
+import subprocess
+import sys
+
+ABSOLUTE_MAX = 120
+TYPE = "sink" if len(sys.argv) <= 1 else sys.argv[1]
+AMOUNT = "+6%" if len(sys.argv) <= 2 else sys.argv[2]
+SIGN = AMOUNT[0]
+
+
+cur_vol_cmd = subprocess.run(
+    [
+        "pactl",
+        "get-{}-volume".format(TYPE.lower()),
+        "@DEFAULT_{}@".format(TYPE.upper()),
+    ],
+    capture_output=True,
+)
+
+# Note: Searching pactl for percents will always
+#       use a number rounded to the nearest int anyway
+sorted_vols = sorted(
+    [int(x) for x in re.findall(r"([0-9]*)%", cur_vol_cmd.stdout.decode("utf-8"))]
+)
+# cur_large_vol = sorted_vols[-1]
+# cur_small_vol = sorted_vols[0]
+cur_vol = sorted_vols[0]
+
+num_amount = float(re.findall("[0-9]+\\.?[0-9]?", AMOUNT)[0])
+if SIGN == "-":
+    # 'Snap' to 100
+    if cur_vol > 100 and cur_vol - num_amount < 100:
+        AMOUNT = "100%"
+
+    subprocess.run(
+        [
+            "pactl",
+            "set-{}-volume".format(TYPE.lower()),
+            "@DEFAULT_{}@".format(TYPE.upper()),
+            AMOUNT,
+        ]
+    )
+    sys.exit()
+
+if cur_vol + num_amount > ABSOLUTE_MAX:
+    subprocess.run(
+        [
+            "pactl",
+            "set-{}-volume".format(TYPE.lower()),
+            "@DEFAULT_{}@".format(TYPE.upper()),
+            "{}%".format(ABSOLUTE_MAX),
+        ]
+    )
+    sys.exit()
+
+# 'Snap' to 100
+if cur_vol + num_amount > 100 and cur_vol < 100:
+    AMOUNT = "100%"
+
+subprocess.run(
+    [
+        "pactl",
+        "set-{}-volume".format(TYPE.lower()),
+        "@DEFAULT_{}@".format(TYPE.upper()),
+        AMOUNT,
+    ]
+)
