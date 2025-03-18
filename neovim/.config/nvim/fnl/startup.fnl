@@ -54,6 +54,9 @@
     ;; picker_list must be last
     ((. telescope :load_extension) :picker_list)))
 
+(when (pcall require :inc_rename)
+  ((. (require :inc_rename) :setup) {}))
+
 (require :startify_config)
 (require :goyo_config)
 
@@ -443,60 +446,61 @@
              18 {1 :glp
                  2 #(vim.diagnostic.goto_prev)
                  :desc "Goto prev error/warning"}
-             19 {1 :gls
+             19 {1 :glr 2 ":IncRename " :desc "Rename identifier"}
+             20 {1 :gls
                  2 #(vim.diagnostic.signature_help)
                  :desc "Show signature"}
-             20 {1 :glt
+             21 {1 :glt
                  2 #(vim.lsp.buf.type_definition)
                  :desc "Show type definition"}
-             21 {1 :gK 2 #(vim.lsp.buf.hover) :desc "LSP Hover"}
-             22 {1 :go :group "Git Signs" :silent false}
-             23 {1 :gon
+             22 {1 :gK 2 #(vim.lsp.buf.hover) :desc "LSP Hover"}
+             23 {1 :go :group "Git Signs" :silent false}
+             24 {1 :gon
                  2 #(package.loaded.gitsigns.next_hunk)
                  :desc "Next hunk"}
-             24 {1 :gop
+             25 {1 :gop
                  2 #(package.loaded.gitsigns.prev_hunk)
                  :desc "Prev hunk"}
-             25 {1 :goP
+             26 {1 :goP
                  2 #(package.loaded.gitsigns.preview_hunk)
                  :desc "Preview hunk"}
-             26 {1 :gol
+             27 {1 :gol
                  2 #(package.loaded.gitsigns.blame_line {:full true})
                  :desc "Full blame"}
-             27 {1 :got
+             28 {1 :got
                  2 #(package.loaded.gitsigns.toggle_current_line_blame)
                  :desc "Toggle line blame"}
-             28 {1 :god
+             29 {1 :god
                  2 #(package.loaded.gitsigns.diffthis)
                  :desc "Split diff"}
-             29 {1 :goD
+             30 {1 :goD
                  2 #(package.loaded.gitsigns.toggle_deleted)
                  :desc "Show deleted lines"}
-             30 {1 :g<leader>c 2 ":set spell!<CR>" :desc "Spell checker"}
-             31 {1 :g<leader>n 2 ":tabnext<CR>" :desc "Next tab"}
-             32 {1 :g<leader>b 2 ":tabprev<CR>" :desc "Prev tab"}
-             33 {1 :g<leader>G 2 ":Goyo<CR>" :desc "Focused Editing"}
-             34 {1 :g<leader>l :group "Lusty Juggler" :silent false}
-             36 {1 :g<leader>s 2 ":split<CR>" :desc "Split window (H)"}
-             37 {1 :g<leader>v
+             31 {1 :g<leader>c 2 ":set spell!<CR>" :desc "Spell checker"}
+             32 {1 :g<leader>n 2 ":tabnext<CR>" :desc "Next tab"}
+             33 {1 :g<leader>b 2 ":tabprev<CR>" :desc "Prev tab"}
+             34 {1 :g<leader>G 2 ":Goyo<CR>" :desc "Focused Editing"}
+             35 {1 :g<leader>l :group "Lusty Juggler" :silent false}
+             37 {1 :g<leader>s 2 ":split<CR>" :desc "Split window (H)"}
+             38 {1 :g<leader>v
                  2 ":vertical split<CR>"
                  :desc "Split window (V)"}
-             38 {1 :g<leader>= 2 :<C-w>= :desc "Equally high and wide"}
-             39 {1 :g<leader>+ 2 ":resize +10<CR>" :desc "Increase height"}
-             40 {1 :g<leader>- 2 ":resize -10<CR>" :desc "Decrease height"}
-             41 {1 :<C-w> :group :Window :silent false}
-             42 {1 :<C-w>J 2 ":resize -10<CR>" :desc "Decrease height"}
-             43 {1 :<C-w>K 2 ":resize +10<CR>" :desc "Increase height"}
-             44 {1 :<C-w>L 2 ":vertical resize +10<CR>" :desc "Increase width"}
-             45 {1 :<C-w>H 2 ":vertical resize -10<CR>" :desc "Decrease width"}
-             46 {1 :<C-w>j 2 :<C-w>j :desc "Move down"}
-             47 {1 :<C-w>k 2 :<C-w>k :desc "Move up"}
-             48 {1 :<C-w>l 2 :<C-w>L :desc "Move right"}
-             49 {1 :<C-w>h 2 :<c-w>H :desc "Move left"}
-             51 {1 :g<leader>dt
+             39 {1 :g<leader>= 2 :<C-w>= :desc "Equally high and wide"}
+             40 {1 :g<leader>+ 2 ":resize +10<CR>" :desc "Increase height"}
+             41 {1 :g<leader>- 2 ":resize -10<CR>" :desc "Decrease height"}
+             42 {1 :<C-w> :group :Window :silent false}
+             43 {1 :<C-w>J 2 ":resize -10<CR>" :desc "Decrease height"}
+             44 {1 :<C-w>K 2 ":resize +10<CR>" :desc "Increase height"}
+             45 {1 :<C-w>L 2 ":vertical resize +10<CR>" :desc "Increase width"}
+             46 {1 :<C-w>H 2 ":vertical resize -10<CR>" :desc "Decrease width"}
+             47 {1 :<C-w>j 2 :<C-w>j :desc "Move down"}
+             48 {1 :<C-w>k 2 :<C-w>k :desc "Move up"}
+             49 {1 :<C-w>l 2 :<C-w>L :desc "Move right"}
+             50 {1 :<C-w>h 2 :<c-w>H :desc "Move left"}
+             52 {1 :g<leader>dt
                  2 ":SSave! default | qall<CR>"
                  :desc "Save default session and quit"}
-             52 {1 :g<leader>Dt
+             53 {1 :g<leader>Dt
                  2 ":SLoad default<CR>"
                  :desc "Load default session"}})
     ;; Insert

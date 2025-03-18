@@ -123,6 +123,7 @@
                                                   :config (SafeRequire :lspsaga
                                                                        {})}
                            ;; LSP Configuration
+                           :smjonas/inc-rename.nvim []
                            :neovim/nvim-lspconfig []
                            :scalameta/nvim-metals []
                            :mfussenegger/nvim-jdtls {:ft :java}
