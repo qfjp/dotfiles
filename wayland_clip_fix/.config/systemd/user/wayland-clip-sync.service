@@ -1,0 +1,11 @@
+[Unit]
+Description=Sync All Clipboards in Wayland
+After=graphical.target
+
+[Service]
+ExecStart=%h/.bin/wayland_clip_fix.sh
+Type=exec
+Restart=on-failure
+
+[Install]
+WantedBy=graphical.target

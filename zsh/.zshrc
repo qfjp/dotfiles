@@ -320,6 +320,7 @@ poke() {
     # {{{ Path Additions
 
         export PATH="$HOME/bin:$PATH"
+        export PATH="$HOME/.bin:$PATH"
         export PATH="$HOME/.local/bin:$PATH"
         export PATH="$HOME/bin/macros:$PATH"
         export PATH="$PATH:$HOME/.cabal/bin"

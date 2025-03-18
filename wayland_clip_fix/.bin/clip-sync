@@ -1,0 +1,50 @@
+#!/bin/sh
+VERBOSE_DEBUG=0
+clipboard_change=0
+CLIP_FILE=/tmp/clipboard
+prev_clip="$(cat $CLIP_FILE)"
+cur_wl_clip=""
+cur_wl_prim=""
+cur_clipse=""
+if wl-paste 1>/dev/null 2>&1; then
+    cur_wl_clip=$(wl-paste)
+fi
+if wl-paste -p 1>/dev/null 2>&1; then
+    cur_wl_prim=$(wl-paste -p)
+fi
+if clipse -p 1>/dev/null 2>&1; then
+    cur_clipse=$(clipse -p)
+fi
+
+if [ "$cur_wl_clip" != "$prev_clip" ]; then
+    clipboard_change=1
+    sync_progs_str="primary/clipse"
+    new_value="$cur_wl_clip"
+elif [ "$cur_clipse" != "$prev_clip" ]; then
+    clipboard_change=1
+    sync_progs_str="primary/clipboard"
+    new_value="$cur_clipse"
+elif [ "$cur_wl_prim" != "$prev_clip" ]; then
+    clipboard_change=1
+    sync_progs_str="clipboard/clipse"
+    new_value="$cur_wl_prim"
+fi
+if [ "$VERBOSE_DEBUG" -gt 0 ] && [ "$clipboard_change" -gt 0 ]; then
+    echo "==="
+    echo "$cur_wl_clip"
+    echo "-"
+    echo "$cur_wl_prim"
+    echo "--"
+    echo "$cur_clipse"
+    echo "---"
+    echo "Syncinc clipse[$new_value] with $sync_progs_str"
+    echo "Old clip is $prev_clip"
+    echo "==="
+fi
+if [ "$clipboard_change" -gt 0 ]; then
+    echo "$new_value" > "$CLIP_FILE"
+    echo "$new_value" | wl-copy
+    echo "$new_value" | wl-copy -p
+    echo "$new_value" | clipse -wl-store
+    clipboard_change=0
+fi
