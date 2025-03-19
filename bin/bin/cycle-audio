@@ -5,7 +5,7 @@ import sys
 
 TYPE = "sink" if len(sys.argv) <= 1 else sys.argv[1]
 TO_MUTE = "" if len(sys.argv) <= 2 else sys.argv[2]
-NOTIFY_HINTS = "string:x-canonical-private-synchronous:Pipewire Waybar Module"
+NOTIFY_HINTS = "string:x-canonical-private-synchronous:Pipewire Waybar Module - {}".format(TYPE.upper())
 
 # Build devices map (human_name -> machine_name)
 indiv_devices_cmd = subprocess.run(
@@ -60,7 +60,7 @@ for cur in devices:
                 "notify-send",
                 "-h",
                 NOTIFY_HINTS,
-                "Set Pipewire {} Default".format(TYPE.title()),
+                "Pipewire {} Default".format(TYPE.title()),
                 prev_name,
             ]
         )
