@@ -1,18 +1,6 @@
-[submodule "hypr/.config/hypr/plugins/hyprland-easymotion"]
-	path = hypr/.config/hypr/plugins/hyprland-easymotion
-	url = https://github.com/zakk4223/hyprland-easymotion
 [submodule "hypr/.config/hypr/plugins/Hypr-DarkWindow"]
 	path = hypr/.config/hypr/plugins/Hypr-DarkWindow
 	url = https://github.com/micha4w/Hypr-DarkWindow
 [submodule "hypr/.config/hypr/plugins/hyprscroller"]
 	path = hypr/.config/hypr/plugins/hyprscroller
 	url = https://github.com/dawsers/hyprscroller
-[submodule "hypr/.config/hypr/plugins/hyprfocus"]
-	path = hypr/.config/hypr/plugins/hyprfocus
-	url = https://github.com/pyt0xic/hyprfocus
-[submodule "hypr/.config/hypr/plugins/Hyprchroma"]
-	path = hypr/.config/hypr/plugins/Hyprchroma
-	url = https://github.com/alexhulbert/Hyprchroma
-[submodule "hypr/.config/hypr/plugins/hypr-zoom"]
-	path = hypr/.config/hypr/plugins/hypr-zoom
-	url = https://github.com/FaqihS/hypr-zoom.git

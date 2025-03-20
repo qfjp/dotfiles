@@ -12,7 +12,3 @@ patch_submodule() {
 }
 
 patch_submodule Hypr-DarkWindow
-patch_submodule hyprland-easymotion
-
-#(cd ./Hypr-DarkWindow && patch -Np1 --strip=1 --input=../darkwindow.patch)
-#(cd ./hyprland-easymotion && patch -Np1 --strip=1 --input=../easymotion.patch)
