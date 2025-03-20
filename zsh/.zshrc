@@ -329,7 +329,7 @@ poke() {
         export PATH="$HOME/.ghcup/bin:$PATH"
         export LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH"
         # Python Completions (in console)
-        export PYTHONSTARTUP="$(python -m jedi repl)"
+        export PYTHONSTARTUP="$HOME/.pythonrc.py"
         # PySpark
         export PATH="$PATH:/opt/apache-spark/bin"
         export PYTHONPATH="/opt/apache-spark/python/lib/py4j-0.10.7-src.zip:/opt/apache-spark/python"
