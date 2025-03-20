@@ -1,5 +1,6 @@
 (import-macros {: g!} :macros)
-(import-macros {: auc- : aug- : def-aug-} :katcros-fnl.macros.nvim.api.autocommands.macros)
+(import-macros {: auc- : aug- : def-aug-}
+               :katcros-fnl.macros.nvim.api.autocommands.macros)
 
 (g! neoformat_sql_mysqlformat {:args [:-k
                                       :upper
@@ -41,7 +42,7 @@
 (g! neoformat_enabled_zsh [])
 (g! neoformat_enabled_c [])
 (g! neoformat_enabled_haskell [])
-(g! neoformat_enabled_fennel [])
+(g! neoformat_enabled_fennel [:fnlfmt])
 
 (g! neoformat_basic_format_retab 1)
 
@@ -52,5 +53,6 @@
 (g! neoformat_run_all_formatters 1)
 
 (def-aug- :Fmt)
-(aug- :Fmt
-     (auc- :BufWritePre :*fnl "undojoin | Neoformat"))
+(aug- :Fmt (auc- :BufWritePre :*fnl "undojoin | Neoformat")
+      (auc- :BufWritePre :*py "undojoin | Neoformat"))
+
