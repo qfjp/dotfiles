@@ -61,7 +61,20 @@ make
 #### Hotkeys
 
 Firefox reserves certain hotkeys so extensions can't override them,
-but it is still possible to change/disable them:
+but it is still possible to change/disable them.
+
+##### Method 1 - Autoconfig
+
+  1. Find a userchrome.js manager. The scripts written in this
+     repository are verified to work with
+     [MrOtherGuy's manager](https://github.com/MrOtherGuy/fx-autoconfig).
+    - Copy the `config.js` and `defaults/pref/config-prefs.js`
+      files into the browser's system directory, e.g.
+      `/usr/lib/firefox` or `/opt/zen-browser-bin`
+  2. Merge the structure of the userscripts directory provided here (under
+     `firefox`) with the firefox profile directory of your choice.
+
+##### Method 2 - Omni.ja
 
  - Find `omni.ja` in `/usr/lib/firefox/browser`
  - `omni.ja` is a standard zip file, so unzip it into the directory of
