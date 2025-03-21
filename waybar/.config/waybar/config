@@ -28,27 +28,15 @@
          "all-outputs": true,
          "format": "{icon}",
          "format-icons": {
-         "1": "",
-         "2": "",
-         "3": "",
-         "4": "",
-         "5": "",
-         //"urgent": "",
-         //"active": "",
-         //"default": ""  // empty
-           "default": "",   // filled
-
-        // "2": "",
-        // "3": "",
-        // "4": "",
-        // "6": "",
-        //"","",
-        //"9": "",
-        // "urgent": "",
-        // 
-        // "active": "",
-        // "default": "",
-        // "empty": ""
+             "1": "",
+             "2": "",
+             "3": "",
+             "4": "",
+             "5": "",
+             //"urgent": "",
+             //"active": "",
+             //"default": ""  // empty
+               "default": "", // filled
         }
     },
     "keyboard-state": {
