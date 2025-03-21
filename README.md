@@ -68,9 +68,11 @@ but it is still possible to change/disable them.
   1. Find a userchrome.js manager. The scripts written in this
      repository are verified to work with
      [MrOtherGuy's manager](https://github.com/MrOtherGuy/fx-autoconfig).
+
     - Copy the `config.js` and `defaults/pref/config-prefs.js`
       files into the browser's system directory, e.g.
       `/usr/lib/firefox` or `/opt/zen-browser-bin`
+
   2. Merge the structure of the userscripts directory provided here (under
      `firefox`) with the firefox profile directory of your choice.
 
