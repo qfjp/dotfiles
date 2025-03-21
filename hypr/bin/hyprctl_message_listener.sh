@@ -14,14 +14,14 @@ function handle {
     fi
     if [[ ${line:0:8} == "scroller" ]]; then
         if [[ ${line:10:11} == "overview, 0" ]]; then
-            hyprctl notify -1 3000 "rgb(f11ea3)" "Normal mode"
+            false  # Just keep some filler
         elif [[ ${line:10:11} == "overview, 1" ]]; then
-            hyprctl notify -1 3000 "rgb(f11ea3)" "Overview mode"
+            false
         elif [[ ${line:10:11} == "admitwindow" ]]; then
-            hyprctl notify -1 3000 "rgb(f11ea3)" "Admit Window"
+            false
         elif [[ ${line:10:11} == "expelwindow" ]]; then
-            hyprctl notify -1 3000 "rgb(f11ea3)" "Expel Window"
-            # Waybar notifications below
+            false
+        # Waybar module notifications below
         elif [[ ${line:10:9} == "mode, row" ]]; then
             echo "Row" > "$MODE_FILE"
         elif [[ ${line:10:12} == "mode, column" ]]; then
