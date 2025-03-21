@@ -2,18 +2,15 @@
 {
     "layer": "top", // Waybar at top layer (in front of all windows)
     "position": "top", // Waybar position (top|bottom|left|right)
-    //"output": "DP-1",
+    "height": 8,
     "width": 3800, // Waybar width
-    // Samsung TV:
-    //"output": "DVI-I-1",
-    //"width": 1910,
     "spacing": 2, // Gaps between modules (4px)
     "mode": "hide",
     "start_hidden": false,
     "passthrough": false,
-    "modules-left": ["custom/scroller-mode", "mpd", "custom/scroller-trail"],
+    "modules-left": ["hyprland/workspaces", "custom/scroller-mode", "custom/scroller-trail"],
     "modules-center": ["hyprland/window"],
-    "modules-right": ["pulseaudio#sink", "pulseaudio#source", "tray", "clock"],
+    "modules-right": ["tray", "pulseaudio#sink", "pulseaudio#source", "clock#date", "clock#time"],
     "hyprland/window": {
         "format": "{class} {title}",
         "rewrite": {
@@ -25,21 +22,21 @@
         "separate-outputs": true
     },
     "hyprland/workspaces": {
+         "persistent-workspaces": {"*": 5},
          "active-only": false,
          "disable-scroll": true,
          "all-outputs": true,
-         "format": "{name}: {icon}",
+         "format": "{icon}",
          "format-icons": {
          "1": "",
          "2": "",
          "3": "",
-         "4": "",
-         "5": "",
-         "6": "",
-         "9": "",
-         "urgent": "",
-         "active": "",
-         "default": ""
+         "4": "",
+         "5": "",
+         //"urgent": "",
+         //"active": "",
+         //"default": ""  // empty
+           "default": "",   // filled
 
         // "2": "",
         // "3": "",
@@ -104,12 +101,18 @@
     },
     "tray": {
         // "icon-size": 21,
-        "spacing": 10
+        "spacing": 5
     },
-    "clock": {
+    "clock#date": {
         "timezone": "America/New_York",
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-        "format": "<b><span color='#745230'><i><b>{0:%Y-%m-%d}</b></i></span> {0:%I:%M %p}</b>",
+        "format": "{0:%Y-%m-%d}",
+        "on-click": "yad --calendar --undecorated --no-buttons --date-format %F --borders=10 --title=yad-popup-calendar | wl-copy -p"
+    },
+    "clock#time": {
+        "timezone": "America/New_York",
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+        "format": "{0:%I:%M %p}",
         "on-click": "yad --calendar --undecorated --no-buttons --date-format %F --borders=10 --title=yad-popup-calendar | wl-copy -p"
     },
 
