@@ -76,6 +76,14 @@ but it is still possible to change/disable them.
 2. Merge the structure of the userscripts directory provided here (under
    `firefox`) with the firefox profile directory of your choice.
 
+REMEMBER: On any change to a script, you must clear the startup
+cache by visiting the `about:support' page.
+
+[The browser
+toolbox](https://firefox-source-docs.mozilla.org/devtools-user/browser_toolbox/index.html)
+gives a debugger, console, DOM element finder, and other useful tools
+for developing scripts.
+
 ##### Method 2 - Omni.ja
 
  - Find `omni.ja` in `/usr/lib/firefox/browser`
