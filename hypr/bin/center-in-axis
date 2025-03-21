@@ -1,0 +1,13 @@
+#!/bin/sh
+
+. hypr-bin-env
+
+center_along="$1"  # Value in ["row", "col"]
+
+mode="$(cut -c 1-3 "$MODE_FILE" | tr '[:upper:]' '[:lower:]')"
+
+if [ "$mode" != "$center_along" ]; then
+    hyprctl dispatch scroller:setmode "$center_along"
+fi
+hyprctl dispatch scroller:alignwindow center
+hyprctl dispatch scroller:setmode "$mode"
