@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
-MODE_FILE="/tmp/hyprland_scroller_mode"
-TRAIL_FILE="/tmp/hyprland_scroller_trail"
+. hypr-bin-env
 
 function handle {
     line="$1"

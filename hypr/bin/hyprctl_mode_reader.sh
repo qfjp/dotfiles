@@ -1,6 +1,6 @@
 #!/bin/bash
 
-MODE_FILE="/tmp/hyprland_scroller_mode"
+. hypr-bin-env
 
 touch "$MODE_FILE"
 

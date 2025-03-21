@@ -1,6 +1,6 @@
 #!/bin/bash
 
-TRAIL_FILE="/tmp/hyprland_scroller_trail"
+. hypr-bin-env
 
 touch "$TRAIL_FILE"
 
