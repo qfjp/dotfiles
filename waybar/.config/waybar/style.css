@@ -9,10 +9,7 @@
  */
 
 * {
-    margin-top: 2px;
-    margin-left: 2px;
-    margin-right: 2px;
-    margin-bottom: 2px;
+    margin: 2px;
     padding-top: 0px;
     padding-bottom: 0px;
     border: none;
@@ -33,7 +30,6 @@ window#waybar.hidden {
 #window {
     padding-left: 16px;
     padding-right: 16px;
-    transition: none;
     color: #f8f8f2;
     background: #282a36;
 }
@@ -57,7 +53,6 @@ window#waybar.PCSX2 #window {
 }
 
 #workspaces button {
-    transition: none;
     color: #50525e;
     background: transparent;
     margin: 0px;
@@ -76,23 +71,20 @@ window#waybar.PCSX2 #window {
 }
 
 #workspaces button:hover {
-    transition: none;
     color: #a1efe4;
     background-color: #0E80A7;
-    border-style: solid;
 }
 
 #mpd {
     padding-left: 16px;
     padding-right: 0;
-    /*background: #f9f8f5;*/
     color: #8c8e9a;
     background: #1E202C;
 }
 
-#mpd.disconnected,
+/*#mpd.disconnected,
 #mpd.stopped {
-}
+}*/
 
 #tray {
     padding-left: 16px;
@@ -106,7 +98,6 @@ window#waybar.PCSX2 #window {
 #network {
     padding-left: 16px;
     padding-right: 16px;
-    transition: none;
     color: #f8f8f2;
     background: #282a36;
 }
@@ -114,7 +105,6 @@ window#waybar.PCSX2 #window {
 #pulseaudio {
     padding-left: 16px;
     padding-right: 16px;
-    transition: none;
 }
 #pulseaudio.sink {
     border-top-right-radius: 0px;
@@ -137,21 +127,16 @@ window#waybar.PCSX2 #window {
 #temperature {
     padding-left: 16px;
     padding-right: 16px;
-    transition: none;
     color: #4d4d4d;
     background: #5af78e;
 }
 
 #custom-scroller-mode {
-    border-top-right-radius: 0px;
-    border-bottom-right-radius: 0px;
-    border-top-left-radius: 0px;
-    border-bottom-left-radius: 0px;
+    border-radius: 0px;
     margin-right: 0px;
     margin-left: 0px;
     padding-left: 13px;
     padding-right: 16px;
-    transition: none;
     color: #c5c5c5;
     background: #50525e;
 }
@@ -160,7 +145,6 @@ window#waybar.PCSX2 #window {
     margin-left: 0px;
     padding-left: 8px;
     padding-right: 4px;
-    transition: none;
     border-top-left-radius: 0px;
     border-bottom-left-radius: 0px;
     color: #c5c5c5;
@@ -170,7 +154,6 @@ window#waybar.PCSX2 #window {
 #cpu {
     padding-left: 16px;
     padding-right: 16px;
-    transition: none;
     color: #4d4d4d;
     background: #f1fa8c;
 }
@@ -178,7 +161,6 @@ window#waybar.PCSX2 #window {
 #memory {
     padding-left: 16px;
     padding-right: 16px;
-    transition: none;
     color: #4d4d4d;
     background: #ff6e67;
 }
@@ -186,7 +168,6 @@ window#waybar.PCSX2 #window {
 #clock {
     padding-left: 8px;
     padding-right: 8px;
-    transition: none;
     color: #30312C;
     background: #5ED0F7;
 }
@@ -195,7 +176,6 @@ window#waybar.PCSX2 #window {
     margin-left: -25px;
 }
 #clock.date {
-    color: #745230;
     font-style: italic;
     font-weight: bold;
     padding-right: 30px;
