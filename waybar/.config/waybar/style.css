@@ -104,10 +104,11 @@ window#waybar.PCSX2 #window {
 #tray {
     padding-left: 16px;
     padding-right: 16px;
-    /*background: #f9f8f5;
-    color: #50525e;*/
     color: #8c8e9a;
     background: #1E202C;
+    margin-right: 0px;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
 }
 
 #network {
@@ -120,18 +121,15 @@ window#waybar.PCSX2 #window {
 #pulseaudio {
     padding-left: 16px;
     padding-right: 16px;
+    border-radius: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
 }
 #pulseaudio.sink {
-    border-top-right-radius: 0px;
-    border-bottom-right-radius: 0px;
-    margin-right: 0px;
     color: #c5c5c5;
     background: #50525e;
 }
 #pulseaudio.source {
-    margin-left: 0px;
-    margin-right: 0px;
-    border-radius: 0px;
     color: #c5c5c5;
     background: #50525e;
 }
