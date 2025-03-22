@@ -232,6 +232,9 @@ modmEmacsKey | modm == super       = "M4-"
              | modm == shiftMask   = "S-"
              | otherwise           = ""
 
+percentBarSplit :: Float
+percentBarSplit = 1.00
+
 main :: IO ()
 main = do
     dzenCommand   <- myWorkspaceBar
@@ -312,13 +315,14 @@ maxBarChars = do
     xres <- ((-2 * gapSize) +) . fst <$> getResolution
     return $ xres `div` fontSize
 
--- Command to launch statusbar
+-- Command to launch statusbar (left)
 myWorkspaceBar :: IO String
 myWorkspaceBar = do
     intLineHeight <- ioLineHeight
-    barWidth      <- ((-2 * gapSize) +) . fst <$> getResolution
+    fullWidth <- fullBarWidth
     (xoff, yoff)  <- getOffset
     let height = show intLineHeight
+        barWidth = floor $ fromIntegral fullWidth * percentBarSplit
     return
         $  "dzen2 -p -ta l -bg '"
         ++ col2string ltstGrey
@@ -360,8 +364,43 @@ toggleFloat = withFocused $ \w -> do
 
 ----------------------------------------------------------------------
 -- Status bars and logging
+
+-- Command to launch tray bar (right)
+myTrayBar :: IO String
+myTrayBar = do
+  intLineHeight <- ioLineHeight
+  fullWidth <- fullBarWidth
+  (xoff, yoff) <- getOffset
+  let trayPercent = 1 - percentBarSplit
+      height = show intLineHeight
+      barWidth = floor $ fromIntegral fullWidth * trayPercent
+      xCoord =
+        xoff + gapSize + floor (fromIntegral fullWidth * (1 - trayPercent))
+  return $
+    "dzen2 -p -ta l -bg '"
+      ++ col2string ltstGrey
+      ++ "'"
+      ++ " -fn \""
+      ++ fontString
+      ++ "\" "
+      ++ " -h "
+      ++ height
+      ++ " -w "
+      ++ show barWidth
+      ++ " -sa c "
+      ++ " -x "
+      ++ show (xoff + gapSize)
+      ++ " -y "
+      ++ show (yoff + gapSize)
+      ++ " -e 'onstart=lower' -dock"
+
+fullBarWidth :: IO Int
+fullBarWidth = ((-2 * gapSize) +) . fst <$> getResolution
+
 rAlignCmpnt :: Int -> Logger -> Logger
-rAlignCmpnt = fixedWidthL AlignRight " "
+rAlignCmpnt minWidth maybOutputLog = do
+  padWidth <- length . fromMaybe (replicate minWidth ' ') <$> maybOutputLog
+  fixedWidthL AlignRight " " padWidth maybOutputLog
 
 batteryCmd :: String
 batteryCmd =
