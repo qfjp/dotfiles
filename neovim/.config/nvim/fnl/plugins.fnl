@@ -104,8 +104,7 @@
                            :karb94/neoscroll.nvim {:config (SafeRequire :neoscroll
                                                                         neoscroll_conf)}
                            :camspiers/lens.vim {:requires [:camspiers/animate.vim]}
-                           :j-hui/fidget.nvim {:config (SafeRequire :fidget {})
-                                               :tag :legacy}
+                           :j-hui/fidget.nvim {:config (SafeRequire :fidget {})}
                            ;; Formatting
                            :junegunn/vim-easy-align []
                            :sbdchd/neoformat []
