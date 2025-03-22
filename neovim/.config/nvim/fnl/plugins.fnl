@@ -73,6 +73,10 @@
                            ;; Motions
                            :ggandor/lightspeed.nvim []
                            :sjbach/Lusty []
+                           :LeonHeidelbach/trailblazer.nvim {:config (SafeRequire :trailblazer
+                                                                                  {:auto_save_trailblazer_state_on_exit true
+                                                                                   :auto_load_trailblazer_state_on_enter true
+                                                                                   :current_trail_mark_stack_sort_mode :chron_dsc})}
                            ;; Highfalutin n' Fancy
                            :folke/noice.nvim {:requires [:rcarriga/nvim-notify
                                                          :MunifTanjim/nui.nvim]
