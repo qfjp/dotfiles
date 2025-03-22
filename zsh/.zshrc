@@ -373,8 +373,9 @@ poke() {
 
     for profile in ${(z)NIX_PROFILES}; do
         fpath+=($profile/share/zsh/site-functions $profile/share/zsh/$ZSH_VERSION/functions $profile/share/zsh/vendor-completions)
-        fpath+=($HOME/.zfunc)
     done
+    fpath+=($HOME/.zfunc)
+    autoload -U $HOME/.zfunc/*(:t)
 
 
     zstyle ':completion:*' verbose yes
@@ -384,6 +385,8 @@ poke() {
     zstyle ':completion:*' group-name
     zstyle ":completion:*:commands" rehash 1
     autoload -U compinit && compinit
+    # if python-argcomplete is nagging, run:
+    # sudo activate-global-python-argcomplete
 
 # }}}
 
@@ -675,3 +678,9 @@ pre_validation() {
 autoload -U add-zsh-hook
 add-zsh-hook preexec pre_validation
 # }}}
+
+## [Completion]
+## Completion scripts setup. Remove the following line to uninstall
+[[ -f /home/dan/.dart-cli-completion/zsh-config.zsh ]] && . /home/dan/.dart-cli-completion/zsh-config.zsh || true
+## [/Completion]
+
