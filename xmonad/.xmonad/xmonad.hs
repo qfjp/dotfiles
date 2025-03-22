@@ -460,7 +460,6 @@ myKeys =
         , (modmEmacsKey ++ "'"         , spawn myTerminal)
         , (modmEmacsKey ++ "S-<Return>", spawn "GDK_SCALE=2 nvim-gtk")
         , (modmEmacsKey ++ "S-'"       , spawn "GDK_SCALE=2 nvim-gtk")
-        , (modmEmacsKey ++ "S-'"       , spawn "GDK_SCALE=2 nvim-gtk")
         , (modmEmacsKey ++ "i"         , spawn "/usr/bin/env rofi-pass")
         , (modmEmacsKey ++ "p", spawn "/usr/bin/env rofi -show combi")
         , (modmEmacsKey ++ "S-i", spawn "/usr/bin/env rofi-pass --insert")
@@ -517,8 +516,6 @@ myKeys =
         , ( "<XF86MonBrightnessDown>"
           , spawn "$HOME/bin/bright $(expr $($HOME/bin/bright) - 100)"
           )
-        , ("<XF86TouchpadOn>" , spawn "$HOME/bin/macros/touchpad_notify.py on")
-        , ("<XF86TouchpadOff>", spawn "$HOME/bin/macros/touchpad_notify.py off")
         ]
         ++ [ (modmEmacsKey ++ m ++ k, windows $ f i)
            | (i, k) <- zip myWorkspaces $ show <$> ([1 .. 9] ++ [0])
@@ -530,8 +527,6 @@ myKeys =
            | (key, sc) <- zip ["a", "s", "d"] [0 ..]
            , (f  , m ) <- [(W.view, ""), (W.shift, "S-")]
            ]
-
-
 
 --------------------------------------------------------------------------------
 -- Mouse bindings: default actions bound to mouse events
