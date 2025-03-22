@@ -452,18 +452,16 @@
                               ((. cmp :select_next_item) {:behavior types.cmp.SelectBehavior.Insert})
                               ((. cmp :complete)))]
               {:mode [:i]
-               1 {1 :<C-j> 2 nextfn}
-               2 {1 :<C-n> 2 nextfn}
-               3 {1 :<Tab>
+               1 {1 :<C-n> 2 nextfn}
+               2 {1 :<Tab>
                   2 #(if ((. cmp :visible))
                          ((. cmp :select_next_item))
                          (vim.cmd "call feedkeys(\"\\<Tab>\", \"n\")"))}
-               4 {1 :<S-Tab>
+               3 {1 :<S-Tab>
                   2 #(if ((. cmp :visible))
                          ((. cmp :select_prev_item))
                          ((. cmp :complete)))}
-               5 {1 :jk 2 :<Esc> :desc "Quick escape"}
-               6 {1 :<C-k> 2 :<C-p> :desc "Prev item"}}))
+               4 {1 :jk 2 :<Esc> :desc "Quick escape"}}))
     ;; Terminal
     (wk.add {:mode :t
              1 {1 :<C-Space> :group "Tmux prefix-alike" :silent false}
@@ -555,3 +553,4 @@
 (vim.cmd "colorscheme silverscreen")
 
 (require :neoformat_config)
+
