@@ -478,10 +478,10 @@ myKeys =
           , killSpawns >> spawn "xmonad --recompile; xmonad --restart"
           )
     -- find multimedia key codes at  /usr/include/X11/XF86keysym.h
-        , ("<XF86AudioLowerVolume>", spawn "$HOME/bin/vol-control 1.50dB-"),
-        , ("<XF86AudioMute>", spawn "$HOME/bin/vol-control m"),
-        , ("<XF86AudioRaiseVolume>", spawn "$HOME/bin/vol-control 1.50dB+"),
-        , ("<XF86AudioMicMute>", spawn "$HOME/bin/toggle-mic-mute"),
+        , ("<XF86AudioLowerVolume>", spawn "$HOME/bin/vol-control 1.50dB-")
+        , ("<XF86AudioMute>", spawn "$HOME/bin/vol-control m")
+        , ("<XF86AudioRaiseVolume>", spawn "$HOME/bin/vol-control 1.50dB+")
+        , ("<XF86AudioMicMute>", spawn "$HOME/bin/toggle-mic-mute")
         , ( "<XF86MonBrightnessUp>"
           , spawn "$HOME/bin/bright $(expr $($HOME/bin/bright) + 100)"
           )
