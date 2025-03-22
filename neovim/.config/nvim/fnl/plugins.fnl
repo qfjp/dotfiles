@@ -163,6 +163,8 @@
                                                                        cmpdict-conf)]}
                            :kdheepak/cmp-latex-symbols {:ft [:tex]}
                            :max397574/cmp-greek []
+                           ;; Browser
+                           :subnut/nvim-ghost.nvim []
                            ;; Filetypes
                            :tridactyl/vim-tridactyl [:ft tridactyl]
                            :lervag/vimtex {:ft :tex}
