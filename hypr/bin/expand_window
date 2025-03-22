@@ -1,0 +1,43 @@
+#!/usr/bin/python
+import re
+import subprocess
+import sys
+
+# Experimentally determined, exclusive
+max_width = 3799
+max_height = 1036
+
+X_AMOUNT = int(sys.argv[1])
+Y_AMOUNT = int(sys.argv[2])
+
+win_info = subprocess.run(["hyprctl", "activewindow"], capture_output=True)
+
+mon_info = subprocess.run(["wayland-info"], capture_output=True)
+
+mon_width, mon_height = [
+    int(x)
+    for x in re.search(
+        r"logical_width:\s*([0-9]*),\s*logical_height:\s([0-9]*)",
+        mon_info.stdout.decode("utf-8"),
+    ).groups()
+]
+win_width, win_height = [
+    int(x)
+    for x in re.search(
+        r"size:\s*([0-9]*),([0-9]*)", win_info.stdout.decode("utf-8")
+    ).groups()
+]
+
+# upper bounds
+adjust_width = X_AMOUNT if win_width + X_AMOUNT < max_width else max_width - win_width
+adjust_height = (
+    Y_AMOUNT if win_height + Y_AMOUNT < max_height else max_height - win_height
+)
+
+# lower bounds
+adjust_width = adjust_width if win_width + X_AMOUNT > 0 else 1 - win_width
+adjust_height = adjust_height if win_height + Y_AMOUNT > 0 else 1 - win_height
+
+subprocess.run(
+    ["hyprctl", "dispatch", "resizeactive", str(adjust_width), str(adjust_height)]
+)
