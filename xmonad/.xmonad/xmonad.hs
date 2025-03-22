@@ -1,6 +1,9 @@
 -- Use /usr/share/xmonad-2.9/ghc-6.12.3/man/xmonad.hs as a reference
 -- A good resource for dzen config: http://thinkingeek.com/2011/11/21/simple-guide-configure-xmonad-dzen2-conky/
 -- http://lynnard.me/blog/2013/11/05/building-a-vim-like-xmonad-prompt-task-groups-topical-workspaces-float-styles-and-more/
+-- In case the date/time in the bar only updates on WM actions, use
+--  the clockstartuphook from darthfennec found here:
+-- https://stackoverflow.com/questions/11045239/can-xmonads-loghook-be-run-at-set-intervals-rather-than-in-merely-response-to
 import           Bar.Colors                     ( brighten
                                                 , col2string
                                                 , dkerGrey
@@ -13,6 +16,7 @@ import           Bar.Colors                     ( brighten
                                                 , orange
                                                 , textGrey
                                                 )
+import           Control.Monad                  ( when )
 import qualified Data.Map                      as M
 import           Data.Maybe                     ( fromMaybe )
 import           Data.Monoid                    ( All(All) )
@@ -27,7 +31,9 @@ import           Data.Time                      ( LocalTime
 
 import           System.Exit                    ( exitSuccess )
 import           System.IO                      ( Handle
+                                                , IOMode (AppendMode)
                                                 , hPutStrLn
+                                                , withFile
                                                 )
 import           XMonad                  hiding ( Color )
 import           XMonad.Actions.FloatKeys       ( keysResizeWindow )
@@ -151,6 +157,8 @@ import           Utils                          ( getOffset
                                                 , ioLineHeight
                                                 )
 
+debug :: Bool
+debug = False
 
 desktopHost, laptopHost :: String
 desktopHost = "franky"
@@ -166,22 +174,42 @@ getCurrentTime' = getCurrentTimeZone
 date' :: String -> Logger
 date' fmt = io $ Just . formatTime defaultTimeLocale fmt <$> getCurrentTime'
 
+-- wrapper for the Timer id, so it can be stored as custom mutable state
 newtype TidState = TID TimerId
-    deriving Typeable
+    deriving (Typeable, Show, Read)
 
 instance ExtensionClass TidState where
     initialValue = TID 0
 
+clockStartupHook :: X ()
 clockStartupHook = startTimer 1 >>= XS.put . TID
 
+clockEventHook :: Event -> X All
 clockEventHook e = do
-    (TID t) <- XS.get
+    -- e is the event we've hooked
+    (TID t) <- XS.get -- get the recent Timer id
+    when debug . io $
+      withFile
+        "/home/dan/TIDState.dat"
+        AppendMode
+        ( `hPutStrLn`
+            ( "e: "
+                ++ show e
+                ++ ", t: "
+                ++ show t
+                ++ "\nev_data: "
+                ++ show (ev_data e)
+                ++ " "
+                ++ (show . head . ev_data $ e)
+                ++ " =?= "
+                ++ show t
+            )
+        )
     handleTimer t e $ do
-        tid <- startTimer 1
-        XS.put . TID $ tid
-        state <- ask
-        logHook . config $ state
-        return Nothing
+        -- run the following if e matches the id
+        startTimer 1 >>= XS.put . TID -- restart the timer, store the new id
+        ask >>= logHook . config -- get the loghook and run it
+        return . Just $ config -- return required type
     return $ All True
 
 substring :: String -> String -> Bool
@@ -223,6 +251,7 @@ myConfig = ewmh . withNavigation2DConfig myNavigation2DConfig . docks $ def
     , mouseBindings      = myMouseBindings
     , layoutHook         = myLayout
     , manageHook         = manageDocks <+> myManageHook
+    , handleEventHook    = clockEventHook
     , startupHook        = myStartupHook >> checkKeymap myConfig myKeys
     , modMask            = modm
     }
