@@ -346,7 +346,7 @@ poke() {
     alias moviebot='filebot -rename . -non-strict --format "{n} ({y})"'
     alias showbot='filebot -rename . -non-strict --format "{n} - {s00e00} - {t}"'
 
-    alias         vim='$EDITOR'
+    alias         vim='$EDITOR --server ${XDG_RUNTIME_DIR}/nvim.socket'
     alias   fbmplayer='mplayer -fs -vo fbdev -ao alsa'
     alias        gksu='gksudo'
     alias          ls='ls --group-directories-first --color=auto'
