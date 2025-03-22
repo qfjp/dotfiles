@@ -66,7 +66,8 @@
                            :lewis6991/gitsigns.nvim {:config (SafeRequire :gitsigns
                                                                           (. (require :gitsigns_config)
                                                                              :git_sign_table))}
-                           :NeogitOrg/neogit {:config (SafeRequire :neogit [])
+                           :NeogitOrg/neogit {:config (SafeRequire :neogit
+                                                                   {:graph_style :kitty})
                                               :requires [:nvim-lua/plenary.nvim
                                                          :nvim-telescope/telescope.nvim
                                                          :sindrets/diffview.nvim]}
@@ -75,6 +76,22 @@
                            :sjbach/Lusty []
                            ;; Highfalutin n' Fancy
                            :xiyaowong/transparent.nvim []
+                           :folke/noice.nvim {:requires [:rcarriga/nvim-notify
+                                                         :MunifTanjim/nui.nvim]
+                                              :config (SafeRequire :noice
+                                                                   {:lsp {:override {:vim.lsp.util.convert_input_to_markdown_lines true
+                                                                                     :vim.lsp.util.stylize_markdown true
+                                                                                     :cmp.entry.get_documentation true}}
+                                                                    :presets {:bottom_search true
+                                                                              :command_palette true
+                                                                              :long_message_to_split true
+                                                                              :inc_rename false
+                                                                              :lsp_doc_border false}
+                                                                    :cmdline {:view :cmdline}
+                                                                    :messages {:enabled true
+                                                                               :view :mini
+                                                                               :view_warn :mini}
+                                                                    :nui {:position "50%"}})}
                            :folke/twilight.nvim {:cmd :Twilight
                                                  :TwilightEnable :TwilightDisable}
                            :junegunn/goyo.vim {:cmd :Goyo
@@ -96,13 +113,14 @@
                            :junegunn/vim-easy-align []
                            :sbdchd/neoformat []
                            ;; Telescope
-                           :rcarriga/nvim-notify {:branch :master}
+                           :rcarriga/nvim-notify {:branch :master
+                                                  :config (SafeRequire :notify
+                                                                       {:background_colour "#868a75"
+                                                                        :render :minimal})}
                            ;;;; create notifications with
                            ;;;; lua> require("notify").notify("Hello, World!")
                            :vigoux/notifier.nvim {:config (SafeRequire :notifier
                                                                        {})}
-                           ;;;; create notifications with
-                           ;;;; lua> require("notifier").notify("Hello, World!")
                            :nvim-telescope/telescope.nvim {:requires [:BurntSushi/ripgrep
                                                                       :nvim-lua/plenary.nvim
                                                                       :nvim-telescope/telescope-fzy-native.nvim
