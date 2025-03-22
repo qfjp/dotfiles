@@ -42,7 +42,6 @@
                                                          :fennel
                                                          :scheme
                                                          :lisp]}
-                           :p00f/nvim-ts-rainbow []
                            :mnacamura/vim-fennel-syntax {:ft :fennel}
                            :rktjmp/hotpot.nvim []
                            :katawful/katcros-fnl {}
@@ -75,7 +74,6 @@
                            :ggandor/lightspeed.nvim []
                            :sjbach/Lusty []
                            ;; Highfalutin n' Fancy
-                           :xiyaowong/transparent.nvim []
                            :folke/noice.nvim {:requires [:rcarriga/nvim-notify
                                                          :MunifTanjim/nui.nvim]
                                               :config (SafeRequire :noice
@@ -98,7 +96,6 @@
                                                :GoyoEnter :GoyoLeave}
                            :nvim-treesitter/playground {:requires :nvim-treesitter/nvim-treesitter}
                            :Olical/conjure []
-                           :rinx/nvim-minimap []
                            :nvim-tree/nvim-web-devicons []
                            :folke/which-key.nvim {:config (SafeRequire :which-key
                                                                        {})
