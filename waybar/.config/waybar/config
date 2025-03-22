@@ -9,17 +9,26 @@
     "start_hidden": false,
     "passthrough": false,
     "modules-left": ["hyprland/workspaces", "custom/scroller-mode", "custom/scroller-trail"],
-    "modules-center": ["hyprland/window"],
+    "modules-center": ["hyprland/window#class", "hyprland/window#title"],
     "modules-right": ["tray", "pulseaudio#sink", "pulseaudio#source", "clock#date", "clock#time"],
-    "hyprland/window": {
-        "format": "{class} {title}",
+    "hyprland/window#title": {
+        "format": "{title}",
         "rewrite": {
-            "([^ ]*) (.*) — Mozilla Firefox": "$1  $2",
-            "zen (.*) — Zen Browser": "zen  $1",
-            "([^ ]*) (.*) — Ablaze Floorp": "$1  $2",
-            "kitty (.*)": "kitty   $1",
+            "(.*) — Mozilla Firefox": "$1",
+            "(.*) — Zen Browser": "$1",
+            "(.*) — Ablaze Floorp": "$1",
+            "([0-9]+: .*)": "$1",
+            "(.{35}).*": "$1 ⋯",
         },
         "separate-outputs": true
+    },
+    "hyprland/window#class": {
+        "format": "{class}",
+        "separate-outputs": true,
+        "rewrite": {
+            "(zen|floorp)": "",
+            "kitty": "",
+        }
     },
     "hyprland/workspaces": {
          "persistent-workspaces": {"*": 5},

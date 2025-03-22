@@ -33,6 +33,21 @@ window#waybar.hidden {
     color: #f8f8f2;
     background: #282a36;
 }
+#window.title {
+    margin-left: 0px;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    color: #f8f8f2;
+    background: #282a36;
+}
+#window.class {
+    margin-right: 0px;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    color: #f8f8f2;
+    background: #282a36;
+    font-style: italic;
+}
 
 
 window#waybar.termite #window,
