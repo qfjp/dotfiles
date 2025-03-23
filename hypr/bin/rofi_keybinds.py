@@ -4,10 +4,41 @@ import re
 import subprocess
 import sys
 
+MODE = "rofi"
+if len(sys.argv) > 1:
+    MODE = sys.argv[1]
+
 KEY_SEQ_LENGTH = 25
 
-CMD_COLOR = "#c4a280"
-CMD_SPAN = "<span color='{}'>".format(CMD_COLOR)
+PICKER_CMD = []
+if MODE == "rofi":
+    PICKER_CMD = ["rofi", "-dmenu", "-i", "-markup-rows", "-p", "Hyprland Keybinds:"]
+elif MODE == "fzy":
+    PICKER_CMD = ["fzy", "-p", "Hyprland Keybinds:"]
+
+CMD_SPAN = ""
+KEY_SEQ_BEG = ""
+KEY_SEQ_END = ""
+NAME_BEG = ""
+NAME_END = ""
+CMD_BEG = ""
+CMD_END = ""
+if MODE == "rofi":
+    CMD_COLOR = "#c4a280"
+    CMD_SPAN = "<span color='{}'>".format(CMD_COLOR)
+    KEY_SEQ_BEG = "<span color='#ffffff'>"
+    KEY_SEQ_END = "</span>"
+    NAME_BEG = "<b><span color='#ffffff'>"
+    NAME_END = "</span></b>"
+    CMD_BEG = "<i>{}".format(CMD_SPAN)
+    CMD_END = "</span></i>"
+elif MODE == "fzy":
+    KEY_SEQ_BEG = ""
+    KEY_SEQ_END = "[0m"
+    NAME_BEG = "[3;35m"
+    NAME_END = "[0m"
+    CMD_BEG = "[38m"  # "[3;33m"
+    CMD_END = "[0m"
 
 
 class VarStatement:
@@ -34,7 +65,7 @@ class BindStatement:
         comment_split = re.search(r"^([^#]*)#(.*)$", raw)
         if comment_split:
             cmd, name = comment_split.groups()
-            self.name = name.strip() + " "
+            self.name = name.strip()
 
         cmd = re.sub(r"\s*bind[lroenmtisdp]*\s*=\s*", "", cmd).strip()
 
@@ -55,10 +86,19 @@ class BindStatement:
         format_str = "{:<" + str(KEY_SEQ_LENGTH) + "}"
         key_seq_buffered = format_str.format(self.key_seq)
         result = (
-            "<span color='#ffffff'>{}</span> <b><span color='#ffffff'>{}</span></b>".format(
-                key_seq_buffered, self.name
-            )
-            + "<i>{}{} {}</span></i>".format(CMD_SPAN, self.dispatcher, self.params)
+            KEY_SEQ_BEG
+            + key_seq_buffered
+            + KEY_SEQ_END
+            + " "
+            + NAME_BEG
+            + self.name
+            + NAME_END
+            + " "
+            + CMD_BEG
+            + self.dispatcher
+            + " "
+            + self.params
+            + CMD_END
         )
         return result
 
@@ -91,7 +131,7 @@ conf = [
 ]
 
 cmd = subprocess.run(
-    ["rofi", "-dmenu", "-i", "-markup-rows", "-p", "Hyprland Keybinds:"],
+    PICKER_CMD,
     input="\n".join(str(x) for x in conf).encode("utf-8"),
     capture_output=True,
 )
@@ -99,11 +139,13 @@ cmd = subprocess.run(
 choice = cmd.stdout.decode("utf-8")
 if not choice:
     sys.exit(0)
-todo = re.search(CMD_SPAN + r"(.*)</span>", choice).group(1)  # type: ignore[union-attr]
+todo = re.search(
+    CMD_BEG.replace("[", "\\[") + r"(.*)" + CMD_END.replace("[", "\\["), choice
+).group(  # type: ignore[union-attr]
+    1
+)
 
 if todo.split()[0] == "exec":
-    print("eval", todo.split())
     subprocess.run(todo.split()[1:])
 else:
-    print("dispatch", todo.split())
     subprocess.run(["hyprctl", "dispatch"] + todo.split())
