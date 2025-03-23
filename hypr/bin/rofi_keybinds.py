@@ -58,7 +58,7 @@ class BindStatement:
             "<span color='#ffffff'>{}</span> <b><span color='#ffffff'>{}</span></b>".format(
                 key_seq_buffered, self.name
             )
-            + "{}<i>{} {}</i></span>".format(CMD_SPAN, self.dispatcher, self.params)
+            + "<i>{}{} {}</span></i>".format(CMD_SPAN, self.dispatcher, self.params)
         )
         return result
 
