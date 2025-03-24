@@ -15,6 +15,18 @@ if MODE == "rofi":
     PICKER_CMD = ["rofi", "-dmenu", "-i", "-markup-rows", "-p", "Hyprland Keybinds:"]
 elif MODE == "fzy":
     PICKER_CMD = ["fzy", "-p", "Hyprland Keybinds:"]
+elif MODE == "fzf":
+    PICKER_CMD = [
+        "fzf",
+        "--delimiter",
+        ",",
+        "--accept-nth",
+        "{3}",
+        "--ansi",
+        "--with-nth",
+        "{1}{2} {3}",
+    ]
+
 
 CMD_SPAN = ""
 KEY_SEQ_BEG = ""
@@ -32,7 +44,7 @@ if MODE == "rofi":
     NAME_END = "</span></b>"
     CMD_BEG = "<i>{}".format(CMD_SPAN)
     CMD_END = "</span></i>"
-elif MODE == "fzy":
+elif MODE == "fzy" or MODE == "fzf":
     KEY_SEQ_BEG = ""
     KEY_SEQ_END = "[0m"
     NAME_BEG = "[3;35m"
@@ -102,6 +114,29 @@ class BindStatement:
         )
         return result
 
+    def fzf_repr(self) -> str:
+        """
+        :returns: A tuple where the first entry is the input to fzf,
+                  the second is the display string (--with-nth option)
+                  and the third is the output (--accept-nth)
+        """
+        """How these will appear in rofi."""
+        format_str = "{:<" + str(KEY_SEQ_LENGTH) + "}"
+        key_seq_buffered = format_str.format(self.key_seq)
+        result = "{}{}{},{}{}{},{}{} {}{}".format(
+            KEY_SEQ_BEG,
+            key_seq_buffered,
+            KEY_SEQ_END,
+            NAME_BEG,
+            self.name,
+            NAME_END,
+            CMD_BEG,
+            self.dispatcher,
+            self.params,
+            CMD_END,
+        )
+        return result
+
 
 def replace_vars(string: str, var_dict: dict[str, str]) -> str:
     result = string
@@ -132,18 +167,23 @@ conf = [
 
 cmd = subprocess.run(
     PICKER_CMD,
-    input="\n".join(str(x) for x in conf).encode("utf-8"),
+    input="\n".join(str(x) if MODE != "fzf" else x.fzf_repr() for x in conf).encode(
+        "utf-8"
+    ),
     capture_output=True,
 )
 
 choice = cmd.stdout.decode("utf-8")
 if not choice:
     sys.exit(0)
-todo = re.search(
-    CMD_BEG.replace("[", "\\[") + r"(.*)" + CMD_END.replace("[", "\\["), choice
-).group(  # type: ignore[union-attr]
-    1
-)
+
+todo = choice
+if MODE != "fzf":
+    todo = re.search(
+        CMD_BEG.replace("[", "\\[") + r"(.*)" + CMD_END.replace("[", "\\["), choice
+    ).group(  # type: ignore[union-attr]
+        1
+    )
 
 if todo.split()[0] == "exec":
     subprocess.run(todo.split()[1:])
