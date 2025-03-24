@@ -39,5 +39,5 @@ adjust_width = adjust_width if win_width + X_AMOUNT > 0 else 1 - win_width
 adjust_height = adjust_height if win_height + Y_AMOUNT > 0 else 1 - win_height
 
 subprocess.run(
-    ["hyprctl", "dispatch", "resizeactive", str(adjust_width), str(adjust_height)]
+    ["hyprctl", "dispatch", "resizeactive", "--", str(adjust_width), str(adjust_height)]
 )
