@@ -121,7 +121,9 @@ poke() {
         [ -z "$NVIM_LISTEN_ADDRESS" ] && exec nvim -c terminal
     }
 
-    tmux_multisession
+    if [[ $TERM != xterm-kitty ]]; then
+        tmux_multisession
+    fi
 
 
     stty stop '' -ixoff # Disable C-S command in any programs
