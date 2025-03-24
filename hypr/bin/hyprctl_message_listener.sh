@@ -12,7 +12,9 @@ function handle {
         trail_len=$(tail -n1 < <(head -n2 "$TRAIL_FILE"))
         trailed=$(tail -n1 $TRAIL_FILE)
     fi
-    if [[ ${line:0:8} == "scroller" ]]; then
+    if [[ "${line:0:10}" == "openwindow" ]]; then
+        ~/bin/center-in-axis col
+    elif [[ ${line:0:8} == "scroller" ]]; then
         if [[ ${line:10:11} == "overview, 0" ]]; then
             false  # Just keep some filler
         elif [[ ${line:10:11} == "overview, 1" ]]; then
