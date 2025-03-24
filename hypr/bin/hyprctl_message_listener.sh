@@ -2,11 +2,19 @@
 
 . hypr-bin-env
 
+DEBUG=0
+
+if [[ "$DEBUG" -eq 1 ]]; then
+    echo "$line" > /tmp/hyprctl_log.txt
+fi
 function handle {
     line="$1"
     trail_num=0
     trail_len=0
     trailed=0
+    if [[ "$DEBUG" -eq 1 ]]; then
+        echo "$line" >> /tmp/hyprctl_log.txt
+    fi
     if [[ -e "$TRAIL_FILE" ]]; then
         trail_num=$(head -n1 "$TRAIL_FILE")
         trail_len=$(tail -n1 < <(head -n2 "$TRAIL_FILE"))
