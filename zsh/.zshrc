@@ -361,6 +361,7 @@ poke() {
     alias          rm='nocorrect rm'
     alias          rg='rg --color always --heading --line-number'
     alias        diff='diff --unified --show-c-function'
+    alias     gitdiff='git difftool --no-symlinks --dir-diff'
 
     alias       magit='vim -c MagitOnly'
     alias        wiki='vim -c "VimwikiIndex"'

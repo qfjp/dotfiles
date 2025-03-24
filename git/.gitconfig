@@ -18,12 +18,16 @@
     tree = "forest --pretty=format:\"%C(red)%h %C(magenta)(%ar) %C(blue)%an %C(reset)%s\" --style=15 --reverse"
 [push]
     default = simple
-[difftool]
-    prompt=true
 [diff]
-    tool=nvimdiff
+    tool = kitty
+    guitool = kitty.gui
+[difftool]
+    prompt = false
+    trustExitCode = true
 [difftool "nvimdiff"]
-    cmd = "nvim -d \"$LOCAL\" \"$REMOTE\""
+    cmd = nvim -d $LOCAL $REMOTE
+[difftool "kitty"]
+    cmd = kitten diff $LOCAL $REMOTE
 [filter "lfs"]
     clean = git-lfs clean -- %f
     smudge = git-lfs smudge -- %f
