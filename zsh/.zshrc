@@ -390,6 +390,7 @@ poke() {
     autoload -U compinit && compinit
     # if python-argcomplete is nagging, run:
     # sudo activate-global-python-argcomplete
+    compdef _gitdiff gitdiff
 
 # }}}
 
