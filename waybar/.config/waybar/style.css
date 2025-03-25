@@ -104,8 +104,8 @@ window#waybar.PCSX2 #window {
 #tray {
     padding-left: 16px;
     padding-right: 16px;
-    color: #8c8e9a;
-    background: #1E202C;
+    color: #30312C;
+    background: #5ED0F7;
     margin-right: 0px;
     border-top-right-radius: 0px;
     border-bottom-right-radius: 0px;
@@ -121,15 +121,17 @@ window#waybar.PCSX2 #window {
 #pulseaudio {
     padding-left: 16px;
     padding-right: 16px;
-    border-radius: 0px;
     margin-left: 0px;
     margin-right: 0px;
 }
 #pulseaudio.sink {
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
     color: #c5c5c5;
     background: #50525e;
 }
 #pulseaudio.source {
+    border-radius: 0px;
     color: #c5c5c5;
     background: #50525e;
 }
@@ -150,8 +152,8 @@ window#waybar.PCSX2 #window {
     margin-left: 0px;
     padding-left: 13px;
     padding-right: 16px;
-    color: #c5c5c5;
-    background: #50525e;
+    background: #c5c5c5;
+    color: #50525e;
 }
 
 #custom-scroller-trail {

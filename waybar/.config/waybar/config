@@ -8,9 +8,9 @@
     "mode": "hide",
     "start_hidden": false,
     "passthrough": false,
-    "modules-left": ["hyprland/workspaces", "custom/scroller-mode", "custom/scroller-trail"],
+    "modules-left": ["tray", "custom/scroller-mode", "custom/scroller-trail"],
     "modules-center": ["hyprland/window#class", "hyprland/window#title"],
-    "modules-right": ["tray", "pulseaudio#sink", "pulseaudio#source", "clock#date", "clock#time"],
+    "modules-right": ["pulseaudio#sink", "pulseaudio#source", "clock#date", "clock#time"],
     "hyprland/window#title": {
         "format": "{title}",
         "rewrite": {
