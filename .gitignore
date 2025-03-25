@@ -9,3 +9,6 @@ __pycache__/
 .uuid
 
 tmux/.tmux/plugins
+
+kitty/.config/kitty/get_layout.py
+kitty/.config/kitty/pass_keys.py

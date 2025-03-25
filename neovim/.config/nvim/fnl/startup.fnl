@@ -336,16 +336,16 @@
                  :desc "Close all folds"}
              19 {1 :<C-s> 2 ":Scratch<CR>" :desc "Scratch Buffer"}
              20 {1 :<C-h>
-                 2 ":TmuxNavigateLeft<CR>"
+                 2 ":KittyNavigateLeft<CR>"
                  :desc "Select Window/Pane Left"}
              21 {1 :<C-l>
-                 2 ":TmuxNavigateRight<CR>"
+                 2 ":KittyNavigateRight<CR>"
                  :desc "Select Window/Pane Right"}
              22 {1 :<C-k>
-                 2 ":TmuxNavigateUp<CR>"
+                 2 ":KittyNavigateUp<CR>"
                  :desc "Select Window/Pane Down"}
              23 {1 :<C-j>
-                 2 ":TmuxNavigateDown<CR>"
+                 2 ":KittyNavigateDown<CR>"
                  :desc "Select Window/Pane Up"}
              24 {1 :n 2 "n:lua HlNext(0.4)<CR>" :desc "Glow Next"}
              25 {1 :N 2 "N:lua HlNext(0.4)<CR>" :desc "Glow Prev"}
