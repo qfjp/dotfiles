@@ -38,3 +38,4 @@ map k <c-y>
 if exists(":QuickScopeToggle")
     let b:qs_local_disable=1
 endif
+colorscheme silverscreen
