@@ -182,7 +182,6 @@
                            :mhinz/vim-janah []
                            :norcalli/nvim-colorizer.lua {:config (SafeRequire :colorizer)}
                            ;; Tmux
-                           :christoomey/vim-tmux-navigator []
                            :knubie/vim-kitty-navigator {:run "cp ./*.py ~/.config/kitty"}
                            :vimwiki/vimwiki {:ft [:vimwiki]}
                            :Feel-ix-343/markdown-oxide {}}))
