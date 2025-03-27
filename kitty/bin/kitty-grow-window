@@ -1,0 +1,40 @@
+#!/bin/sh
+# https://sw.kovidgoyal.net/kitty/remote-control/
+
+
+AMOUNT=5
+# The direction to grow; one of 'up', 'down', 'left', or 'right'
+DIRECTION="$1"
+neighbor="$DIRECTION"
+axis=horizontal
+if [ "$DIRECTION" = "up" ]; then
+    neighbor="top"
+    axis=vertical
+elif [ "$DIRECTION" = "down" ]; then
+    neighbor="bottom"
+    axis=vertical
+fi
+
+before="$(kitten @ls --match-tab state:focused)"
+
+kitten @resize-window --match "neighbor:$neighbor" --axis "$axis" --increment "-$AMOUNT"
+
+after="$(kitten @ls --match-tab state:focused)"
+
+if [ "$before" = "$after" ]; then
+    # If nothing changed, then we need to shrink the active window
+    kitten @resize-window --axis "$axis" --increment "-$AMOUNT"
+fi
+
+# # Some helpful commands:
+# 
+# ## Resize the neighbor below this one by decreasing it's height by 2 units.
+# ## Neighbor may take one of the following arguments: top, bottom, right, left
+# kitten @resize-window --match neighbor:bottom --axis vertical --increment -2
+# 
+# 
+# ## Switch active window to the one above this one
+# #kitten @move-window --match neighbor:top
+# 
+# ## Get information about the current kitty instance
+# kitten @ls --match-tab state:focused
