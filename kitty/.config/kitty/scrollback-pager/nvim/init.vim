@@ -1,3 +1,8 @@
+packadd impatient.nvim
+packadd silverscreen.nvim
+packadd neoscroll.nvim
+packadd vim-kitty-navigator
+packadd nvim-ufo
 set relativenumber
 set number
 set mouse=a
