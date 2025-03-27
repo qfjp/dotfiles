@@ -2,9 +2,9 @@
 # https://sw.kovidgoyal.net/kitty/remote-control/
 
 
-AMOUNT=5
 # The direction to grow; one of 'up', 'down', 'left', or 'right'
 DIRECTION="$1"
+
 neighbor="$DIRECTION"
 axis=horizontal
 if [ "$DIRECTION" = "up" ]; then
@@ -13,6 +13,12 @@ if [ "$DIRECTION" = "up" ]; then
 elif [ "$DIRECTION" = "down" ]; then
     neighbor="bottom"
     axis=vertical
+fi
+
+AMOUNT="$2"
+
+if [[ -z "$AMOUNT" ]]; then
+    AMOUNT=5
 fi
 
 before="$(kitten @ls --match-tab state:focused)"
