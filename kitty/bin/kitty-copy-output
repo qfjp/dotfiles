@@ -1,0 +1,11 @@
+#!/bin/sh
+# If the argument is 0, copy the last non-empty output. If it is 1,
+# copy the whole scrollback buffer
+MODE="$1"
+extent=last_non_empty_output
+if [ "$MODE" -eq 1 ]; then
+    extent=all
+fi
+
+text="$(kitten @get-text --extent $extent)"
+echo "$text" | wl-copy
