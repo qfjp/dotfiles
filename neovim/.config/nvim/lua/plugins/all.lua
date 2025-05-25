@@ -66,10 +66,6 @@ return {
         'mnacamura/vim-fennel-syntax',
         ft = 'fennel',
     },
-    { 'rktjmp/hotpot.nvim', },
-    {
-        'katawful/katcros-fnl',
-    },
     -- Vim Essentials
 
     {

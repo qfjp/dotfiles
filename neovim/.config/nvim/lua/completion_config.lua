@@ -386,7 +386,9 @@ if pcall(require, "lspconfig") then
         on_attach = on_attach,
     };
 end
-require('ufo').setup()
+if pcall(require, 'ufo') then
+    require('ufo').setup()
+end
 
 local cmpdict_conf = {
     dic = {
