@@ -1,5 +1,4 @@
 require("bootstrap")
---local lazy_path = vim.fn.stdpath("data") .. "/lazy"
 Bootstrap(BOOTSTRAP_PATH, "folke", "lazy.nvim", {{'--filter=blob:none', '--branch=stable'}})
 vim.opt.rtp:prepend(string.format('%s/%s', BOOTSTRAP_PATH, "lazy.nvim"))
 

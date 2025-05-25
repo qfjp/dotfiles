@@ -1,4 +1,3 @@
--- BOOTSTRAP_PATH = vim.fn.stdpath("data") .. "bootstrap_plugins/start"
 BOOTSTRAP_PATH = vim.fn.stdpath("data") .. "/lazy"
 vim.opt.rtp:prepend(BOOTSTRAP_PATH)
 
