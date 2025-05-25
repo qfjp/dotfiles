@@ -1,0 +1,6 @@
+#!/bin/sh
+
+arg="$*"
+
+arg="$(echo "$arg" | sed "s/\(^'\|'$\)//g" )"
+nvim "$arg"
