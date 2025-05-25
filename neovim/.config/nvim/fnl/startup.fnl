@@ -5,7 +5,6 @@
                :katcros-fnl.macros.nvim.api.autocommands.macros)
 
 ;; Initialize packer
-
 ;; {{{ Plugin Configs
 ;; ------------------
 
@@ -182,7 +181,8 @@
         (string.match str (.. subnet "[1-9][0-9]"))
         (string.match str (.. subnet "[1-2][0-9][0-9]")))))
 
-(set! termguicolors)
+(when (not (or (= :linux (os.getenv :TERM)) (= :linux (os.getenv :OLD_TERM))))
+  (set! termguicolors))
 
 (set! listchars "tab:▕░,trail:▒,extends:>,precedes:<")
 
@@ -514,10 +514,10 @@
 ;; -----------------
 ; Open at last line
 (def-aug- :Utilities)
-(aug- :Utilities (auc- :BufReadPost "*"
-                       #(when (and (> (vimfn line "'\"") 1)
-                                   (<= (vimfn line "'\"") (vimfn line "$")))
-                          (vim.cmd "exe \"normal! g`\\\"\""))))
+(let [open-at-last-position #(when (and (> (vimfn line "'\"") 1)
+                                        (<= (vimfn line "'\"") (vimfn line "$")))
+                               (vim.cmd "exe \"normal! g`\\\"\""))]
+  (aug- :Utilities (auc- :BufRead "*" open-at-last-position)))
 
 (def-aug- :LatexHelp)
 (aug- :LatexHelp (auc- :FileType :tex #(set! fileencoding :ascii)))
