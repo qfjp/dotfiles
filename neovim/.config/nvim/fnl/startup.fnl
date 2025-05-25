@@ -5,15 +5,6 @@
                :katcros-fnl.macros.nvim.api.autocommands.macros)
 
 ;; Initialize packer
-(let [packer-path (.. (vimfn stdpath :data) :/site/pack/packer/start)
-      cmd (io.popen (.. "find " packer-path "* -maxdepth 1"))
-      files {}
-      packer (require :packer)]
-  (each [fname (cmd:lines)]
-    (tset files (+ 1 (length files)) fname))
-  ((. (require :packer) :startup) (. (require :plugins) :packer_table))
-  (when (<= (length files) 5)
-    (packer.sync)))
 
 ;; {{{ Plugin Configs
 ;; ------------------
