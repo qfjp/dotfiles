@@ -313,7 +313,7 @@ poke() {
     # {{{ Default programs
 
         export PAGER="vimpager"
-        export MANPAGER="nvim -u $HOME/.config/nvim/vimpagerrc -c ':Man!' -"
+        export MANPAGER="nvim -c \"source $HOME/.config/nvim/lua/vimpager.lua | :Man! -\""
         [ -z "$EDITOR" ] && export EDITOR='nvim'
         [ -z "$SYSTEMD_EDITOR" ] && export SYSTEMD_EDITOR="$EDITOR"
 

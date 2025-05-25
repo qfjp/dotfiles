@@ -1,4 +1,4 @@
 #!/bin/bash
 fname="scrollback-$RANDOM"
-nvim --noplugin -u ~/.config/kitty/scrollback-pager/nvim/init.vim -c "silent write! /tmp/$fname | te cat /tmp/$fname -"
+nvim -Rc "source ~/.config/nvim/lua/vimpager.lua | write! /tmp/$fname | te cat /tmp/$fname -"
 rm "$fname"

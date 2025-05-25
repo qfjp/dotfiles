@@ -1,6 +1,6 @@
 #!/bin/sh
 if [ -z "$1" ]; then
-    nvim -R -u $HOME/.config/nvim/vimpagerrc -
+    nvim -Rc "source $HOME/.config/nvim/lua/vimpager.lua" -
 else
-    nvim -R -u $HOME/.config/nvim/vimpagerrc $1
+    nvim -Rc "source $HOME/.config/nvim/lua/vimpager.lua" $1
 fi
