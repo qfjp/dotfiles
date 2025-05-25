@@ -1,38 +1,18 @@
-
-
-
  local HOME = (os.getenv("HOME") or "")
  local GIT_DIR = (HOME .. "/projects/github/dotfiles")
 
-
-
-
-
- local BOOKMARK_PAIRS = {a = {neovim = (vim.fn.stdpath("config") .. "/fnl/plugins.fnl")}, d = {neovim = (vim.fn.stdpath("config") .. "/fnl/startup.fnl")}, f = {zsh = (HOME .. "/.zshrc")}}
-
-
-
-
-
+ local BOOKMARK_PAIRS = { d = {tmux = (HOME .. "/.tmux.conf")}, f = {neovim = (vim.fn.stdpath("config") .. "/lua/startup.lua")}, h = {zsh = (HOME .. "/.zshrc")}, l = {neovim = (vim.fn.stdpath("config") .. "/lua/plugins/all.lua")}}
 
  local skiplist = {"COMMIT_EDITMSG", ".git/index", "nvim/runtime/doc*", (vim.fn.stdpath("data") .. "/lazy/start/.*/doc/.*")}
-
-
-
 
  local bmark_indices do local ixs = {}
  for k, _ in pairs(BOOKMARK_PAIRS) do
  ixs[(1 + table.maxn(ixs))] = k end
  bmark_indices = ixs end
 
-
- vim.g["startify_custom_indices"] = {"g", "h", "l", "w", "r", "u", "o", "p", "z", "x", "c", "v", "n", "m"}
-
-
- table.sort(bmark_indices)
+ vim.g["startify_custom_indices"] = {";", "a", "r", "u", "v", "n", "c", "m", "n", "b", "y"}
 
  local bookmarks = {}
-
 
  for _, ix in ipairs(bmark_indices) do
 
@@ -47,17 +27,8 @@
 
  vim.cmd("function! StartifyEntryFormat()\n            return 'WebDevIconsGetFileTypeSymbol(absolute_path) .\" \". entry_path'\n          endfunction")
 
-
-
- vim.g["startify_files_number"] = 10
- vim.g["startify_list_order"] = {{"MRU"}, "files", {"Bookmarks"}, "bookmarks", {"Sessions"}, "sessions", {"Cmds"}, "commands"}
-
-
-
-
-
-
-
+ vim.g["startify_files_number"] = 5
+ vim.g["startify_list_order"] = {{"Bookmarks"}, "bookmarks",{"Recent"}, "files", {"Sessions"}, "sessions", {"Cmds"}, "commands"}
 
  vim.g["startify_skiplist"] = skiplist
  vim.g["startify_bookmarks"] = bookmarks
@@ -85,9 +56,7 @@
  centered[ix] = (replicate(" ", ((cols / 2) - (max / 2))) .. str) end
  return centered end
 
- vim.g["startify_session_sort"] = 1
+ vim.g["startify_session_sort"] = 1 -- sorts bookmarks by recently used
  vim.g["startify_change_to_dir"] = 0 local cmd = "~/bin/random_description.sh | cowthink -W 40 -f tux -n"
-
-
 
  vim.g["startify_custom_header"] = center(shell(("MANWIDTH=" .. 72 .. " " .. cmd)), 80) return nil

@@ -369,6 +369,8 @@ poke() {
     alias       paint='classic-colors'
     alias    wl-paste='wl-paste -p'
     alias      record='wf-recorder -g "$(slurp)" --audio=alsa_output.pci-0000_00_1f.3.analog-stereo.monitor'
+    alias         lua='rlwrap --always-readline lua'
+    alias      stylua='stylua --config-path $HOME/.config/stylua/stylua.toml'
 
 # }}}
 
