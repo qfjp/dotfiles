@@ -12,3 +12,5 @@ tmux/.tmux/plugins
 
 kitty/.config/kitty/get_layout.py
 kitty/.config/kitty/pass_keys.py
+
+lazy-lock.json
