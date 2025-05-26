@@ -20,8 +20,6 @@ local neoscroll_conf = {
     respect_scrolloff = true,
 }
 
-local cmpdict_conf = require('completion_config').cmpdict_conf
-
 return {
 
     -- personal
@@ -237,63 +235,13 @@ return {
     },
 
     --  Completion/Snippets
-    {
-        'hrsh7th/vim-vsnip',
-    },
-    {
-        'rafamadriz/friendly-snippets',
-    },
-    {
-        'onsails/lspkind.nvim',
-    },
-    {
-        'hrsh7th/cmp-nvim-lua',
-        ft = { 'vim', 'lua' },
-    },
-    {
-        'hrsh7th/cmp-nvim-lsp',
-    },
-    {
-        'hrsh7th/cmp-nvim-lsp-signature-help',
-    },
-    {
-        'hrsh7th/cmp-buffer',
-    },
-    {
-        'hrsh7th/cmp-path',
-    },
-    {
-        'hrsh7th/cmp-cmdline',
-    },
-    {
-        'hrsh7th/nvim-cmp',
-    },
-    {
-        'hrsh7th/cmp-vsnip',
-    },
-    {
-        'PaterJason/cmp-conjure',
-    },
-    {
-        'f3fora/cmp-spell',
-        ft = { 'tex' }
-    },
-    {
-        'uga-rosa/cmp-dictionary',
-        ft = { 'tex' },
-        --opts = cmpdict_conf,
-    },
-    {
-        'kdheepak/cmp-latex-symbols',
-        ft = { 'tex' },
-    },
-    {
-        'max397574/cmp-greek',
-    },
-    --  Browser
-    {
-        'subnut/nvim-ghost.nvim',
-    },
+    { "hrsh7th/vim-vsnip", },
+    { "rafamadriz/friendly-snippets", },
+    { "onsails/lspkind.nvim", },
+
+    ----  Browser
+    { "subnut/nvim-ghost.nvim", },
+
     --  Filetypes
     {
         'tridactyl/vim-tridactyl',

@@ -6,11 +6,7 @@ if pcall(require, "transparent") then
 else
 end
 
-if pcall(require, "cmp") then
-    require("completion_config")
-else
-end
-
+require("completion_config")
 if pcall(require, "nvim-treesitter") then
     require("treesitter_config")
 else
@@ -477,38 +473,14 @@ if pcall(require, "which-key") then
     })
 
     local function _41_(...)
-        local cmp = require("cmp")
-        local types = require("cmp.types")
-        local nextfn
-        local function _39_()
-            if cmp.visible() then
-                return cmp.select_next_item({ behavior = types.cmp.SelectBehavior.Insert })
-            else
-                return cmp.complete()
-            end
-        end
-        nextfn = _39_
-
-        local function _42_()
-            if cmp.visible() then
-                return cmp.select_next_item()
-            else
-                return vim.cmd('call feedkeys("\\<Tab>", "n")')
-            end
-        end
-
-        local function _44_()
-            if cmp.visible() then
-                return cmp.select_prev_item()
-            else
-                return cmp.complete()
-            end
-        end
         return {
-            { "<C-n>", nextfn },
-            { "<Tab>", _42_ },
-            { "<S-Tab>", _44_ },
             { "jk", "<Esc>", desc = "Quick escape" },
+            --{
+            --    "<C-n>",
+            --    "pumvisible() ? <C-n> : <C—x><C-o>",
+            --    {noremap = true, expr = true},
+            --    desc = "Next buffer",
+            --},
             mode = { "i" },
         }
     end

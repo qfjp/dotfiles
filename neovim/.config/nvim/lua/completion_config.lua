@@ -77,129 +77,29 @@ vim.api.nvim_create_autocmd("ColorScheme", {
         vim.cmd [[highlight! CmpItemKindUnit       guibg=NONE gui=bold]]
     end
 })
-local cmp_autopairs = nil
-if pcall(require, "nvim-autopairs.completion.cmp") then
-    cmp_autopairs = require('nvim-autopairs.completion.cmp')
-end
-if pcall(require, "cmp") then
-    local cmp = package.loaded.cmp
-    --cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
-    local lspkind = require 'lspkind'
-    cmp.setup({
-        formatting = {
-            format = lspkind.cmp_format({
-                mode = "symbol_text",
-                menu = ({
-                    buffer = '[Buf]',
-                    dictionary = '[Dict]',
-                    latex_symbols = '[LaTeX]',
-                    nvim_lua = '[Lua]',
-                    nvim_lsp = '[LSP]',
-                    path = '[FS]',
-                    spell = '[Sp]',
-                    vsnip = '[vsnip]',
-                }),
-            }),
-        },
-        snippet = {
-            expand = function(args)
-                vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
-                -- require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
-                -- require('snippy').expand_snippet(args.body) -- For `snippy` users.
-            end,
-        },
-        window = {
-            -- completion = cmp.config.window.bordered(),
-            documentation = cmp.config.window.bordered(),
-        },
-        mapping = cmp.mapping.preset.insert({
-            ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-            ['<C-f>'] = cmp.mapping.scroll_docs(4),
-            ['<C-Space>'] = cmp.mapping.complete(),
-            ['<C-e>'] = cmp.mapping.abort(),
-            ['<CR>'] = cmp.mapping.confirm({ select = false }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-        }),
-        sources = cmp.config.sources({
-            {
-                name = 'nvim_lsp',
-                option = {
-                    markdown_oxide = {
-                        keyword_pattern = [[\(\k\| \|\/\|#\)\+]]
-                    }
-                }
-            },
-            { name = 'nvim_lsp_signature_help' },
-            { name = 'nvim_lua' },
-            { name = 'vsnip' },
-            { name = 'buffer' },
-            { name = 'path' },
-            { name = 'greek' },
-            { name = 'conjure' },
-        })
-    })
+ local capabilities = vim.lsp.protocol.make_client_capabilities()
+ capabilities.textDocument.foldingRange = {
+     dynamicRegistration = false,
+     lineFoldingOnly = true
+ }
 
-    -- Set configuration for specific filetype.
-    cmp.setup.filetype('gitcommit', {
-        sources = cmp.config.sources({
-            { name = 'cmp_git' }, -- You can specify the `cmp_git` source if you were installed it.
-        }, {
-            { name = 'buffer' },
-        })
-    })
-
-    cmp.setup.filetype('tex', {
-        sources = cmp.config.sources({
-            { name = 'latex_symbols' }
-        }, {
-            { name = 'spell' },
-        }, {
-            { name = 'dictionary' },
-        })
-    })
-
-    -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
-    cmp.setup.cmdline('/', {
-        mapping = cmp.mapping.preset.cmdline(),
-        view = {
-            entries = { name = "custom", selection_order = 'near_cursor' },
-        },
-        sources = {
-            { name = 'buffer' }
-        }
-    })
-
-    -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
-    cmp.setup.cmdline(':', {
-        mapping = cmp.mapping.preset.cmdline(),
-        view = {
-            entries = { name = "custom", selection_order = 'near_cursor' },
-        },
-        sources = cmp.config.sources({
-            { name = 'path' }
-        }, {
-            { name = 'cmdline' }
-        })
-    })
-end
-
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities.textDocument.foldingRange = {
-    dynamicRegistration = false,
-    lineFoldingOnly = true
-}
 -- Setup lspconfig.
-if pcall(require, "cmp_nvim_lsp") then
-    capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
-end
-
-if pcall(require, "nvim-lsp-installer") then
-    require("nvim-lsp-installer").setup {}
-end
+-- Uses old style lspconfig spec to 'attach' to the modern built-in
+-- handler
 if pcall(require, "lspconfig") then
     local lspconfig = require('lspconfig')
     local lsp_selection_range = require('lsp-selection-range')
-    capabilities = lsp_selection_range.update_capabilities(capabilities)
-    local on_attach = function(client, bufnr)
+    local capabilities2 = lsp_selection_range.update_capabilities(capabilities)
+    local function on_attach_fn(client, bufnr)
+        vim.lsp.completion.enable(true, client.id, bufnr, {
+            autotrigger = true,
+            convert = function(item)
+                return { abbr = item.label:gsub("%b()", "") }
+            end,
+        })
+        vim.keymap.set("i", "<C-n>", vim.lsp.completion.get, {desc = "trigger autocompletion"})
+
+
         local bmap = function(mode, lhs, rhs, options)
             options = options or {}
             vim.api.nvim_buf_set_keymap(bufnr, mode, lhs, rhs, options)
@@ -247,8 +147,8 @@ if pcall(require, "lspconfig") then
     lspconfig.bashls.setup {
         cmd = { "bash-language-server", "start" },
         filetypes = { "sh", "bash", "zsh" },
-        capabilities = capabilities,
-        on_attach = on_attach,
+        capabilities = capabilities2,
+        on_attach = on_attach_fn,
     };
     lspconfig.ccls.setup {
         init_options = {
@@ -260,18 +160,18 @@ if pcall(require, "lspconfig") then
                 excludeArgs = { "-frounding-math" },
             },
         },
-        capabilities = capabilities,
-        on_attach = on_attach,
+        capabilities = capabilities2,
+        on_attach = on_attach_fn,
     };
     lspconfig.cssls.setup {
-        capabilities = capabilities,
-        on_attach = on_attach,
+        capabilities = capabilities2,
+        on_attach = on_attach_fn,
         cmd = { "vscode-css-languageserver", "--stdio" },
         filetypes = { "css", "scss", "less" },
     };
     lspconfig.fennel_language_server.setup {
-        capabilities = capabilities,
-        on_attach = on_attach,
+        capabilities = capabilities2,
+        on_attach = on_attach_fn,
     };
     lspconfig.lua_ls.setup {
         settings = {
@@ -290,15 +190,15 @@ if pcall(require, "lspconfig") then
                 },
             },
         },
-        capabilities = capabilities,
-        on_attach = on_attach,
+        capabilities = capabilities2,
+        on_attach = on_attach_fn,
     };
     lspconfig.markdown_oxide.setup({
         -- Ensure that dynamicRegistration is enabled! This allows the LS to take into account actions like the
         -- Create Unresolved File code action, resolving completions for unindexed code blocks, ...
         capabilities = vim.tbl_deep_extend(
             'force',
-            capabilities,
+            capabilities2,
             {
                 workspace = {
                     didChangeWatchedFiles = {
@@ -307,11 +207,11 @@ if pcall(require, "lspconfig") then
                 },
             }
         ),
-        on_attach = on_attach,
+        on_attach = on_attach_fn,
     })
     lspconfig.marksman.setup {
-        capabilities = capabilities,
-        on_attach = on_attach,
+        capabilities = capabilities2,
+        on_attach = on_attach_fn,
     }
     lspconfig.pylsp.setup {
         settings = {
@@ -335,12 +235,12 @@ if pcall(require, "lspconfig") then
                 },
             },
         },
-        capabilities = capabilities,
-        on_attach = on_attach,
+        capabilities = capabilities2,
+        on_attach = on_attach_fn,
     };
     lspconfig.jsonls.setup {
-        capabilities = capabilities,
-        on_attach = on_attach,
+        capabilities = capabilities2,
+        on_attach = on_attach_fn,
     };
     lspconfig.vimls.setup {
         filetypes = { "vim" },
@@ -348,8 +248,8 @@ if pcall(require, "lspconfig") then
         initializationOptions = {
             isNeovim = true,
         },
-        capabilities = capabilities,
-        on_attach = on_attach,
+        capabilities = capabilities2,
+        on_attach = on_attach_fn,
     };
     lspconfig.hls.setup {
         cmd = { "haskell-language-server-wrapper", "--lsp" },
@@ -360,8 +260,8 @@ if pcall(require, "lspconfig") then
             },
         },
         single_file_support = true,
-        capabilities = capabilities,
-        on_attach = on_attach,
+        capabilities = capabilities2,
+        on_attach = on_attach_fn,
     };
     lspconfig.texlab.setup {
         settings = {
@@ -382,35 +282,12 @@ if pcall(require, "lspconfig") then
                 },
             },
         },
-        capabilities = capabilities,
-        on_attach = on_attach,
+        capabilities = capabilities2,
+        on_attach = on_attach_fn,
     };
 end
 if pcall(require, 'ufo') then
     require('ufo').setup()
 end
 
-local cmpdict_conf = {
-    dic = {
-        ["*"] = { "/usr/share/hunspell/en_US.dic" }
-        ,
-        spellang = { en = "/usr/share/hunspell/en_US.dic" }
-    }
-    ,
-    exact = 2
-    ,
-    first_case_insensitive = false
-    ,
-    document = false
-    ,
-    document_command = "wn %s -over"
-    ,
-    async = true
-    ,
-    capacity = 5
-    ,
-    debug = false
-}
-
-return { cmpdict_conf = cmpdict_conf }
 -- }}}
