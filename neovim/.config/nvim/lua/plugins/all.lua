@@ -73,7 +73,7 @@ return {
     {
         'nvim-lualine/lualine.nvim',
         dependencies = { 'nvim-tree/nvim-web-devicons' },
-        opts = require('lualine-conf'),
+        opts = require('lualine_conf').lualine_conf,
     },
     {
         'mhinz/vim-sayonara',
