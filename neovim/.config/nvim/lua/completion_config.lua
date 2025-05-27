@@ -57,6 +57,26 @@ vim.api.nvim_create_autocmd({"FileType"},
         pattern = { "python", "vim", "haskell", "scala", "sbt", "tex", "json" },
         command = "setlocal omnifunc=v:lua.vim.lsp.omnifunc"
     })
+vim.api.nvim_create_autocmd({"FileType"},
+    {
+        group = lspGroup,
+        nested = false,
+        once = false,
+        pattern = { "python", "vim", "haskell", "scala", "sbt", "tex", "json" },
+        callback = function()
+                vim.api.nvim_buf_set_option(0, "formatexpr", "v:lua.vim.lsp.formatexpr()")
+        end
+    })
+vim.api.nvim_create_autocmd({"FileType"},
+    {
+        group = lspGroup,
+        nested = false,
+        once = false,
+        pattern = { "python", "vim", "haskell", "scala", "sbt", "tex", "json" },
+        callback = function()
+                vim.api.nvim_buf_set_option(0, "tagfunc", "v:lua.vim.lsp.tagfunc")
+        end
+    })
 
 local cmp_group = vim.api.nvim_create_augroup("CmpColors", { clear = true })
 vim.api.nvim_create_autocmd({"ColorScheme"}, {
