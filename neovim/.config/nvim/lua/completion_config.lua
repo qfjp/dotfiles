@@ -17,7 +17,7 @@ vim.diagnostic.config({
 })
 
 local colorSchemeLsp = vim.api.nvim_create_augroup("ColorSchemeLspMod", { clear = true })
-vim.api.nvim_create_autocmd("ColorScheme",
+vim.api.nvim_create_autocmd({"ColorScheme"},
     {
         group = colorSchemeLsp,
         nested = false,
@@ -49,7 +49,7 @@ vim.api.nvim_create_autocmd("ColorScheme",
 vim.opt.shortmess:remove({ "F" })
 
 local lspGroup = vim.api.nvim_create_augroup("LspGroup", { clear = true })
-vim.api.nvim_create_autocmd("FileType",
+vim.api.nvim_create_autocmd({"FileType"},
     {
         group = lspGroup,
         nested = false,
@@ -59,7 +59,7 @@ vim.api.nvim_create_autocmd("FileType",
     })
 
 local cmp_group = vim.api.nvim_create_augroup("CmpColors", { clear = true })
-vim.api.nvim_create_autocmd("ColorScheme", {
+vim.api.nvim_create_autocmd({"ColorScheme"}, {
     pattern = "*",
     group = cmp_group
     ,
