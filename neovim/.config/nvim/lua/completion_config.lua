@@ -5,10 +5,16 @@
 vim.opt.cmdheight = 2
 vim.opt.completeopt = { "menu", "menuone", "noselect" }
 vim.opt.signcolumn = "auto"
-vim.cmd [[sign define DiagnosticSignError text=● texthl=DiagnosticSignError]]
-vim.cmd [[sign define DiagnosticSignWarn  text=● texthl=DiagnosticSignWarn]]
-vim.cmd [[sign define DiagnosticSignInfo  text=● texthl=DiagnosticSignInfo]]
-vim.cmd [[sign define DiagnosticSignHint  text=● texthl=DiagnosticSignHint]]
+vim.diagnostic.config({
+    signs = {
+        text = {
+            [vim.diagnostic.severity.ERROR] = "●",
+            [vim.diagnostic.severity.WARN] = "●",
+            [vim.diagnostic.severity.HINT] = "●",
+            [vim.diagnostic.severity.INFO] = "●",
+        },
+    },
+})
 
 local colorSchemeLsp = vim.api.nvim_create_augroup("ColorSchemeLspMod", { clear = true })
 vim.api.nvim_create_autocmd("ColorScheme",

@@ -151,8 +151,13 @@ return {
     { "camilledejoye/nvim-lsp-selection-range", },
     {
         "nvimdev/lspsaga.nvim",
-        dependencies =  { "nvim-lspconfig", },
-        opts = {},
+        event = "LspAttach",
+        dependencies = {
+            "neovim/nvim-lspconfig",
+            "nvim-treesitter/nvim-treesitter",
+            "nvim-tree/nvim-web-devicons"
+        },
+        opts = { ui = {code_action = ""} },
     },
     --  LSP Configuration
     { "smjonas/inc-rename.nvim", },

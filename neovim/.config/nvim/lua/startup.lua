@@ -359,7 +359,11 @@ if pcall(require, "which-key") then
     end
 
     local function _24_()
-        return vim.lsp.buf.hover()
+        if pcall(require, "lspsaga.hover") then
+            return require("lspsaga.hover"):render_hover_doc()
+        else
+            return vim.lsp.buf.hover()
+        end
     end
 
     local function _25_()
@@ -387,7 +391,11 @@ if pcall(require, "which-key") then
     end
 
     local function _31_()
-        return vim.lsp.buf.hover()
+        if pcall(require, "lspsaga.hover") then
+            return require("lspsaga.hover"):render_hover_doc()
+        else
+            return vim.lsp.buf.hover()
+        end
     end
 
     local function _32_()
