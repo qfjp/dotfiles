@@ -26,8 +26,6 @@ vim.opt.relativenumber = false
 
 vim.cmd([[noh]]) -- Start without highlights
 
-vim.g.mapleader="<c-a>"
-vim.g.maplocalleader="<c-a>"
 vim.api.nvim_set_keymap("n", "q", ":q!<CR>", {nowait=true})
 vim.api.nvim_set_keymap("n", "<Space>", "<C-d>", {nowait=true})
 vim.api.nvim_set_keymap("n", "b", "<C-u>", {nowait=true})
@@ -38,4 +36,3 @@ if vim.fn.exists(":QuickScopeToggle") then
     vim.b.qs_local_disable = 1
 end
 vim.cmd([[colorscheme silverscreen]])
-vim.cmd([[Man!]])
