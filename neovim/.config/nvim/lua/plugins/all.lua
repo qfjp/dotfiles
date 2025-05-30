@@ -223,8 +223,21 @@ return {
     { "norcalli/nvim-colorizer.lua", opts = {}, },
 
     --  Tmux
-    { "christoomey/vim-tmux-navigator", },
-    { "knubie/vim-kitty-navigator", build = "cp ./*.py ~/.config/kitty", },
+    {
+        "christoomey/vim-tmux-navigator",
+        cmd = {
+            "TmuxNavigateLeft",
+            "TmuxNavigateDown",
+            "TmuxNavigateUp",
+            "TmuxNavigateRight",
+            "TmuxNavigatePrevious",
+            "TmuxNavigatorProcessList",
+        },
+    },
+    {
+        "knubie/vim-kitty-navigator",
+        build = "cp ./*.py ~/.config/kitty",
+    },
     { "vimwiki/vimwiki", ft = { "vimwiki" }, },
     { "Feel-ix-343/markdown-oxide", },
 }

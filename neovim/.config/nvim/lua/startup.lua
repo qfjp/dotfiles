@@ -292,6 +292,15 @@ if pcall(require, "which-key") then
         mode = { "v" },
     })
 
+    vim.g.kitty_navigator_no_mappings = true
+    local function tmux_or_kitty(dir)
+        if vim.fn.exists('$TMUX') then
+            return ':TmuxNavigate' .. dir .. '<CR>'
+        else
+            return ':KittyNavigate' .. dir .. '<CR>'
+        end
+    end
+
     wk.add({
         { "gk", "k", desc = "Move up one actual line" },
         { "gj", "j", desc = "Move down one actual line" },
@@ -312,10 +321,10 @@ if pcall(require, "which-key") then
         { "z[", require("ufo").openAllFolds, desc = "Open all folds" },
         { "z]", require("ufo").closeAllFolds, desc = "Close all folds" },
         { "<C-s>", ":Scratch<CR>", desc = "Scratch Buffer" },
-        { "<C-h>", ":KittyNavigateLeft<CR>", desc = "Select Window/Pane Left" },
-        { "<C-l>", ":KittyNavigateRight<CR>", desc = "Select Window/Pane Right" },
-        { "<C-k>", ":KittyNavigateUp<CR>", desc = "Select Window/Pane Down" },
-        { "<C-j>", ":KittyNavigateDown<CR>", desc = "Select Window/Pane Up" },
+        { "<C-h>", tmux_or_kitty('Left'), desc = "Select Window/Pane Left" },
+        { "<C-l>", tmux_or_kitty('Right'), desc = "Select Window/Pane Right" },
+        { "<C-k>", tmux_or_kitty('Down'), desc = "Select Window/Pane Down" },
+        { "<C-j>", tmux_or_kitty('Up'), desc = "Select Window/Pane Up" },
         { "n", "n:lua HlNext(0.4)<CR>", desc = "Glow Next" },
         { "N", "N:lua HlNext(0.4)<CR>", desc = "Glow Prev" },
         { ";", ":", desc = "Quick Command" },
