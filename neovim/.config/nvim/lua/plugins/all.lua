@@ -112,11 +112,15 @@ return {
     },
     {
         "folke/twilight.nvim",
-        --cmd = { 'twilight', 'twilightenable', 'twilightdisable' },
+        cmd = {
+            'Twilight',
+            'TwilightEnable',
+            'TwilightDisable'
+        },
     },
     {
         "junegunn/goyo.vim",
-        --cmd = { 'goyo', 'goyoenter', 'goyoleave'},
+        cmd = { 'Goyo', },
     },
     {
         "nvim-treesitter/playground",
