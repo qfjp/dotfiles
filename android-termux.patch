@@ -1,0 +1,147 @@
+diff --git a/neovim/.config/nvim/lua/startup.lua b/neovim/.config/nvim/lua/startup.lua
+index c49c00f..bbc34f5 100644
+--- a/neovim/.config/nvim/lua/startup.lua
++++ b/neovim/.config/nvim/lua/startup.lua
+@@ -26,7 +26,6 @@ if pcall(require, "telescope") then
+         },
+     })
+ 
+-    telescope.load_extension("fzy_native")
+     telescope.load_extension("jj")
+     telescope.load_extension("foldmarkers")
+     telescope.load_extension("texsuite")
+diff --git a/neovim/.config/nvim/lua/treesitter_config.lua b/neovim/.config/nvim/lua/treesitter_config.lua
+index 148fea0..32c7007 100644
+--- a/neovim/.config/nvim/lua/treesitter_config.lua
++++ b/neovim/.config/nvim/lua/treesitter_config.lua
+@@ -1,5 +1,6 @@
+ -- {{{ Treesitter
+ -- --------------
++    require("nvim-treesitter.install").prefer_git = true
+     local enabled_list = {'clojure', 'fennel', 'commonlisp', 'scheme'}
+     local parsers = require('nvim-treesitter.parsers')
+     require'nvim-treesitter.configs'.setup {
+@@ -12,7 +13,6 @@
+           , "haskell"
+           , "java"
+           , "json"
+-          , "latex"
+           , "lua"
+           , "make"
+           , "markdown"
+diff --git a/neovim/bin/random_description.sh b/neovim/bin/random_description.sh
+index 1a63176..d04d418 100755
+--- a/neovim/bin/random_description.sh
++++ b/neovim/bin/random_description.sh
+@@ -1,4 +1,5 @@
+ #!/bin/sh
++OS_PREFIX=/data/data/com.termux/files/usr
+ commands="$OS_PREFIX/share/man/man1/*"
+ # shellcheck disable=SC2086
+ commands="$(basename -a $commands | sed 's/\.1[a-z]*\.gz//')"
+diff --git a/tmux/.tmux.conf b/tmux/.tmux.conf
+index 759b3d7..7ca0f95 100644
+--- a/tmux/.tmux.conf
++++ b/tmux/.tmux.conf
+@@ -30,7 +30,7 @@ bind 1 break-pane
+ # Command Prefix (like screen)
+ unbind C-b
+ set-option -g prefix "C- "
+-set-option -g prefix "C-q"  # C-Backspace as a backup prefix
++set-option -g prefix "C-x"  # C-Backspace as a backup prefix
+ bind-key " " send-prefix
+ 
+ # next-layout was previously tied to " ", so rebind it to something else
+diff --git a/tmux/.tmux/tmuxline-base16 b/tmux/.tmux/tmuxline-base16
+index 1aee527..2f0ebad 100644
+--- a/tmux/.tmux/tmuxline-base16
++++ b/tmux/.tmux/tmuxline-base16
+@@ -18,7 +18,7 @@ setw -g window-status-separator ""
+ 
+ set -g status-left '#[fg=colour81]#[fg=colour237,bg=colour81,bold] #S #[fg=colour81,bg=colour0,nobold,nounderscore,noitalics]'
+ 
+-set -g status-right '#[fg=colour239,nobold,nounderscore,noitalics]#[fg=colour250,bg=colour239] %Y-%m-%d #[fg=colour245,bg=colour239]#[fg=colour238,bg=colour245] %I:%M %p #[fg=colour81,bg=colour245,nobold,nounderscore,noitalics]#[fg=colour237,bg=colour81] #h #[fg=colour81,bg=colour237,bold]'
++set -g status-right '#[fg=colour239,nobold,nounderscore,noitalics]#[fg=colour245,bg=colour239]#[fg=colour81,bg=colour245,nobold,nounderscore,noitalics]#[fg=colour237,bg=colour81] Pixel 9 #[fg=colour81,bg=colour237,bold]'
+ 
+ setw -g window-status-format " #[fg=colour245]  #I  #W  "
+ 
+diff --git a/zsh/.zshrc b/zsh/.zshrc
+index 2118091..0dc04a0 100644
+--- a/zsh/.zshrc
++++ b/zsh/.zshrc
+@@ -153,15 +153,6 @@ poke() {
+         export DISPLAY=:0
+     fi
+ 
+-    # if this is an ssh session, print out info about the last ssh login
+-    if [ "$SSH_CONNECTION" ]; then
+-        lastlogarr=("${(@f)$(last -a -F -n 2 "$USER")}")
+-        lastLogAddr=$(echo "$lastlogarr[2]" | awk '{print $NF}')
+-        lastLogDate=$(echo "$lastlogarr[2]" |\
+-            awk '{printf("%s %s %s %s %s", $3, $4, $5, $6, $7)}')
+-        echo "Last login:"
+-        echo "    $lastLogDate from $lastLogAddr"
+-    fi
+ # }}}
+ 
+ # {{{ Colors
+@@ -180,7 +171,7 @@ poke() {
+     fi
+ 
+     # {{{ zgen
+-        source ~/.zgen/zgen.zsh
++    source ~/.zgen/zgen.zsh >/dev/null
+ 
+         if ! zgen saved; then
+             zgen prezto
+@@ -191,10 +182,6 @@ poke() {
+             zgen prezto 'spectrum'
+             zgen prezto 'utility'
+             zgen prezto 'completion'
+-            zgen prezto 'ssh'
+-            zgen prezto 'gpg'
+-            zgen prezto 'command-not-found'
+-            zgen prezto 'prompt'
+ 
+             zgen load "b4b4r07/emoji-cli"
+             zgen load 'felixgravila/zsh-abbr-path'
+@@ -209,8 +196,10 @@ poke() {
+             zgen save
+         fi
+ 
++        . $HOME/.zgen/zdharma/fast-syntax-highlighting-master/fast-syntax-highlighting.plugin.zsh > /dev/null
++        . $HOME/.zgen/zsh-users/zsh-autosuggestions-master/zsh-autosuggestions.zsh
++
+         . $HOME/.zgen/felixgravila/zsh-abbr-path-master/.abbr_pwd
+-        FAST_HIGHLIGHT_STYLES[comment]="fg=magenta,bold"
+ 
+         ZSH_AUTOSUGGEST_ACCEPT_WIDGETS=(
+             forward-char
+@@ -313,7 +302,7 @@ poke() {
+     # {{{ Default programs
+ 
+         export PAGER="vimpager"
+-        export MANPAGER="nvim -c \"source $HOME/.config/nvim/lua/vimpager.lua | :Man! -\""
++        export MANPAGER=vimmanpager
+         [ -z "$EDITOR" ] && export EDITOR='nvim'
+         [ -z "$SYSTEMD_EDITOR" ] && export SYSTEMD_EDITOR="$EDITOR"
+ 
+@@ -336,9 +325,6 @@ poke() {
+         export JUPYTERLAB_DIR=$HOME/.local/share/jupyter/lab
+ 
+         export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+-
+-        . ~/.databricks_tokens
+-
+     # }}}
+ 
+ # }}}
+@@ -380,7 +366,7 @@ poke() {
+         fpath+=($profile/share/zsh/site-functions $profile/share/zsh/$ZSH_VERSION/functions $profile/share/zsh/vendor-completions)
+     done
+     fpath+=($HOME/.zfunc)
+-    autoload -U $HOME/.zfunc/*(:t)
++    autoload -U $HOME/.zfunc/*(:t) > /dev/null
+ 
+ 
+     zstyle ':completion:*' verbose yes
