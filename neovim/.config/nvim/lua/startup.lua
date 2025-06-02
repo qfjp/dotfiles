@@ -489,15 +489,30 @@ if pcall(require, "which-key") then
         { "g<leader>Dt", ":SLoad default<CR>", desc = "Load default session" },
     })
 
+    local function pumvisible()
+        return tonumber(vim.fn.pumvisible()) ~= 0
+    end
+
+    local function feedkeys(keys)
+        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(keys, true, false, true), 'n', true)
+    end
+
     local function _41_(...)
         return {
             { "jk", "<Esc>", desc = "Quick escape" },
-            --{
-            --    "<C-n>",
-            --    "pumvisible() ? <C-n> : <C—x><C-o>",
-            --    {noremap = true, expr = true},
-            --    desc = "Next buffer",
-            --},
+            {
+                "<C-n>",
+                function()
+                    if pumvisible() then
+                        feedkeys '<C-n>'
+                    else
+                        feedkeys '<C-x><C-o>'
+                    end
+                end,
+                --pumvisible() ? '<C-n>' : '<C—x><C-o>',
+                {noremap = true, expr = true},
+                desc = "Autocomplete",
+            },
             mode = { "i" },
         }
     end
