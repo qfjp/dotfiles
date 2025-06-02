@@ -49,30 +49,30 @@ vim.api.nvim_create_autocmd({"ColorScheme"},
 vim.opt.shortmess:remove({ "F" })
 
 local lspGroup = vim.api.nvim_create_augroup("LspGroup", { clear = true })
-vim.api.nvim_create_autocmd({"FileType"},
+vim.api.nvim_create_autocmd({ "BufRead" },
     {
         group = lspGroup,
         nested = false,
         once = false,
-        pattern = { "python", "vim", "haskell", "scala", "sbt", "tex", "json" },
+        pattern = '*',
         command = "setlocal omnifunc=v:lua.vim.lsp.omnifunc"
     })
-vim.api.nvim_create_autocmd({"FileType"},
+vim.api.nvim_create_autocmd({ "BufRead" },
     {
         group = lspGroup,
         nested = false,
         once = false,
-        pattern = { "python", "vim", "haskell", "scala", "sbt", "tex", "json" },
+        pattern = '*',
         callback = function()
                 vim.api.nvim_buf_set_option(0, "formatexpr", "v:lua.vim.lsp.formatexpr()")
         end
     })
-vim.api.nvim_create_autocmd({"FileType"},
+vim.api.nvim_create_autocmd({ "BufRead" },
     {
         group = lspGroup,
         nested = false,
         once = false,
-        pattern = { "python", "vim", "haskell", "scala", "sbt", "tex", "json" },
+        pattern = '*',
         callback = function()
                 vim.api.nvim_buf_set_option(0, "tagfunc", "v:lua.vim.lsp.tagfunc")
         end

@@ -144,7 +144,6 @@ return {
     { "j-hui/fidget.nvim", opts = {}, },
     --  formatting
     { "junegunn/vim-easy-align", },
-    { "sbdchd/neoformat", },
 
     --  Telescope
     {
