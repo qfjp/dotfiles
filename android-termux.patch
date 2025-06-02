@@ -1,3 +1,17 @@
+diff --git a/neovim/.config/nvim/lua/plugins/all.lua b/neovim/.config/nvim/lua/plugins/all.lua
+index c108c82..2cccad2 100644
+--- a/neovim/.config/nvim/lua/plugins/all.lua
++++ b/neovim/.config/nvim/lua/plugins/all.lua
+@@ -249,9 +249,6 @@ return {
+     { "mfussenegger/nvim-jdtls", ft = { "java" }, },
+     { "williamboman/mason.nvim", opts = {}, },
+ 
+-    ----  Browser
+-    { "subnut/nvim-ghost.nvim", },
+-
+     --  Filetypes
+     { "tridactyl/vim-tridactyl", ft = { "tridactyl" }, },
+     { "lervag/vimtex", ft = { "tex" }, },
 diff --git a/neovim/.config/nvim/lua/startup.lua b/neovim/.config/nvim/lua/startup.lua
 index c49c00f..bbc34f5 100644
 --- a/neovim/.config/nvim/lua/startup.lua
