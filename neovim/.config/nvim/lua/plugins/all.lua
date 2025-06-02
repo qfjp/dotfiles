@@ -263,6 +263,9 @@ return {
         ft = { "tex" },
         dependencies = { "kana/vim-textobj-user" },
     },
+    {
+        "kana/vim-textobj-user",
+    },
     { "neovimhaskell/haskell-vim",        ft = { "haskell" }, },
     { "mattn/emmet-vim",                  ft = { "html", "xml" }, },
     { "ElmCast/elm-vim",                  ft = { "html", "xml" }, },
