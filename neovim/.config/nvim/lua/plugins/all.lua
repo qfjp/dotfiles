@@ -192,66 +192,62 @@ return {
     },
     --  LSP Configuration
     { "smjonas/inc-rename.nvim", },
-    { "neovim/nvim-lspconfig", },
+    {
+        "neovim/nvim-lspconfig",
+        lazy = false, -- REQUIRED: tell lazy.nvim to start this plugin at startup
+        dependencies = {
+            -- main one
+            { "ms-jpq/coq_nvim", branch = "coq" },
+
+            -- 9000+ Snippets
+            { "ms-jpq/coq.artifacts", branch = "artifacts" },
+
+            -- lua & third party sources -- See https://github.com/ms-jpq/coq.thirdparty
+            -- Need to **configure separately**
+            { 'ms-jpq/coq.thirdparty', branch = "3p" }
+            -- - shell repl
+            -- - nvim lua api
+            -- - scientific calculator
+            -- - comment banner
+            -- - etc
+        },
+        init = function()
+            vim.g.coq_settings = {
+                auto_start = true, -- if you want to start COQ at startup
+                -- Your COQ settings here
+                completion = {
+                    always = false,
+                },
+                display = {
+                    icons = {
+                        mode = 'short'
+                    },
+                    pum = {
+                        kind_context = {" [", "]"},
+                        source_context = {"「", "」"},
+                    },
+                },
+            }
+        end,
+        config = function()
+            if pcall(require, "coq_3p") then
+                require("coq_3p") {
+                    { src = "nvimlua", short_name = "nLUA", conf_only = false },
+                    { src = "vimtex",  short_name = "vTEX" },
+                    { src = "builtin/c"       },
+                    { src = "builtin/css"     },
+                    { src = "builtin/haskell" },
+                    { src = "builtin/html"    },
+                    { src = "builtin/js"      },
+                    { src = "builtin/syntax"  },
+                    { src = "builtin/xml"     },
+                }
+            end
+        end,
+    },
     { "scalameta/nvim-metals", },
     { "mfussenegger/nvim-jdtls", ft = { "java" }, },
     { "williamboman/mason.nvim", opts = {}, },
-
-    --  Completion/Snippets
-    { "hrsh7th/vim-vsnip", },
-    { "rafamadriz/friendly-snippets", },
-    {
-        "onsails/lspkind.nvim",
-        opt = {
-            -- DEPRECATED (use mode instead): enables text annotations
-            --
-            -- default: true
-            -- with_text = true,
-
-            -- defines how annotations are shown
-            -- default: symbol
-            -- options: 'text', 'text_symbol', 'symbol_text', 'symbol'
-            mode = 'symbol_text',
-
-            -- default symbol map
-            -- can be either 'default' (requires nerd-fonts font) or
-            -- 'codicons' for codicon preset (requires vscode-codicons font)
-            --
-            -- default: 'default'
-            preset = 'codicons',
-
-            -- override preset symbols
-            --
-            -- default: {}
-            symbol_map = {
-                Text = "󰉿",
-                Method = "󰆧",
-                Function = "󰊕",
-                Constructor = "",
-                Field = "󰜢",
-                Variable = "󰀫",
-                Class = "󰠱",
-                Interface = "",
-                Module = "",
-                Property = "󰜢",
-                Unit = "󰑭",
-                Value = "󰎠",
-                Enum = "",
-                Keyword = "󰌋",
-                Snippet = "",
-                Color = "󰏘",
-                File = "󰈙",
-                Reference = "󰈇",
-                Folder = "󰉋",
-                EnumMember = "",
-                Constant = "󰏿",
-                Struct = "󰙅",
-                Event = "",
-                Operator = "󰆕",
-                TypeParameter = "",
-            },
-        },
-    },
 
     ----  Browser
     { "subnut/nvim-ghost.nvim", },
