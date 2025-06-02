@@ -215,6 +215,9 @@ return {
             vim.g.coq_settings = {
                 auto_start = true, -- if you want to start COQ at startup
                 -- Your COQ settings here
+                keymap = {
+                    jump_to_mark = '',
+                },
                 completion = {
                     always = false,
                 },
@@ -284,6 +287,12 @@ return {
     {
         "knubie/vim-kitty-navigator",
         build = "cp ./*.py ~/.config/kitty",
+            cmd = {
+                "KittyNavigateLeft",
+                "KittyNavigateDown",
+                "KittyNavigateUp",
+                "KittyNavigateRight",
+        }
     },
     { "vimwiki/vimwiki", ft = { "vimwiki" }, },
     { "Feel-ix-343/markdown-oxide", },

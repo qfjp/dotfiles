@@ -294,7 +294,7 @@ if pcall(require, "which-key") then
 
     vim.g.kitty_navigator_no_mappings = true
     local function tmux_or_kitty(dir)
-        if vim.fn.exists('$TMUX') then
+        if vim.fn.exists('$TMUX') == 1 then
             return ':TmuxNavigate' .. dir .. '<CR>'
         else
             return ':KittyNavigate' .. dir .. '<CR>'
@@ -323,8 +323,8 @@ if pcall(require, "which-key") then
         { "<C-s>", ":Scratch<CR>", desc = "Scratch Buffer" },
         { "<C-h>", tmux_or_kitty('Left'), desc = "Select Window/Pane Left" },
         { "<C-l>", tmux_or_kitty('Right'), desc = "Select Window/Pane Right" },
-        { "<C-k>", tmux_or_kitty('Down'), desc = "Select Window/Pane Down" },
-        { "<C-j>", tmux_or_kitty('Up'), desc = "Select Window/Pane Up" },
+        { "<C-k>", tmux_or_kitty('Up'), desc = "Select Window/Pane Up" },
+        { "<C-j>", tmux_or_kitty('Down'), desc = "Select Window/Pane Down" },
         { "n", "n:lua HlNext(0.4)<CR>", desc = "Glow Next" },
         { "N", "N:lua HlNext(0.4)<CR>", desc = "Glow Prev" },
         { ";", ":", desc = "Quick Command" },
