@@ -17,7 +17,7 @@ vim.diagnostic.config({
 })
 
 local colorSchemeLsp = vim.api.nvim_create_augroup("ColorSchemeLspMod", { clear = true })
-vim.api.nvim_create_autocmd({"ColorScheme"},
+vim.api.nvim_create_autocmd({ "ColorScheme" },
     {
         group = colorSchemeLsp,
         nested = false,
@@ -64,7 +64,7 @@ vim.api.nvim_create_autocmd({ "BufRead" },
         once = false,
         pattern = '*',
         callback = function()
-                vim.api.nvim_buf_set_option(0, "formatexpr", "v:lua.vim.lsp.formatexpr()")
+            vim.api.nvim_buf_set_option(0, "formatexpr", "v:lua.vim.lsp.formatexpr()")
         end
     })
 vim.api.nvim_create_autocmd({ "BufRead" },
@@ -72,14 +72,14 @@ vim.api.nvim_create_autocmd({ "BufRead" },
         group = lspGroup,
         nested = false,
         once = false,
-        pattern = '*',
+        pattern = '*', -- { "python", "vim", "haskell", "scala", "sbt", "tex", "json" },
         callback = function()
-                vim.api.nvim_buf_set_option(0, "tagfunc", "v:lua.vim.lsp.tagfunc")
+            vim.api.nvim_buf_set_option(0, "tagfunc", "v:lua.vim.lsp.tagfunc")
         end
     })
 
 local cmp_group = vim.api.nvim_create_augroup("CmpColors", { clear = true })
-vim.api.nvim_create_autocmd({"ColorScheme"}, {
+vim.api.nvim_create_autocmd({ "ColorScheme" }, {
     pattern = "*",
     group = cmp_group
     ,
@@ -118,7 +118,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
         end
         if not client:supports_method('textDocument/willSaveWaitUntil') and client:supports_method('textDocument/formatting') then
             vim.api.nvim_create_autocmd('BufWritePre', {
-                group = vim.api.nvim_create_augroup('my.lsp', {clear = false}),
+                group = vim.api.nvim_create_augroup('my.lsp', { clear = false }),
                 buffer = args.buf,
                 callback = function()
                     vim.lsp.buf.format({ bufnr = args.buf, id = client.id, timeout_ms = 1000 })
@@ -146,7 +146,7 @@ vim.lsp.config("ccls", coq.lsp_ensure_capabilities({
 }))
 vim.lsp.enable('ccls')
 vim.lsp.config("cssls", coq.lsp_ensure_capabilities({
-    cmd = {'vscode-css-languageserver', '--stdio'},
+    cmd = { 'vscode-css-languageserver', '--stdio' },
     filetypes = { "css", "scss", "less" },
 }))
 vim.lsp.enable("cssls")

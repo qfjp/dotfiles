@@ -37,26 +37,26 @@ return {
     { dir = "~/.config/nvim/bundle/SyntaxAttr", },
 
     -- startup
-    { "mhinz/vim-startify", dependencies = { "ryanoasis/vim-devicons", }, },
-    { "lewis6991/impatient.nvim", priority = 1000, },
+    { "mhinz/vim-startify",                                 dependencies = { "ryanoasis/vim-devicons", }, },
+    { "lewis6991/impatient.nvim",                           priority = 1000, },
 
     -- Fennel
-    { "gpanders/nvim-parinfer", ft = { "clojure", "fennel", "scheme", "lisp" }, },
-    { "mnacamura/vim-fennel-syntax", ft = "fennel", },
+    { "gpanders/nvim-parinfer",                             ft = { "clojure", "fennel", "scheme", "lisp" }, },
+    { "mnacamura/vim-fennel-syntax",                        ft = "fennel", },
     -- Vim Essentials
 
-    { "mbbill/undotree", cmd = "UndotreeShow", },
+    { "mbbill/undotree",                                    cmd = "UndotreeShow", },
     {
         "nvim-lualine/lualine.nvim",
         dependencies = { "nvim-tree/nvim-web-devicons" },
         opts = require("lualine_conf").lualine_conf,
     },
-    { "mhinz/vim-sayonara", config = SayoConfig, },
+    { "mhinz/vim-sayonara",      config = SayoConfig, },
     { "tpope/vim-repeat", },
     { "tpope/vim-surround", },
     { "tpope/vim-speeddating", },
     { "wellle/targets.vim", },
-    { "windwp/nvim-autopairs", opts = {}, },
+    { "windwp/nvim-autopairs",   opts = {}, },
 
     --  Git
     { "lewis6991/gitsigns.nvim", opts = require("gitsigns_config").git_sign_table, },
@@ -136,12 +136,12 @@ return {
             "echasnovski/mini.icons",
         },
     },
-    { "karb94/neoscroll.nvim", opts = neoscroll_conf, },
+    { "karb94/neoscroll.nvim",   opts = neoscroll_conf, },
     {
         "camspiers/lens.vim",
         dependencies = { "camspiers/animate.vim" },
     },
-    { "j-hui/fidget.nvim", opts = {}, },
+    { "j-hui/fidget.nvim",       opts = {}, },
     --  formatting
     { "junegunn/vim-easy-align", },
 
@@ -154,7 +154,7 @@ return {
             render = "minimal",
         },
     },
-    { "vigoux/notifier.nvim", opts = {}, },
+    { "vigoux/notifier.nvim",    opts = {}, },
     {
         "nvim-telescope/telescope.nvim",
         dependencies = {
@@ -186,7 +186,7 @@ return {
             "nvim-treesitter/nvim-treesitter",
             "nvim-tree/nvim-web-devicons"
         },
-        opts = { ui = {code_action = ""} },
+        opts = { ui = { code_action = "" } },
     },
     --  LSP Configuration
     { "smjonas/inc-rename.nvim", },
@@ -195,10 +195,10 @@ return {
         lazy = false, -- REQUIRED: tell lazy.nvim to start this plugin at startup
         dependencies = {
             -- main one
-            { "ms-jpq/coq_nvim", branch = "coq" },
+            { "ms-jpq/coq_nvim",       branch = "coq" },
 
             -- 9000+ Snippets
-            { "ms-jpq/coq.artifacts", branch = "artifacts" },
+            { "ms-jpq/coq.artifacts",  branch = "artifacts" },
 
             -- lua & third party sources -- See https://github.com/ms-jpq/coq.thirdparty
             -- Need to **configure separately**
@@ -224,8 +224,8 @@ return {
                         mode = 'short'
                     },
                     pum = {
-                        kind_context = {" [", "]"},
-                        source_context = {"「", "」"},
+                        kind_context = { " [", "]" },
+                        source_context = { "「", "」" },
                     },
                 },
             }
@@ -233,15 +233,17 @@ return {
         config = function()
             if pcall(require, "coq_3p") then
                 require("coq_3p") {
-                    { src = "nvimlua", short_name = "nLUA", conf_only = false },
-                    { src = "vimtex",  short_name = "vTEX" },
-                    { src = "builtin/c"       },
-                    { src = "builtin/css"     },
+                    { src = "nvimlua",        short_name = "nLUA", conf_only = false },
+                    { src = "vimtex",         short_name = "vTEX" },
+                    { src = "builtin/c" },
+                    { src = "builtin/css" },
                     { src = "builtin/haskell" },
-                    { src = "builtin/html"    },
-                    { src = "builtin/js"      },
-                    { src = "builtin/syntax"  },
-                    { src = "builtin/xml"     },
+                    { src = "builtin/html" },
+                    { src = "builtin/js" },
+                    { src = "builtin/syntax" },
+                    { src = "builtin/xml" },
+                    { src = "bc",             short_name = "MATH", precision = 6 },
+                    { src = "cow",            trigger = "!cow" },
                 }
             end
         end,
@@ -255,20 +257,20 @@ return {
 
     --  Filetypes
     { "tridactyl/vim-tridactyl", ft = { "tridactyl" }, },
-    { "lervag/vimtex", ft = { "tex" }, },
+    { "lervag/vimtex",           ft = { "tex" }, },
     {
         "rbonvall/vim-textobj-latex",
         ft = { "tex" },
         dependencies = { "kana/vim-textobj-user" },
     },
-    { "neovimhaskell/haskell-vim", ft = { "haskell" }, },
-    { "mattn/emmet-vim", ft = { "html", "xml" }, },
-    { "ElmCast/elm-vim", ft = { "html", "xml" }, },
+    { "neovimhaskell/haskell-vim",        ft = { "haskell" }, },
+    { "mattn/emmet-vim",                  ft = { "html", "xml" }, },
+    { "ElmCast/elm-vim",                  ft = { "html", "xml" }, },
     { "mattly/vim-markdown-enhancements", ft = { "markdown" }, },
 
     --  Color
     { "mhinz/vim-janah", },
-    { "norcalli/nvim-colorizer.lua", opts = {}, },
+    { "norcalli/nvim-colorizer.lua",      opts = {}, },
 
     --  Tmux
     {
@@ -285,13 +287,13 @@ return {
     {
         "knubie/vim-kitty-navigator",
         build = "cp ./*.py ~/.config/kitty",
-            cmd = {
-                "KittyNavigateLeft",
-                "KittyNavigateDown",
-                "KittyNavigateUp",
-                "KittyNavigateRight",
+        cmd = {
+            "KittyNavigateLeft",
+            "KittyNavigateDown",
+            "KittyNavigateUp",
+            "KittyNavigateRight",
         }
     },
-    { "vimwiki/vimwiki", ft = { "vimwiki" }, },
+    { "vimwiki/vimwiki",            ft = { "vimwiki" }, },
     { "Feel-ix-343/markdown-oxide", },
 }
