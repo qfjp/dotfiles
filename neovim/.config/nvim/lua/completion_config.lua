@@ -103,215 +103,142 @@ vim.api.nvim_create_autocmd({"ColorScheme"}, {
         vim.cmd [[highlight! CmpItemKindUnit       guibg=NONE gui=bold]]
     end
 })
- local capabilities = vim.lsp.protocol.make_client_capabilities()
- capabilities.textDocument.foldingRange = {
-     dynamicRegistration = false,
-     lineFoldingOnly = true
- }
 
--- Setup lspconfig.
--- Uses old style lspconfig spec to 'attach' to the modern built-in
--- handler
-if pcall(require, "lspconfig") then
-    local lspconfig = require('lspconfig')
-    local lsp_selection_range = require('lsp-selection-range')
-    local capabilities2 = lsp_selection_range.update_capabilities(capabilities)
-    local function on_attach_fn(client, bufnr)
-        vim.lsp.completion.enable(true, client.id, bufnr, {
-            autotrigger = true,
-            convert = function(item)
-                return { abbr = item.label:gsub("%b()", "") }
-            end,
-        })
-        vim.keymap.set("i", "<C-n>", vim.lsp.completion.get, {desc = "trigger autocompletion"})
-
-
-        local bmap = function(mode, lhs, rhs, options)
-            options = options or {}
-            vim.api.nvim_buf_set_keymap(bufnr, mode, lhs, rhs, options)
-        end
-
-        local function check_codelens_support()
-            local clients = vim.lsp.get_active_clients({ bufnr = 0 })
-            for _, c in ipairs(clients) do
-                if c.server_capabilities.codeLensProvider then
-                    return true
-                end
-            end
-            return false
-        end
-        -- trigger codelens refresh
-
-        vim.api.nvim_create_autocmd(
-            { 'TextChanged', 'InsertLeave', 'CursorHold', 'LspAttach', 'BufEnter' },
-            {
-                buffer = bufnr,
-                callback = function()
-                    if check_codelens_support() then
-                        vim.lsp.codelens.refresh({ bufnr = 0 })
-                    end
-                end
-            })
-
-        -- setup Markdown Oxide daily note commands
-        if client.name == "markdown_oxide" then
-            vim.api.nvim_create_user_command(
-                "Daily",
-                function(args)
-                    local input = args.args
-                    vim.lsp.buf.execute_command({ command = "jump", arguments = { input } })
+vim.api.nvim_create_autocmd("LspAttach", {
+    group = vim.api.nvim_create_augroup('my.lsp', {}),
+    callback = function(args)
+        local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
+        if client:supports_method('textDocument/completion') then
+            vim.lsp.completion.enable(true, client.id, args.buf, {
+                autotrigger = true,
+                convert = function(item)
+                    return { abbr = item.label:gsub("%b()", "") }
                 end,
-                { desc = 'Open daily note', nargs = "*" }
-            )
+            })
         end
-        -- Put here any configuration to execute when attaching a client to a buffer
-
-        -- Create mappings to trigger or expand the selection
-        bmap('n', 'vv', [[<cmd>lua require('lsp-selection-range').trigger()<CR>]], { noremap = true })
-        bmap('v', 'vv', [[<cmd>lua require('lsp-selection-range').expand()<CR>]], { noremap = true })
+        if not client:supports_method('textDocument/willSaveWaitUntil') and client:supports_method('textDocument/formatting') then
+            vim.api.nvim_create_autocmd('BufWritePre', {
+                group = vim.api.nvim_create_augroup('my.lsp', {clear = false}),
+                buffer = args.buf,
+                callback = function()
+                    vim.lsp.buf.format({ bufnr = args.buf, id = client.id, timeout_ms = 1000 })
+                end,
+            })
+        end
     end
-    lspconfig.bashls.setup {
-        cmd = { "bash-language-server", "start" },
-        filetypes = { "sh", "bash", "zsh" },
-        capabilities = capabilities2,
-        on_attach = on_attach_fn,
-    };
-    lspconfig.ccls.setup {
-        init_options = {
-            compilationDatabaseDirectory = "build",
-            index = {
-                threads = 0,
+})
+local coq = require('coq')
+vim.lsp.config("bashls", coq.lsp_ensure_capabilities({
+    cmd = { "bash-language-server", "start" },
+    filetypes = { "sh", "bash", "zsh" },
+}))
+vim.lsp.enable('bashls')
+vim.lsp.config("ccls", coq.lsp_ensure_capabilities({
+    init_options = {
+        compilationDatabaseDirectory = "build",
+        index = {
+            threads = 0,
+        },
+        clang = {
+            excludeArgs = { "-frounding-math" },
+        },
+    },
+}))
+vim.lsp.enable('ccls')
+vim.lsp.config("cssls", coq.lsp_ensure_capabilities({
+    cmd = {'vscode-css-languageserver', '--stdio'},
+    filetypes = { "css", "scss", "less" },
+}))
+vim.lsp.enable("cssls")
+vim.lsp.config("fennel_language_server", coq.lsp_ensure_capabilities({}))
+vim.lsp.enable("fennel_language_server")
+vim.lsp.config("luals", coq.lsp_ensure_capabilities({
+    settings = {
+        Lua = {
+            runtime = {
+                version = "LuaJIT",
             },
-            clang = {
-                excludeArgs = { "-frounding-math" },
+            diagnostics = {
+                globals = { 'vim' },
+            },
+            workspace = {
+                library = vim.api.nvim_get_runtime_file("", true),
+            },
+            telemetry = {
+                enable = false,
             },
         },
-        capabilities = capabilities2,
-        on_attach = on_attach_fn,
-    };
-    lspconfig.cssls.setup {
-        capabilities = capabilities2,
-        on_attach = on_attach_fn,
-        cmd = { "vscode-css-languageserver", "--stdio" },
-        filetypes = { "css", "scss", "less" },
-    };
-    lspconfig.fennel_language_server.setup {
-        capabilities = capabilities2,
-        on_attach = on_attach_fn,
-    };
-    lspconfig.lua_ls.setup {
-        settings = {
-            Lua = {
-                runtime = {
-                    version = "LuaJIT",
+    },
+}))
+vim.lsp.enable("lua_ls")
+vim.lsp.config("marksman", coq.lsp_ensure_capabilities({}))
+vim.lsp.enable('marksman')
+vim.lsp.config("pylsp", coq.lsp_ensure_capabilities({
+    settings = {
+        pylsp = {
+            plugins = {
+                black = {
+                    enabled = true,
                 },
-                diagnostics = {
-                    globals = { 'vim' },
+                isort = {
+                    enabled = true,
                 },
-                workspace = {
-                    library = vim.api.nvim_get_runtime_file("", true),
+                ruff = {
+                    enabled = true,
+                    extendSelect = { "I" },
                 },
-                telemetry = {
-                    enable = false,
-                },
-            },
-        },
-        capabilities = capabilities2,
-        on_attach = on_attach_fn,
-    };
-    lspconfig.markdown_oxide.setup({
-        -- Ensure that dynamicRegistration is enabled! This allows the LS to take into account actions like the
-        -- Create Unresolved File code action, resolving completions for unindexed code blocks, ...
-        capabilities = vim.tbl_deep_extend(
-            'force',
-            capabilities2,
-            {
-                workspace = {
-                    didChangeWatchedFiles = {
-                        dynamicRegistration = true,
-                    },
-                },
-            }
-        ),
-        on_attach = on_attach_fn,
-    })
-    lspconfig.marksman.setup {
-        capabilities = capabilities2,
-        on_attach = on_attach_fn,
-    }
-    lspconfig.pylsp.setup {
-        settings = {
-            pyls = {
-                plugins = {
-                    black = {
-                        enabled = true,
-                    },
-                    isort = {
-                        enabled = true,
-                    },
-                    ruff = {
-                        enabled = true,
-                        extendSelect = { "I" },
-                    },
-                    mypy = {
-                        enabled = true,
-                        live_mode = true,
-                        report_progress = true,
-                    },
+                mypy = {
+                    enabled = true,
+                    live_mode = true,
+                    report_progress = true,
                 },
             },
         },
-        capabilities = capabilities2,
-        on_attach = on_attach_fn,
-    };
-    lspconfig.jsonls.setup {
-        capabilities = capabilities2,
-        on_attach = on_attach_fn,
-    };
-    lspconfig.vimls.setup {
-        filetypes = { "vim" },
-        cmd = { "vim-language-server", "--stdio" },
-        initializationOptions = {
-            isNeovim = true,
+    },
+}));
+vim.lsp.enable("pylsp")
+vim.lsp.config("jsonls", coq.lsp_ensure_capabilities({}))
+vim.lsp.enable("jsonls")
+vim.lsp.config("vimls", coq.lsp_ensure_capabilities({
+    filetypes = { "vim" },
+    cmd = { "vim-language-server", "--stdio" },
+    initializationOptions = {
+        isNeovim = true,
+    },
+}))
+vim.lsp.enable("vimls")
+vim.lsp.config("hls", coq.lsp_ensure_capabilities({
+    cmd = { "haskell-language-server-wrapper", "--lsp" },
+    filetypes = { "haskell", "lhaskell" },
+    settings = {
+        haskell = {
+            formattingProvider = "brittany",
         },
-        capabilities = capabilities2,
-        on_attach = on_attach_fn,
-    };
-    lspconfig.hls.setup {
-        cmd = { "haskell-language-server-wrapper", "--lsp" },
-        filetypes = { "haskell", "lhaskell" },
-        settings = {
-            haskell = {
-                formattingProvider = "brittany",
+    },
+    single_file_support = true,
+}))
+vim.lsp.enable("hls")
+vim.lsp.config("texlab", coq.lsp_ensure_capabilities({
+    settings = {
+        bibtex = {
+            formatting = {
+                lineLength = 80,
             },
         },
-        single_file_support = true,
-        capabilities = capabilities2,
-        on_attach = on_attach_fn,
-    };
-    lspconfig.texlab.setup {
-        settings = {
-            bibtex = {
-                formatting = {
-                    lineLength = 80,
-                },
+        latex = {
+            build = {
+                args = { "-outdir", "build", "-pdf", "-interaction=nonstopmode", "-synctex=1" },
+                executable = "latexmk",
+                onSave = true,
+                outputDirectory = "build",
             },
-            latex = {
-                build = {
-                    args = { "-outdir", "build", "-pdf", "-interaction=nonstopmode", "-synctex=1" },
-                    executable = "latexmk",
-                    onSave = true,
-                    outputDirectory = "build",
-                },
-                lint = {
-                    onChange = true,
-                },
+            lint = {
+                onChange = true,
             },
         },
-        capabilities = capabilities2,
-        on_attach = on_attach_fn,
-    };
-end
+    },
+}))
+vim.lsp.enable("texlab")
 if pcall(require, 'ufo') then
     require('ufo').setup()
 end
