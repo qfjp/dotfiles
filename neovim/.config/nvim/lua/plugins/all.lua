@@ -110,6 +110,9 @@ return {
                 view = "mini",
                 view_warn = "mini",
             },
+            popupmenu = {
+                enabled = false
+            },
             nui = { position = "50%" },
         },
     },
@@ -234,13 +237,11 @@ return {
                     manual_complete_insertion_only = true,
                 },
                 completion = {
-                    always = false,
+                    always = true,
                 },
                 display = {
-                    icons = {
-                        mode = 'short'
-                    },
                     pum = {
+                        y_ratio = 0.2,
                         kind_context = { " [", "]" },
                         source_context = { "「", "」" },
                     },
