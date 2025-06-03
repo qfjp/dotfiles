@@ -6,7 +6,6 @@ if pcall(require, "transparent") then
 else
 end
 
-require("completion_config")
 if pcall(require, "nvim-treesitter") then
     require("treesitter_config")
 else

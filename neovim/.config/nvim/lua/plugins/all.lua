@@ -230,6 +230,8 @@ return {
                 -- Your COQ settings here
                 keymap = {
                     jump_to_mark = '',
+                    manual_complete = '<c-n>',
+                    manual_complete_insertion_only = true,
                 },
                 completion = {
                     always = false,
@@ -246,6 +248,7 @@ return {
             }
         end,
         config = function()
+            require("completion_config")
             if pcall(require, "coq_3p") then
                 require("coq_3p") {
                     { src = "nvimlua",        short_name = "nLUA", conf_only = false },
