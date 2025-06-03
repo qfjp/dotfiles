@@ -93,13 +93,16 @@ return {
                     ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
                     ["vim.lsp.util.stylize_markdown"] = true,
                 },
+                signature = {
+                    enabled = false,
+                },
             },
             presets = {
                 bottom_search = true,
                 command_palette = true,
                 long_message_to_split = true,
                 inc_rename = false,
-                lsp_doc_border = false,
+                lsp_doc_border = true,
             },
             cmdline = { view = "cmdline" },
             messages = {
@@ -187,6 +190,18 @@ return {
             "nvim-tree/nvim-web-devicons"
         },
         opts = { ui = { code_action = "" } },
+    },
+    {
+        "ray-x/lsp_signature.nvim",
+        event = "InsertEnter",
+        opts = {
+            bind = true,
+            handler_opts = {
+                border = "rounded"
+            }
+        },
+        -- or use config
+        -- config = function(_, opts) require'lsp_signature'.setup({you options}) end
     },
     --  LSP Configuration
     { "smjonas/inc-rename.nvim", },
