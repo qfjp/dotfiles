@@ -192,7 +192,14 @@ return {
             "nvim-treesitter/nvim-treesitter",
             "nvim-tree/nvim-web-devicons"
         },
-        opts = { ui = { code_action = "" } },
+        opts = {
+            symbol_in_winbar = {
+                separator = '  ',  -- ' › '
+                show_file = false,
+                color_mode = false,
+            },
+            ui = { code_action = "", },
+        },
     },
     {
         "ray-x/lsp_signature.nvim",
