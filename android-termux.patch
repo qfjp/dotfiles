@@ -1,8 +1,8 @@
 diff --git a/neovim/.config/nvim/lua/plugins/all.lua b/neovim/.config/nvim/lua/plugins/all.lua
-index b3a717c..392b399 100644
+index d2ae664..00be023 100644
 --- a/neovim/.config/nvim/lua/plugins/all.lua
 +++ b/neovim/.config/nvim/lua/plugins/all.lua
-@@ -252,9 +252,6 @@ return {
+@@ -278,9 +278,6 @@ return {
      { "mfussenegger/nvim-jdtls", ft = { "java" }, },
      { "williamboman/mason.nvim", opts = {}, },
  
@@ -13,10 +13,10 @@ index b3a717c..392b399 100644
      { "tridactyl/vim-tridactyl", ft = { "tridactyl" }, },
      { "lervag/vimtex",           ft = { "tex" }, },
 diff --git a/neovim/.config/nvim/lua/startup.lua b/neovim/.config/nvim/lua/startup.lua
-index 529a5ea..dbb0391 100644
+index 2386331..9b8ac47 100644
 --- a/neovim/.config/nvim/lua/startup.lua
 +++ b/neovim/.config/nvim/lua/startup.lua
-@@ -26,7 +26,6 @@ if pcall(require, "telescope") then
+@@ -25,7 +25,6 @@ if pcall(require, "telescope") then
          },
      })
  
@@ -54,7 +54,7 @@ index 1a63176..d04d418 100755
  # shellcheck disable=SC2086
  commands="$(basename -a $commands | sed 's/\.1[a-z]*\.gz//')"
 diff --git a/tmux/.tmux.conf b/tmux/.tmux.conf
-index 759b3d7..7ca0f95 100644
+index 759b3d7..3617195 100644
 --- a/tmux/.tmux.conf
 +++ b/tmux/.tmux.conf
 @@ -30,7 +30,7 @@ bind 1 break-pane
@@ -66,6 +66,15 @@ index 759b3d7..7ca0f95 100644
  bind-key " " send-prefix
  
  # next-layout was previously tied to " ", so rebind it to something else
+@@ -74,7 +74,7 @@ unbind b
+ unbind y
+ bind b previous-window
+ # copies paste buffer to primary
+-bind y if-shell "test -n \"$WAYLAND_DISPLAY\"" "run \"tmux show-buffer | wl-copy\"" "run \"tmux show-buffer | xsel -i\""
++bind y "run \"tmux show-buffer | termux-clipboard-set\""
+ 
+ # Copy primary to paste-buffer, then C-]
+ bind p run-shell "$HOME/bin/set_and_paste_tmux_buffer"
 diff --git a/tmux/.tmux/tmuxline-base16 b/tmux/.tmux/tmuxline-base16
 index 1aee527..2f0ebad 100644
 --- a/tmux/.tmux/tmuxline-base16
@@ -79,8 +88,23 @@ index 1aee527..2f0ebad 100644
  
  setw -g window-status-format " #[fg=colour245]  #I  #W  "
  
+diff --git a/tmux/bin/set_and_paste_tmux_buffer b/tmux/bin/set_and_paste_tmux_buffer
+index 5bb543f..e1213e4 100755
+--- a/tmux/bin/set_and_paste_tmux_buffer
++++ b/tmux/bin/set_and_paste_tmux_buffer
+@@ -1,8 +1,3 @@
+ #!/bin/sh
+-if [ "$WAYLAND_DISPLAY" ]; then
+-    tmux set-buffer -- "$(wl-paste -p)"
+-    tmux paste-buffer
+-else
+-    tmux set-buffer -- "$(xsel -o)"
+-    tmux paste-buffer
+-fi
++tmux set-buffer -- "$(termux-clipboard-get)"
++tmux paste-buffer
 diff --git a/zsh/.zshrc b/zsh/.zshrc
-index 2118091..0dc04a0 100644
+index 2118091..5ef80b9 100644
 --- a/zsh/.zshrc
 +++ b/zsh/.zshrc
 @@ -153,15 +153,6 @@ poke() {
@@ -123,7 +147,7 @@ index 2118091..0dc04a0 100644
              zgen save
          fi
  
-+        . $HOME/.zgen/zdharma/fast-syntax-highlighting-master/fast-syntax-highlighting.plugin.zsh > /dev/null
++        . $HOME/.zgen/zdharma-continuum/fast-syntax-highlighting-master/fast-syntax-highlighting.plugin.zsh > /dev/null
 +        . $HOME/.zgen/zsh-users/zsh-autosuggestions-master/zsh-autosuggestions.zsh
 +
          . $HOME/.zgen/felixgravila/zsh-abbr-path-master/.abbr_pwd
