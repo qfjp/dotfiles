@@ -3,6 +3,18 @@ vim.g.easycomplete_lsp_checking=0
 vim.g.easycomplete_diagnostics_enable=0
 
 vim.opt.laststatus=0
+vim.api.nvim_create_augroup("VimPager", { clear = true })
+vim.api.nvim_create_autocmd("BufWinEnter", {
+	callback = function() vim.opt.laststatus=0 end,
+	group = "VimPager",
+	pattern = "*",
+})
+vim.api.nvim_create_autocmd("BufWinEnter", {
+	callback = function() vim.opt.showtabline=0 end,
+	group = "VimPager",
+	pattern = "*",
+})
+
 vim.opt.scrolloff=999
 vim.opt.list = false
 vim.opt.cursorline = false
