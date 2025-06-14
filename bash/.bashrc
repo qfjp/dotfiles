@@ -151,7 +151,6 @@ PERL_MM_OPT="INSTALL_BASE=/data/data/com.termux/files/home/perl5"; export PERL_M
     # {{{ Default programs
 
         export PAGER="vimpager"
-        export MANPAGER=vimmanpager
         export MANPAGER="nvim -c \"source $HOME/.config/nvim/lua/vimpager.lua | :Man! -\""
         [ -z "$EDITOR" ] && export EDITOR='nvim'
         [ -z "$SYSTEMD_EDITOR" ] && export SYSTEMD_EDITOR="$EDITOR"
