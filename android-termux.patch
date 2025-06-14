@@ -1,8 +1,28 @@
+diff --git a/bash/.bashrc b/bash/.bashrc
+index ee21c52..c69a9c1 100644
+--- a/bash/.bashrc
++++ b/bash/.bashrc
+@@ -1,5 +1,5 @@
+ # Keep thisat the top
+-[[ $- == *i* ]] && source /usr/share/blesh/ble.sh
++[[ $- == *i* ]] && USER=u0_485 source /data/data/com.termux/files/home/.local/share/blesh/ble.sh
+ 
+ export NVM_DIR="$HOME/.nvm"
+ [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+@@ -151,7 +151,7 @@ PERL_MM_OPT="INSTALL_BASE=/data/data/com.termux/files/home/perl5"; export PERL_M
+     # {{{ Default programs
+ 
+         export PAGER="vimpager"
+-        export MANPAGER="nvim -c \"source $HOME/.config/nvim/lua/vimpager.lua | :Man! -\""
++        export MANPAGER="vimmanpager"
+         [ -z "$EDITOR" ] && export EDITOR='nvim'
+         [ -z "$SYSTEMD_EDITOR" ] && export SYSTEMD_EDITOR="$EDITOR"
+ 
 diff --git a/neovim/.config/nvim/lua/plugins/all.lua b/neovim/.config/nvim/lua/plugins/all.lua
-index d2ae664..00be023 100644
+index fcbc957..570d6aa 100644
 --- a/neovim/.config/nvim/lua/plugins/all.lua
 +++ b/neovim/.config/nvim/lua/plugins/all.lua
-@@ -278,9 +278,6 @@ return {
+@@ -291,9 +291,6 @@ return {
      { "mfussenegger/nvim-jdtls", ft = { "java" }, },
      { "williamboman/mason.nvim", opts = {}, },
  
@@ -88,23 +108,8 @@ index 1aee527..2f0ebad 100644
  
  setw -g window-status-format " #[fg=colour245]  #I  #W  "
  
-diff --git a/tmux/bin/set_and_paste_tmux_buffer b/tmux/bin/set_and_paste_tmux_buffer
-index 5bb543f..e1213e4 100755
---- a/tmux/bin/set_and_paste_tmux_buffer
-+++ b/tmux/bin/set_and_paste_tmux_buffer
-@@ -1,8 +1,3 @@
- #!/bin/sh
--if [ "$WAYLAND_DISPLAY" ]; then
--    tmux set-buffer -- "$(wl-paste -p)"
--    tmux paste-buffer
--else
--    tmux set-buffer -- "$(xsel -o)"
--    tmux paste-buffer
--fi
-+tmux set-buffer -- "$(termux-clipboard-get)"
-+tmux paste-buffer
 diff --git a/zsh/.zshrc b/zsh/.zshrc
-index 2118091..5ef80b9 100644
+index 2118091..12523db 100644
 --- a/zsh/.zshrc
 +++ b/zsh/.zshrc
 @@ -153,15 +153,6 @@ poke() {
@@ -164,7 +169,15 @@ index 2118091..5ef80b9 100644
          [ -z "$EDITOR" ] && export EDITOR='nvim'
          [ -z "$SYSTEMD_EDITOR" ] && export SYSTEMD_EDITOR="$EDITOR"
  
-@@ -336,9 +325,6 @@ poke() {
+@@ -321,6 +310,7 @@ poke() {
+ 
+     # {{{ Path Additions
+ 
++        export PATH="$HOME/shiz:$PATH"
+         export PATH="$HOME/bin:$PATH"
+         export PATH="$HOME/.local/bin:$PATH"
+         export PATH="$PATH:$HOME/.cabal/bin"
+@@ -336,9 +326,6 @@ poke() {
          export JUPYTERLAB_DIR=$HOME/.local/share/jupyter/lab
  
          export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
@@ -174,7 +187,7 @@ index 2118091..5ef80b9 100644
      # }}}
  
  # }}}
-@@ -380,7 +366,7 @@ poke() {
+@@ -380,7 +367,7 @@ poke() {
          fpath+=($profile/share/zsh/site-functions $profile/share/zsh/$ZSH_VERSION/functions $profile/share/zsh/vendor-completions)
      done
      fpath+=($HOME/.zfunc)
