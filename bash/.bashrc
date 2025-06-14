@@ -223,5 +223,6 @@ PERL_MM_OPT="INSTALL_BASE=/data/data/com.termux/files/home/perl5"; export PERL_M
 # [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 # Keep this at the bottom
+bleopt filename_ls_colors="$LS_COLORS"
 [[ ! ${BLE_VERSION-} ]] || ble-attach
 # exec zsh

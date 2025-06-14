@@ -849,7 +849,7 @@ ble-face auto_complete='fg=240,underline,italic' # darker background
 ## completions in the menu.  The characters "@", "/" and "*" are added to
 ## symbolic links, directories and executables, respectively.
 
-#bind 'set visible-stats off'
+bind 'set visible-stats on'
 
 
 ## When this Readline setting is turned on, the suffix "/" is inserted after
@@ -867,7 +867,7 @@ ble-face auto_complete='fg=240,underline,italic' # darker background
 ## When this Readline setting is turned on, the filenames starting with "." is
 ## also generated as possible completions.
 
-#bind 'set match-hidden-files on'
+bind 'set match-hidden-files off'
 
 
 ## By default, when filenames of the form "dir/file*" is shown in the menu, the
@@ -1018,14 +1018,14 @@ ble-face auto_complete='fg=240,underline,italic' # darker background
 #ble-face -s filename_setuid           underline,fg=black,bg=220
 #ble-face -s filename_setgid           underline,fg=black,bg=191
 #ble-face -s filename_executable       underline,fg=green
-#ble-face -s filename_other            underline
+ble-face -s filename_other            none
 #ble-face -s filename_socket           underline,fg=cyan,bg=black
 #ble-face -s filename_pipe             underline,fg=lime,bg=black
 #ble-face -s filename_character        underline,fg=231,bg=black
 #ble-face -s filename_block            underline,fg=yellow,bg=black
 #ble-face -s filename_warning          underline,fg=red
 #ble-face -s filename_url              underline,fg=blue
-#ble-face -s filename_ls_colors        underline
+ble-face -s filename_ls_colors        none
 #ble-face -s varname_array             fg=orange,bold
 #ble-face -s varname_empty             fg=31
 #ble-face -s varname_export            fg=200,bold
