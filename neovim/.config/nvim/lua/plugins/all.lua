@@ -262,7 +262,8 @@ return {
             vim.api.nvim_set_keymap(
                 "i",
                 "<Esc>",
-                [[pumvisible() ? (complete_info().selected == -1 ? "\<C-e><CR>" : "\<C-y>") : "\<Esc>"]],
+                [[pumvisible() ? (complete_info().selected == -1 ? "\<C-e><Esc>" : "\<C-y><Esc>") : "\<Esc>"]],
+
                 { expr = true, silent = true }
             )
 			vim.api.nvim_set_keymap('i', '<Tab>', [[pumvisible() ? "\<C-n>" : "\<Tab>"]], { expr = true, silent = true })
