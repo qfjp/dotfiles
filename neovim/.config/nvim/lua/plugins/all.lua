@@ -239,6 +239,7 @@ return {
                 auto_start = true, -- if you want to start COQ at startup
                 -- Your COQ settings here
                 keymap = {
+                    recommended = false,
                     jump_to_mark = '',
                     manual_complete = '<c-n>',
                     manual_complete_insertion_only = true,
@@ -256,6 +257,17 @@ return {
             }
         end,
         config = function()
+			vim.api.nvim_set_keymap('i', '<C-c>', [[pumvisible() ? "\<C-e><C-c>" : "\<C-c>"]], { expr = true, silent = true })
+			vim.api.nvim_set_keymap('i', '<BS>', [[pumvisible() ? "\<C-e><BS>" : "\<BS>"]], { expr = true, silent = true })
+            vim.api.nvim_set_keymap(
+                "i",
+                "<Esc>",
+                [[pumvisible() ? (complete_info().selected == -1 ? "\<C-e><CR>" : "\<C-y>") : "\<Esc>"]],
+                { expr = true, silent = true }
+            )
+			vim.api.nvim_set_keymap('i', '<Tab>', [[pumvisible() ? "\<C-n>" : "\<Tab>"]], { expr = true, silent = true })
+			vim.api.nvim_set_keymap('i', '<S-Tab>', [[pumvisible() ? "\<C-p>" : "\<BS>"]], { expr = true, silent = true })
+
             require("completion_config")
             if pcall(require, "coq_3p") then
                 require("coq_3p") {
